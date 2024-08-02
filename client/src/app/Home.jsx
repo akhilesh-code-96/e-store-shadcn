@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { MdFavoriteBorder } from "react-icons/md";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -37,7 +39,10 @@ const Home = () => {
               className="w-full h-auto max-w-xs cursor-pointer border-neutral-700 dark:bg-black"
             >
               <CardHeader>
-                <CardTitle>{product.title}</CardTitle>
+                <div className="flex justify-between">
+                  <CardTitle>{product.title}</CardTitle>
+                  <MdFavoriteBorder />
+                </div>
                 <CardDescription>{product.description}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -47,6 +52,10 @@ const Home = () => {
                   className="object-contain w-full h-auto"
                 />
               </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button variant="outline">Add to Cart</Button>
+                <Button>Buy Now</Button>
+              </CardFooter>
             </Card>
           ))}
       </div>

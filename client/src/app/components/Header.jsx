@@ -86,10 +86,17 @@ const Header = () => {
               ⌘k
             </CommandShortcut>
           </div>
-          <CiShoppingCart size={24} className="cursor-pointer" />
-          <FaXTwitter className="cursor-pointer" />
-          <IoLogoGithub className="cursor-pointer" />
-          <ModeToggle />
+          <div className="flex items-center space-x-3">
+            <Link to="/login">
+              <div className="cursor-pointer hover:underline">Sign in</div>
+            </Link>
+            <CiShoppingCart size={24} className="cursor-pointer" />
+            <FaXTwitter className="cursor-pointer" />
+            <IoLogoGithub className="cursor-pointer" size={19} />
+            <span style={{ marginLeft: "2px" }}>
+              <ModeToggle />
+            </span>
+          </div>
         </div>
 
         <Sheet>
@@ -100,7 +107,7 @@ const Header = () => {
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle>Menu</SheetTitle>
+              <SheetTitle className="mb-2">Menu</SheetTitle>
             </SheetHeader>
             <ul className="flex flex-col space-y-4">
               {["My Account", "Admin Panel", "Orders"].map((link) => {
@@ -132,7 +139,7 @@ const Header = () => {
               </div>
             </ul>
             <SheetClose asChild>
-              <Button variant="ghost" className="mt-4">
+              <Button variant="ghost" className="mt-4 ms-[-10px]">
                 Close
               </Button>
             </SheetClose>

@@ -10,6 +10,7 @@ import Products from "./app/admin/Products";
 import Orders from "./app/admin/Orders";
 import Customers from "./app/admin/Customers";
 import Dashboard from "./app/admin/Dashboard";
+import LoginPage from "./app/LoginPage";
 
 function AppContent() {
   const [visible, setVisible] = useState(true);
@@ -28,6 +29,7 @@ function AppContent() {
       {visible && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/admin-panel" element={<AdminPanel />}>
           <Route path="/admin-panel/add-product" element={<AddProducts />} />
           <Route path="/admin-panel/products" element={<Products />} />
