@@ -12,6 +12,7 @@ import Customers from "./app/admin/Customers";
 import Dashboard from "./app/admin/Dashboard";
 import LoginPage from "./app/LoginPage";
 import RegisterPage from "./app/RegisterPage";
+import AccountPage from "./app/Account";
 
 function AppContent() {
   const [visible, setVisible] = useState(true);
@@ -31,6 +32,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/my-account" element={<AccountPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin-panel" element={<AdminPanel />}>
           <Route path="/admin-panel/add-product" element={<AddProducts />} />

@@ -47,11 +47,15 @@ class ProductController {
   }
 
   async getAllProducts(req, res) {
-    const { brand, sort, select, page = 1, limit = 10 } = req.query; // Default values for page and limit
+    const { brand, title, sort, select, page = 1, limit = 10 } = req.query; // Default values for page and limit
     const queryObject = {};
 
-    if (brand) {
+    if (brand && brand.trim() !== "") {
       queryObject.brand = { $regex: brand, $options: "i" };
+    }
+
+    if (title && title.trim() !== "") {
+      queryObject.title = { $regex: title, $options: "i" }; // Add title to the query object
     }
 
     try {

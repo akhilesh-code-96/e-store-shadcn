@@ -11,9 +11,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
+import { useProducts } from "./utils/ProductContext.jsx";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  const { products, setProducts } = useProducts();
 
   useEffect(() => {
     async function getProducts() {
@@ -43,6 +44,7 @@ const Home = () => {
                   <CardTitle>{product.title}</CardTitle>
                   <MdFavoriteBorder />
                 </div>
+                <div>{product.brand}</div>
                 <CardDescription>{product.description}</CardDescription>
               </CardHeader>
               <CardContent>

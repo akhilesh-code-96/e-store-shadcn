@@ -8,7 +8,6 @@ import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandList,
   CommandShortcut,
 } from "@/components/ui/command";
@@ -22,15 +21,25 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
 import { Menu } from "lucide-react";
+import axios from "axios";
+import { CiSearch } from "react-icons/ci";
+import { useProducts } from "../utils/ProductContext.jsx";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
+  const { products, setProducts } = useProducts();
+  const user = window.localStorage.getItem("user");
 
   React.useEffect(() => {
     const down = (e) => {
-      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.type === "click") {
+      if (
+        (e.key === "k" && (e.metaKey || e.ctrlKey)) ||
+        e.type === "click" ||
+        e.key === "Enter"
+      ) {
         e.preventDefault();
         setOpen((open) => !open);
       }
@@ -39,6 +48,45 @@ const Header = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  const handleSearch = async (e) => {
+    if (e) {
+      const value = e.target.textContent;
+      if (value) {
+        try {
+          const response = await axios.get(`/api/get-products?title=${value}`);
+          const data = response.data.products;
+          setProducts(data);
+          setOpen((open) => !open);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    handleSearch();
+  }, []);
+
+  const handleSearchChange = async (e) => {
+    if (e) {
+      const value = e.target.value;
+      if (value) {
+        try {
+          const response = await axios.get(`/api/get-products?title=${value}`);
+          const data = response.data.products;
+          setProducts(data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    handleSearchChange();
+  }, [products]);
 
   const isActive = (path) => location.pathname === path;
 
@@ -55,24 +103,33 @@ const Header = () => {
               alt="logo"
               className="object-contain w-10 h-7"
             />
-            <span className="ms-2">E-Store</span>
+            <span className="text-sm ms-2 me-2">E-Store</span>
           </Link>
 
-          <div className="hidden space-x-4 md:flex">
-            {["My Account", "Admin Panel", "Orders"].map((link) => {
-              const path = `/${link.toLowerCase().replace(" ", "-")}`;
-              return (
-                <Link
-                  key={path}
-                  to={path}
-                  className={`cursor-pointer ${
-                    isActive(path) ? "text-gray-300" : "text-neutral-500"
-                  } hover:text-neutral-200`}
-                >
-                  {link}
-                </Link>
-              );
-            })}
+          <div className="hidden space-x-6 md:flex">
+            {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
+              (link) => {
+                // Determine the path based on the link
+                let path;
+                if (link.startsWith("Hello")) {
+                  path = "/my-account"; // Redirect to the my-account page
+                } else {
+                  path = `/${link.toLowerCase().replace(" ", "-")}`;
+                }
+
+                return (
+                  <Link
+                    key={path}
+                    to={path}
+                    className={`cursor-pointer text-sm font-bold ${
+                      isActive(path) ? "text-gray-300" : "text-neutral-500"
+                    } hover:text-neutral-200`}
+                  >
+                    {link}
+                  </Link>
+                );
+              }
+            )}
           </div>
         </div>
 
@@ -88,7 +145,7 @@ const Header = () => {
           </div>
           <div className="flex items-center space-x-3">
             <Link to="/login">
-              <Button variant="outline" className="hover:underline">
+              <Button variant="outline" className="hover:underline h-[30px]">
                 Sign in
               </Button>
             </Link>
@@ -112,18 +169,27 @@ const Header = () => {
               <SheetTitle className="mb-2">Menu</SheetTitle>
             </SheetHeader>
             <ul className="flex flex-col space-y-4">
-              {["My Account", "Admin Panel", "Orders"].map((link) => {
-                const path = `/${link.toLowerCase().replace(" ", "-")}`;
-                return (
-                  <Link
-                    key={path}
-                    to={path}
-                    className="text-neutral-500 hover:text-neutral-200"
-                  >
-                    {link}
-                  </Link>
-                );
-              })}
+              {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
+                (link) => {
+                  // Determine the path based on the link
+                  let path;
+                  if (link.startsWith("Hello")) {
+                    path = "/my-account"; // Redirect to the my-account page
+                  } else {
+                    path = `/${link.toLowerCase().replace(" ", "-")}`;
+                  }
+                  console.log(path);
+                  return (
+                    <Link
+                      key={path}
+                      to={path}
+                      className="text-neutral-500 hover:text-neutral-200"
+                    >
+                      {link}
+                    </Link>
+                  );
+                }
+              )}
               <div
                 className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-full h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
@@ -149,14 +215,35 @@ const Header = () => {
         </Sheet>
       </section>
 
+      {/* Search Dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Type a command or search..."
-          className="border-none outline-none ring-0 focus:outline-none focus:border-none focus:ring-0"
-        />
+        <div className="flex items-center p-2 space-x-2 rounded-md">
+          <CiSearch size={24} style={{ cursor: "pointer" }} />
+          <Input
+            placeholder="Type a command or search..."
+            onChange={handleSearchChange}
+            style={{
+              border: "none",
+              outline: "none",
+              boxShadow: "none",
+            }}
+          />
+        </div>
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions"></CommandGroup>
+          {products.length === 0 && (
+            <CommandEmpty>No results found.</CommandEmpty>
+          )}
+          <CommandGroup heading="Suggestions">
+            {products.map((product, i) => (
+              <div
+                key={i}
+                onClick={handleSearch}
+                className="p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                {product.title}
+              </div>
+            ))}
+          </CommandGroup>
         </CommandList>
       </CommandDialog>
     </div>
