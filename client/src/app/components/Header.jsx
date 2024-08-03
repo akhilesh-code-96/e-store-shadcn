@@ -3,7 +3,7 @@ import React from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoLogoGithub } from "react-icons/io5";
 import { CiShoppingCart } from "react-icons/ci";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   CommandDialog,
   CommandEmpty,
@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
+
 import { Menu } from "lucide-react";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
@@ -32,6 +33,7 @@ const Header = () => {
   const location = useLocation();
   const { products, setProducts } = useProducts();
   const user = window.localStorage.getItem("user");
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const down = (e) => {
@@ -65,6 +67,10 @@ const Header = () => {
     }
   };
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("user");
+  };
+
   React.useEffect(() => {
     handleSearch();
   }, []);
@@ -88,6 +94,12 @@ const Header = () => {
     handleSearchChange();
   }, [products]);
 
+  if (location.pathname === "/my-account") {
+    if (!user) {
+      navigate("/login");
+    }
+  }
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -105,7 +117,7 @@ const Header = () => {
             />
             <span className="text-sm ms-2 me-2">E-Store</span>
           </Link>
-
+          {/* Main Header */}
           <div className="hidden space-x-6 md:flex">
             {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
               (link) => {
@@ -132,7 +144,7 @@ const Header = () => {
             )}
           </div>
         </div>
-
+        {/* Icons and sign in button */}
         <div className="items-center hidden space-x-4 md:flex">
           <div
             className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
@@ -145,9 +157,19 @@ const Header = () => {
           </div>
           <div className="flex items-center space-x-3">
             <Link to="/login">
-              <Button variant="outline" className="hover:underline h-[30px]">
-                Sign in
-              </Button>
+              {user ? (
+                <Button
+                  variant="outline"
+                  className="hover:underline h-[30px]"
+                  onClick={() => handleLogout()}
+                >
+                  Sign out
+                </Button>
+              ) : (
+                <Button variant="outline" className="hover:underline h-[30px]">
+                  Sign in
+                </Button>
+              )}
             </Link>
             <CiShoppingCart size={24} className="cursor-pointer" />
             <FaXTwitter className="cursor-pointer" />
@@ -157,7 +179,7 @@ const Header = () => {
             </span>
           </div>
         </div>
-
+        {/* Secondary Header */}
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" className="md:hidden">
@@ -178,7 +200,6 @@ const Header = () => {
                   } else {
                     path = `/${link.toLowerCase().replace(" ", "-")}`;
                   }
-                  console.log(path);
                   return (
                     <Link
                       key={path}

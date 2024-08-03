@@ -12,7 +12,8 @@ import Customers from "./app/admin/Customers";
 import Dashboard from "./app/admin/Dashboard";
 import LoginPage from "./app/LoginPage";
 import RegisterPage from "./app/RegisterPage";
-import AccountPage from "./app/Account";
+import AccountPage from "./app/AccountPage";
+import { Toaster } from "./components/ui/toaster";
 
 function AppContent() {
   const [visible, setVisible] = useState(true);
@@ -29,6 +30,7 @@ function AppContent() {
   return (
     <>
       {visible && <Header />}
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
