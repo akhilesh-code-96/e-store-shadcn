@@ -43,7 +43,7 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 px-4">
+    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100  bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-80 px-4">
       <section
         id="navigation"
         className="relative flex items-center justify-between w-full px-3"
@@ -88,7 +88,9 @@ const Header = () => {
           </div>
           <div className="flex items-center space-x-3">
             <Link to="/login">
-              <div className="cursor-pointer hover:underline">Sign in</div>
+              <Button variant="outline" className="hover:underline">
+                Sign in
+              </Button>
             </Link>
             <CiShoppingCart size={24} className="cursor-pointer" />
             <FaXTwitter className="cursor-pointer" />

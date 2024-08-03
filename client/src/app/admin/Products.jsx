@@ -250,7 +250,8 @@ export default function Products() {
         <div className="text-xs text-muted-foreground">
           Showing{" "}
           <strong>
-            {page * 10 - 10 + 1}-{page * 10}
+            {page * 10 - 10 + 1}-
+            {page === totalPages ? totalProducts : page * 10}
           </strong>{" "}
           of <strong>{totalProducts}</strong> products
         </div>

@@ -1,3 +1,63 @@
 .pagination__disabled {
   opacity: 0;
 }
+
+/* Registration Page */
+
+.register__box-1,
+.register__box-2 {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Define the transition */
+}
+
+.register__box-1,
+.register__box-2 {
+  opacity: 0; /* Initial opacity */
+}
+
+.register__box-1 {
+  transform: translateX(100%); /* Initial state */
+}
+
+.register__box-2 {
+  transform: translateX(-100%); /* Initial state */
+}
+
+.transition .register__box-1 {
+  transform: translateX(0); /* State after transition */
+  opacity: 1;
+}
+
+.transition .register__box-2 {
+  transform: translateX(0); /* State after transition */
+  opacity: 1;
+}
+
+/* Login Page */
+
+.login__box-1,
+.login__box-2 {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Define the transition */
+}
+
+.login__box-1,
+.login__box-2 {
+  opacity: 0; /* Initial opacity */
+}
+
+.login__box-1 {
+  transform: translateX(-100%); /* Initial state */
+}
+
+.login__box-2 {
+  transform: translateX(100%); /* Initial state */
+}
+
+.transition .login__box-1 {
+  transform: translateX(0); /* State after transition */
+  opacity: 1;
+}
+
+.transition .login__box-2 {
+  transform: translateX(0); /* State after transition */
+  opacity: 1;
+}
