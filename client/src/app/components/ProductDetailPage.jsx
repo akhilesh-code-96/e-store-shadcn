@@ -18,7 +18,6 @@ const ProductDetailPage = () => {
       try {
         const response = await axios.get(`/api/get-products?id=${id}`);
         const data = response.data.products;
-        console.log(data);
         setProduct(data);
       } catch (error) {
         console.error(error);

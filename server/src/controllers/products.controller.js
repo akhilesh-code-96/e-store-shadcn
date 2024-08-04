@@ -47,7 +47,17 @@ class ProductController {
   }
 
   async getAllProducts(req, res) {
-    const { id, brand, title, sort, select, page = 1, limit = 10 } = req.query; // Default values for page and limit
+    const {
+      id,
+      brand,
+      category,
+      title,
+      sort,
+      select,
+      page = 1,
+      limit = 10,
+    } = req.query; // Default values for page and limit
+
     const queryObject = {};
 
     if (id) {
@@ -59,7 +69,12 @@ class ProductController {
     }
 
     if (title && title.trim() !== "") {
-      queryObject.title = { $regex: title, $options: "i" }; // Add title to the query object
+      queryObject.title = { $regex: title, $options: "i" };
+    }
+
+    if (category) {
+      const categories = category.split(",");
+      queryObject.category = { $in: categories };
     }
 
     try {
@@ -81,8 +96,10 @@ class ProductController {
 
       apiData = apiData.skip(skip).limit(limitNum);
 
+      // Execute the query
       const products = await apiData;
-      const totalProds = await ProductModel.countDocuments();
+      const totalProds = await ProductModel.countDocuments(queryObject);
+
       res.status(200).json({ products: products, total: totalProds });
     } catch (error) {
       res.status(500).json({ message: "Failed to get all products", error });

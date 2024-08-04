@@ -228,7 +228,6 @@ export default function AddProducts() {
                         <SelectItem value="furniture">furniture</SelectItem>
                         <SelectItem value="beauty">beauty</SelectItem>
                         <SelectItem value="fragrances">fragrances</SelectItem>
-                        <SelectItem value="groceries">groceries</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
