@@ -13,6 +13,7 @@ import Dashboard from "./app/admin/Dashboard";
 import LoginPage from "./app/LoginPage";
 import RegisterPage from "./app/RegisterPage";
 import AccountPage from "./app/AccountPage";
+import ProductDetailPage from "./app/components/ProductDetailPage";
 import { Toaster } from "./components/ui/toaster";
 
 function AppContent() {
@@ -33,6 +34,7 @@ function AppContent() {
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/:id" element={<ProductDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/my-account" element={<AccountPage />} />
         <Route path="/register" element={<RegisterPage />} />

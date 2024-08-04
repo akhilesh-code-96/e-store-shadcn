@@ -47,8 +47,12 @@ class ProductController {
   }
 
   async getAllProducts(req, res) {
-    const { brand, title, sort, select, page = 1, limit = 10 } = req.query; // Default values for page and limit
+    const { id, brand, title, sort, select, page = 1, limit = 10 } = req.query; // Default values for page and limit
     const queryObject = {};
+
+    if (id) {
+      queryObject._id = id;
+    }
 
     if (brand && brand.trim() !== "") {
       queryObject.brand = { $regex: brand, $options: "i" };
@@ -85,16 +89,6 @@ class ProductController {
     }
   }
 
-  async getSpecificProduct(req, res) {
-    const id = req.params.id; // fetching the id from the url.
-    try {
-      const product = await ProductModel.findById(id); // getting the products by id.
-      res.send(product); // sending the response.
-    } catch (error) {
-      res.json({ message: "failed to fetch the product with error: ", error }); // throwing the error.
-    }
-  }
-
   async editProduct(req, res) {
     const { id, price, stock } = req.body;
     try {
@@ -110,7 +104,6 @@ class ProductController {
 
   async deleteProduct(req, res) {
     const id = req.params.id;
-    console.log(id);
     try {
       await ProductModel.deleteOne({ _id: id });
       res.status(200).json({ message: "Successfully deleted the product." });

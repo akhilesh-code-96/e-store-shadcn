@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -7,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
@@ -41,7 +42,11 @@ const Home = () => {
             >
               <CardHeader>
                 <div className="flex justify-between">
-                  <CardTitle>{product.title}</CardTitle>
+                  <Link to={`/${product._id}`}>
+                    <CardTitle className="hover:underline hover:text-blue-300">
+                      {product.title}
+                    </CardTitle>
+                  </Link>
                   <MdFavoriteBorder />
                 </div>
                 <div>{product.brand}</div>

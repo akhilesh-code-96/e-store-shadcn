@@ -17,7 +17,7 @@ router.post(
   uploadFile.single("photo"),
   productController.addProducts
 );
-// router.get("/get-products/:id", productController.getSpecificProduct);
+
 router.get("/get-products/", productController.getAllProducts);
 router.put("/edit-product/", productController.editProduct);
 router.delete("/delete-product/:id", productController.deleteProduct);
