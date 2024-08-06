@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import "../style.css";
 import { Separator } from "@/components/ui/separator";
 import { Rate } from "antd";
-import { FaRupeeSign } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 
 const ProductDetailPage = () => {
@@ -71,8 +70,8 @@ const ProductDetailPage = () => {
                   {prod.discountPercentage}%
                 </p>
                 <div className="flex">
-                  <FaRupeeSign size={12} />
                   <p className="text-2xl">
+                    ₹
                     {(
                       prod.price * 84 -
                       (prod.discountPercentage / 100) * prod.price
@@ -85,8 +84,7 @@ const ProductDetailPage = () => {
                 <p className="pl-1 text-xs text-neutral-400">M.R.P:&nbsp;</p>
                 <del>
                   <div className="flex items-center space-x-1">
-                    <FaRupeeSign size={10} />
-                    <p className="text-xs font-light">{prod.price * 84}</p>
+                    <p className="text-xs font-light">₹{prod.price * 84}</p>
                   </div>
                 </del>
               </div>

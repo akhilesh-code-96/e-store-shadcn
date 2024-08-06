@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaChevronRight, FaChevronDown } from "react-icons/fa";
 
 const Toggle = ({ name }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggleRef = useRef(null);
 
   const handleToggle = () => {

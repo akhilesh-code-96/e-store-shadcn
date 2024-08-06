@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -20,12 +21,42 @@ import {
   selectProducts,
   toggleCategory,
 } from "./redux/reducers/headerReducer.js";
+import { Separator } from "@/components/ui/separator";
+import { FaRupeeSign } from "react-icons/fa";
 
 const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
   const categories = useSelector(selectCategories);
-  const [expand, setExpand] = React.useState(false);
+  const [expand, setExpand] = React.useState(true);
+  const [data, setData] = React.useState([50]);
+
+  const conversionRate = 84;
+  const minPrice = () => {
+    let min = Number.MAX_SAFE_INTEGER;
+    for (const obj of products) {
+      let price = obj.price;
+      min = Math.min(price, min);
+    }
+    return min * conversionRate;
+  };
+
+  const handleValueChange = (newValue) => {
+    setData(newValue);
+    console.log("Slider value:", newValue); // Handle the value change as needed
+  };
+
+  const maxPrice = () => {
+    let max = Number.MIN_SAFE_INTEGER;
+    for (const obj of products) {
+      let price = obj.price;
+      max = Math.max(price, max);
+    }
+    return max * conversionRate;
+  };
+
+  const maximumPrice = maxPrice();
+  const minimumPrice = minPrice();
 
   useEffect(() => {
     const categoryQuery = categories.join(",");
@@ -61,12 +92,39 @@ const Home = () => {
             </div>
           ))}
         </div>
+        <Separator className="mt-2" />
+        {/* Price Range */}
         <div className="py-10 w-[200px]">
-          <Slider defaultValue={[33]} max={100} step={1} />
+          <h4 className="mb-2 text-md text-neutral-300">Price Range</h4>
+          <div className="flex justify-between py-2 mb-2">
+            <span className="px-2 text-xs">
+              ₹
+              {minimumPrice.toFixed(2) > 1000
+                ? `${Math.floor(minimumPrice / 1000)}k`
+                : minimumPrice}
+            </span>
+            <span className="px-2 text-xs">
+              ₹
+              {maximumPrice.toFixed(2) > 1000
+                ? `${Math.floor(maximumPrice / 1000)}k`
+                : maximumPrice}
+            </span>
+          </div>
+          {/* Slider */}
+          <Slider
+            value={data}
+            onValueChange={handleValueChange}
+            max={100}
+            step={1}
+          />
+          <h1>{data[0]}</h1>
         </div>
       </div>
       {/* Product Display Section */}
-      <div className="grid grid-cols-1 gap-4 p-5 mt-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+      <div className="flex self-start h-[240vh]">
+        <Separator orientation="vertical" className="w-[1px] h-[240vh]" />
+      </div>
+      <div className="grid grid-cols-1 gap-2 p-5 ms-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {products &&
           products.map((product, index) => (
             <Card
