@@ -51,6 +51,7 @@ class ProductController {
       id,
       brand,
       category,
+      range,
       title,
       sort,
       select,
@@ -75,6 +76,10 @@ class ProductController {
     if (category) {
       const categories = category.split(",");
       queryObject.category = { $in: categories };
+    }
+
+    if (range) {
+      queryObject.price = { $lte: range };
     }
 
     try {

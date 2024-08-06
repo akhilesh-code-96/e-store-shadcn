@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import Toggle from "./components/Toggle.jsx";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,52 +19,74 @@ import {
   selectCategories,
   selectProducts,
   toggleCategory,
+  selectRange,
+  setRange,
 } from "./redux/reducers/headerReducer.js";
 import { Separator } from "@/components/ui/separator";
-import { FaRupeeSign } from "react-icons/fa";
 
 const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
   const categories = useSelector(selectCategories);
   const [expand, setExpand] = React.useState(true);
-  const [data, setData] = React.useState([50]);
+  const newRange = useSelector(selectRange);
+  const [initialMinPrice, setInitialMinPrice] = React.useState(null);
+  const [initialMaxPrice, setInitialMaxPrice] = React.useState(null);
 
   const conversionRate = 84;
-  const minPrice = () => {
+  // Calculation of max and min price
+  const calculateMinPrice = (items) => {
     let min = Number.MAX_SAFE_INTEGER;
-    for (const obj of products) {
+    for (const obj of items) {
       let price = obj.price;
       min = Math.min(price, min);
     }
-    return min * conversionRate;
+    return (min * conversionRate).toFixed(2);
   };
 
-  const handleValueChange = (newValue) => {
-    setData(newValue);
-    console.log("Slider value:", newValue); // Handle the value change as needed
-  };
-
-  const maxPrice = () => {
+  const calculateMaxPrice = (items) => {
     let max = Number.MIN_SAFE_INTEGER;
-    for (const obj of products) {
+    for (const obj of items) {
       let price = obj.price;
       max = Math.max(price, max);
     }
-    return max * conversionRate;
+    console.log("Max", max);
+    return (max * conversionRate).toFixed(2);
   };
 
-  const maximumPrice = maxPrice();
-  const minimumPrice = minPrice();
+  // Handling the change in slider
+  const handleValueChange = (e) => {
+    let newValue = e.target.value;
+    dispatch(setRange(newValue));
+  };
 
+  // Making api calls to fetch the products based on the query.
   useEffect(() => {
     const categoryQuery = categories.join(",");
-    try {
+    const rangeQuery = (newRange / conversionRate).toFixed(2);
+    console.log(rangeQuery);
+    if (initialMinPrice !== null && initialMaxPrice !== null) {
+      try {
+        dispatch(
+          fetchProducts(`limit=9&category=${categoryQuery}&range=${rangeQuery}`)
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
       dispatch(fetchProducts(`limit=9&category=${categoryQuery}`));
-    } catch (error) {
-      console.error(error);
     }
-  }, [categories, dispatch]);
+  }, [categories, dispatch, newRange]);
+
+  useEffect(() => {
+    if (initialMinPrice === null) {
+      setInitialMinPrice(calculateMinPrice(products));
+    }
+    if (initialMaxPrice === null) {
+      console.log(initialMaxPrice);
+      setInitialMaxPrice(calculateMaxPrice(products));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-start md:items-center">
@@ -96,33 +117,21 @@ const Home = () => {
         {/* Price Range */}
         <div className="py-10 w-[200px]">
           <h4 className="mb-2 text-md text-neutral-300">Price Range</h4>
-          <div className="flex justify-between py-2 mb-2">
-            <span className="px-2 text-xs">
-              ₹
-              {minimumPrice.toFixed(2) > 1000
-                ? `${Math.floor(minimumPrice / 1000)}k`
-                : minimumPrice}
-            </span>
-            <span className="px-2 text-xs">
-              ₹
-              {maximumPrice.toFixed(2) > 1000
-                ? `${Math.floor(maximumPrice / 1000)}k`
-                : maximumPrice}
-            </span>
-          </div>
           {/* Slider */}
-          <Slider
-            value={data}
-            onValueChange={handleValueChange}
-            max={100}
-            step={1}
+          <h1>₹{newRange}</h1>
+          <input
+            type="range"
+            min={initialMinPrice}
+            max={initialMaxPrice}
+            step={100}
+            value={newRange}
+            onChange={handleValueChange}
           />
-          <h1>{data[0]}</h1>
         </div>
       </div>
       {/* Product Display Section */}
-      <div className="flex self-start h-[240vh]">
-        <Separator orientation="vertical" className="w-[1px] h-[240vh]" />
+      <div className="flex self-start h-screen">
+        <Separator orientation="vertical" className="w-[1px] h-screen" />
       </div>
       <div className="grid grid-cols-1 gap-2 p-5 ms-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {products &&

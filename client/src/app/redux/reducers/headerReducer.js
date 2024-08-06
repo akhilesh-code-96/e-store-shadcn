@@ -12,6 +12,7 @@ export const fetchProducts = createAsyncThunk(
 const initialState = {
   products: [],
   categories: [],
+  range: 0,
   status: "idle", // status of the async operation
   error: null,
 };
@@ -20,10 +21,6 @@ const headerSlice = createSlice({
   name: "header",
   initialState: initialState,
   reducers: {
-    setProducts: (state, action) => {
-      console.log(state.products);
-      state.products = action.payload;
-    },
     toggleCategory(state, action) {
       const category = action.payload;
       if (state.categories.includes(category)) {
@@ -31,6 +28,9 @@ const headerSlice = createSlice({
       } else {
         state.categories.push(category);
       }
+    },
+    setRange(state, action) {
+      state.range = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -49,7 +49,8 @@ const headerSlice = createSlice({
   },
 });
 
-export const { toggleCategory } = headerSlice.actions;
+export const { toggleCategory, setRange } = headerSlice.actions;
+export const selectRange = (state) => state.headerReducer.range;
 export const selectProducts = (state) => state.headerReducer.products;
 export const selectCategories = (state) => state.headerReducer.categories;
 export const selectProductsStatus = (state) => state.headerReducer.status;
