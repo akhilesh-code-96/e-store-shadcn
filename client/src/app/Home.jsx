@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -8,123 +8,58 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useEffect } from "react";
-import axios from "axios";
 import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import Toggle from "./components/Toggle.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { actions, headerSelector } from "./redux/reducers/headerReducer.js";
+import {
+  fetchProducts,
+  selectCategories,
+  selectProducts,
+  toggleCategory,
+} from "./redux/reducers/headerReducer.js";
 
 const Home = () => {
-  const products = useSelector(headerSelector);
   const dispatch = useDispatch();
-  const [expand, setExpand] = useState(false);
-  const [category, setCategory] = useState([]);
+  const products = useSelector(selectProducts);
+  const categories = useSelector(selectCategories);
+  const [expand, setExpand] = React.useState(false);
 
-  async function getProducts() {
-    const categories = category.join(",");
+  useEffect(() => {
+    const categoryQuery = categories.join(",");
     try {
-      const response = await axios.get(
-        `/api/get-products?limit=9&category=${categories}`
-      );
-      const data = response.data.products;
-      dispatch(actions.setProducts(data));
+      dispatch(fetchProducts(`limit=9&category=${categoryQuery}`));
     } catch (error) {
       console.error(error);
     }
-  }
-  useEffect(() => {
-    getProducts();
-  }, [category]);
-
-  console.log(category);
+  }, [categories, dispatch]);
 
   return (
     <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-start md:items-center">
       {/* Filter and sorting section */}
       <div className="w-full md:w-[300px] p-5 flex flex-col md:sticky md:top-20 md:self-start">
         <div onClick={() => setExpand(!expand)}>
-          <Toggle name={"Category"} />
+          <Toggle name={"Categories"} />
         </div>
         <div
           style={{ display: expand ? "block" : "none" }}
           className="py-2 pl-5"
         >
-          <div className="flex items-center space-x-2">
-            <div
-              onClick={() =>
-                setCategory((prev) => {
-                  // Check if "beauty" is already in the array
-                  if (prev.includes("beauty")) {
-                    // If it is, remove it
-                    return prev.filter((item) => item !== "beauty");
-                  } else {
-                    // If it is not, add it
-                    return [...prev, "beauty"];
-                  }
-                })
-              }
-            >
-              <Checkbox id="beauty" />
+          {["beauty", "fragrances", "furniture"].map((category) => (
+            <div key={category} className="flex items-center space-x-2">
+              <div onClick={() => dispatch(toggleCategory(category))}>
+                <Checkbox id={category} />
+              </div>
+              <label
+                htmlFor={category}
+                className="text-sm font-medium leading-none cursor-pointer hover:text-primary text-neutral-400 peer-disabled:opacity-70"
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </label>
             </div>
-            <label
-              htmlFor="beauty"
-              className="text-sm font-medium leading-none cursor-pointer hover:text-primary text-neutral-400 peer-disabled:opacity-70"
-            >
-              Beauty
-            </label>
-          </div>
-          <div className="flex items-center py-2 space-x-2">
-            <div
-              onClick={() =>
-                setCategory((prev) => {
-                  // Check if "fragrances" is already in the array
-                  if (prev.includes("fragrances")) {
-                    // If it is, remove it
-                    return prev.filter((item) => item !== "fragrances");
-                  } else {
-                    // If it is not, add it
-                    return [...prev, "fragrances"];
-                  }
-                })
-              }
-            >
-              <Checkbox id="fragrances" />
-            </div>
-            <label
-              htmlFor="fragrances"
-              className="text-sm font-medium leading-none cursor-pointer hover:text-primary text-neutral-400 peer-disabled:opacity-70"
-            >
-              Fragrances
-            </label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div
-              onClick={() =>
-                setCategory((prev) => {
-                  // Check if "fruniture" is already in the array
-                  if (prev.includes("furniture")) {
-                    // If it is, remove it
-                    return prev.filter((item) => item !== "furniture");
-                  } else {
-                    // If it is not, add it
-                    return [...prev, "furniture"];
-                  }
-                })
-              }
-            >
-              <Checkbox id="furniture" />
-            </div>
-            <label
-              htmlFor="furniture"
-              className="text-sm font-medium leading-none cursor-pointer hover:text-primary text-neutral-400 peer-disabled:opacity-70"
-            >
-              Furniture
-            </label>
-          </div>
+          ))}
         </div>
         <div className="py-10 w-[200px]">
           <Slider defaultValue={[33]} max={100} step={1} />
