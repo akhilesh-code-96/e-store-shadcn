@@ -57,7 +57,7 @@ const ProductDetailPage = () => {
                   className="p-1 mt-[-1px] text-sm"
                 />
               </div>
-              {/* Discounted Pice */}
+              {/* Discounted Price */}
               <div className="py-2">
                 <Badge
                   variant="destructive"
@@ -83,11 +83,11 @@ const ProductDetailPage = () => {
               {/* Actual Product Price */}
               <div className="flex space-x-1">
                 <p className="pl-1 text-xs text-neutral-400">M.R.P:&nbsp;</p>
-                <div className="flex items-center space-x-1">
-                  <FaRupeeSign size={10} />
-                </div>
                 <del>
-                  <p className="text-xs font-light">{prod.price * 84}</p>
+                  <div className="flex items-center space-x-1">
+                    <FaRupeeSign size={10} />
+                    <p className="text-xs font-light">{prod.price * 84}</p>
+                  </div>
                 </del>
               </div>
               <div>

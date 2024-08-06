@@ -125,7 +125,7 @@ export default function AddProducts() {
                     <div className="flex mt-4 text-sm leading-6 text-gray-600">
                       <Label
                         htmlFor="photo"
-                        className="relative mt-1 font-semibold text-indigo-600 bg-white rounded-md cursor-pointer dark:bg-black focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                        className="relative mt-1 font-semibold text-indigo-600 bg-white rounded-md cursor-pointer dark:bg-[#0a0a0a] focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                       >
                         <span>Upload a file</span>
                         <input
