@@ -12,13 +12,15 @@ import { useEffect } from "react";
 import axios from "axios";
 import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
-import { useProducts } from "./utils/ProductContext.jsx";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import Toggle from "./components/Toggle.jsx";
+import { useSelector, useDispatch } from "react-redux";
+import { actions, headerSelector } from "./redux/reducers/headerReducer.js";
 
 const Home = () => {
-  const { products, setProducts } = useProducts();
+  const products = useSelector(headerSelector);
+  const dispatch = useDispatch();
   const [expand, setExpand] = useState(false);
   const [category, setCategory] = useState([]);
 
@@ -29,7 +31,7 @@ const Home = () => {
         `/api/get-products?limit=9&category=${categories}`
       );
       const data = response.data.products;
-      setProducts(data);
+      dispatch(actions.setProducts(data));
     } catch (error) {
       console.error(error);
     }

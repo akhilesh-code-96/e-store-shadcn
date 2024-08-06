@@ -26,12 +26,14 @@ import { Input } from "@/components/ui/input";
 import { Menu } from "lucide-react";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import { useProducts } from "../utils/ProductContext.jsx";
+import { actions, headerSelector } from "../redux/reducers/headerReducer";
+import { useSelector, useDispatch } from "react-redux";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
-  const { products, setProducts } = useProducts();
+  const dispatch = useDispatch();
+  const products = useSelector(headerSelector);
   const user = window.localStorage.getItem("user");
   const navigate = useNavigate();
 
@@ -58,7 +60,7 @@ const Header = () => {
         try {
           const response = await axios.get(`/api/get-products?title=${value}`);
           const data = response.data.products;
-          setProducts(data);
+          dispatch(actions.setProducts(data));
           setOpen((open) => !open);
         } catch (error) {
           console.error(error);
