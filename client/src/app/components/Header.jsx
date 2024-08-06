@@ -24,16 +24,15 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Menu } from "lucide-react";
-import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import { actions, headerSelector } from "../redux/reducers/headerReducer";
+import { fetchProducts, selectProducts } from "../redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
-  const products = useSelector(headerSelector);
+  const products = useSelector(selectProducts);
   const user = window.localStorage.getItem("user");
   const navigate = useNavigate();
 
@@ -58,9 +57,7 @@ const Header = () => {
       const value = e.target.textContent;
       if (value) {
         try {
-          const response = await axios.get(`/api/get-products?title=${value}`);
-          const data = response.data.products;
-          dispatch(actions.setProducts(data));
+          dispatch(fetchProducts(`title=${value}`));
           setOpen((open) => !open);
         } catch (error) {
           console.error(error);
@@ -82,9 +79,7 @@ const Header = () => {
       const value = e.target.value;
       if (value) {
         try {
-          const response = await axios.get(`/api/get-products?title=${value}`);
-          const data = response.data.products;
-          setProducts(data);
+          dispatch(fetchProducts(`title=${value}`));
         } catch (error) {
           console.error(error);
         }
