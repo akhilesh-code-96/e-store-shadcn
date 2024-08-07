@@ -15,6 +15,8 @@ const initialState = {
   range: 0,
   status: "idle", // status of the async operation
   error: null,
+  initialiMaxPrice: null,
+  initialiMinPrice: null,
 };
 
 const headerSlice = createSlice({
@@ -31,6 +33,25 @@ const headerSlice = createSlice({
     },
     setRange(state, action) {
       state.range = action.payload;
+    },
+    setInitialMaxPrice(state, action) {
+      const products = action.payload;
+      console.log("Reducer", products);
+      let max = Number.MIN_SAFE_INTEGER;
+      for (const obj of products) {
+        let price = obj.price;
+        max = Math.max(price, max);
+      }
+      state.initialiMaxPrice = Math.floor(max * 84);
+    },
+    setInitialMinPrice(state, action) {
+      const products = action.payload;
+      let min = Number.MAX_SAFE_INTEGER;
+      for (const obj of products) {
+        let price = obj.price;
+        min = Math.min(price, min);
+      }
+      state.initialiMinPrice = Math.floor(min * 84);
     },
   },
   extraReducers: (builder) => {
@@ -49,7 +70,14 @@ const headerSlice = createSlice({
   },
 });
 
-export const { toggleCategory, setRange } = headerSlice.actions;
+export const {
+  toggleCategory,
+  setRange,
+  setInitialMaxPrice,
+  setInitialMinPrice,
+} = headerSlice.actions;
+export const minPrice = (state) => state.headerReducer.initialiMinPrice;
+export const maxPrice = (state) => state.headerReducer.initialiMaxPrice;
 export const selectRange = (state) => state.headerReducer.range;
 export const selectProducts = (state) => state.headerReducer.products;
 export const selectCategories = (state) => state.headerReducer.categories;

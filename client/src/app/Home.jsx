@@ -21,8 +21,14 @@ import {
   toggleCategory,
   selectRange,
   setRange,
+  setInitialMaxPrice,
+  setInitialMinPrice,
+  minPrice,
+  maxPrice,
 } from "./redux/reducers/headerReducer.js";
 import { Separator } from "@/components/ui/separator";
+import RangeInput from "./components/RangeInput.jsx";
+import { Slider } from "@/components/ui/slider.jsx";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -30,42 +36,32 @@ const Home = () => {
   const categories = useSelector(selectCategories);
   const [expand, setExpand] = React.useState(true);
   const newRange = useSelector(selectRange);
-  const [initialMinPrice, setInitialMinPrice] = React.useState(null);
-  const [initialMaxPrice, setInitialMaxPrice] = React.useState(null);
-
-  const conversionRate = 84;
-  // Calculation of max and min price
-  const calculateMinPrice = (items) => {
-    let min = Number.MAX_SAFE_INTEGER;
-    for (const obj of items) {
-      let price = obj.price;
-      min = Math.min(price, min);
-    }
-    return (min * conversionRate).toFixed(2);
-  };
-
-  const calculateMaxPrice = (items) => {
-    let max = Number.MIN_SAFE_INTEGER;
-    for (const obj of items) {
-      let price = obj.price;
-      max = Math.max(price, max);
-    }
-    console.log("Max", max);
-    return (max * conversionRate).toFixed(2);
-  };
+  const newMinPrice = useSelector(minPrice);
+  const newMaxPrice = useSelector(maxPrice);
 
   // Handling the change in slider
-  const handleValueChange = (e) => {
-    let newValue = e.target.value;
+  const handleValueChange = (newValue) => {
+    // let newValue = e.target.value;
     dispatch(setRange(newValue));
   };
+
+  // Calling minPrice and maxPrice functions for the slider.
+  useEffect(() => {
+    if (products.length > 0) {
+      if (newMinPrice === null) {
+        dispatch(setInitialMinPrice(products));
+      }
+      if (newMaxPrice === null) {
+        dispatch(setInitialMaxPrice(products));
+      }
+    }
+  }, [products]);
 
   // Making api calls to fetch the products based on the query.
   useEffect(() => {
     const categoryQuery = categories.join(",");
-    const rangeQuery = (newRange / conversionRate).toFixed(2);
-    console.log(rangeQuery);
-    if (initialMinPrice !== null && initialMaxPrice !== null) {
+    const rangeQuery = (newRange / 84).toFixed(2);
+    if (newMinPrice !== null && newMaxPrice !== null) {
       try {
         dispatch(
           fetchProducts(`limit=9&category=${categoryQuery}&range=${rangeQuery}`)
@@ -77,16 +73,6 @@ const Home = () => {
       dispatch(fetchProducts(`limit=9&category=${categoryQuery}`));
     }
   }, [categories, dispatch, newRange]);
-
-  useEffect(() => {
-    if (initialMinPrice === null) {
-      setInitialMinPrice(calculateMinPrice(products));
-    }
-    if (initialMaxPrice === null) {
-      console.log(initialMaxPrice);
-      setInitialMaxPrice(calculateMaxPrice(products));
-    }
-  }, []);
 
   return (
     <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-start md:items-center">
@@ -118,14 +104,21 @@ const Home = () => {
         <div className="py-10 w-[200px]">
           <h4 className="mb-2 text-md text-neutral-300">Price Range</h4>
           {/* Slider */}
-          <h1>₹{newRange}</h1>
-          <input
-            type="range"
-            min={initialMinPrice}
-            max={initialMaxPrice}
+          <p className="py-2 mb-2 text-sm font-light text-neutral-300">
+            ₹{newRange > 0 ? newRange : newMinPrice}
+          </p>
+          {/* <RangeInput
+            newMinPrice={newMinPrice}
+            newMaxPrice={newMaxPrice}
+            newRange={newRange}
+            handleValueChange={handleValueChange}
+          /> */}
+          <Slider
+            value={[newRange]}
             step={100}
-            value={newRange}
-            onChange={handleValueChange}
+            onValueChange={handleValueChange}
+            min={newMinPrice}
+            max={newMaxPrice}
           />
         </div>
       </div>
