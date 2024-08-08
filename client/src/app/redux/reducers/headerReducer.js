@@ -117,6 +117,9 @@ const headerSlice = createSlice({
         state.cartCount = storedCartProducts.length;
       }
     },
+    updateDeletedCartCount(state, action) {
+      state.cartCount -= 1;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -145,6 +148,7 @@ export const {
   setInitialMinPrice,
   addToCart,
   resetItemCartStatus,
+  updateDeletedCartCount,
 } = headerSlice.actions;
 export const minPrice = (state) => state.headerReducer.initialiMinPrice;
 export const maxPrice = (state) => state.headerReducer.initialiMaxPrice;

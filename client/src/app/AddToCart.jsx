@@ -14,6 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableFooter,
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
@@ -21,6 +22,7 @@ import { useEffect, useCallback } from "react";
 import {
   updateProductQuantity,
   updatedProduct,
+  updateDeletedCartCount,
 } from "./redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -87,9 +89,27 @@ export default function AddToCart() {
   useEffect(() => {
     if (changedProduct) {
       console.log("Product quantity updated:", changedProduct);
-      // Additional logic here, like updating UI or triggering another action
     }
   }, [changedProduct]);
+
+  const handleDeleteProduct = (id, quantity) => {
+    const value = "delete";
+    dispatch(
+      updateProductQuantity(`id=${id}&value=${value}&quantity=${quantity}`)
+    );
+    const productIndex = cartProducts.findIndex((item) => item._id === id);
+    if (productIndex !== -1) {
+      const updatedCartProducts = [...cartProducts];
+      updatedCartProducts.splice(productIndex, 1);
+
+      dispatch(updateDeletedCartCount());
+      // If the array is empty, set it as an empty array in localStorage
+      localStorage.setItem(
+        "cartProducts",
+        JSON.stringify(updatedCartProducts.length ? updatedCartProducts : [])
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-[70px] p-10">
@@ -99,7 +119,9 @@ export default function AddToCart() {
           <Separator />
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="relative">
+            {" "}
+            {/* Add relative positioning if needed */}
             <TableHeader>
               <TableRow>
                 <TableHead className="hidden w-[100px] sm:table-cell">
@@ -114,43 +136,68 @@ export default function AddToCart() {
               </TableRow>
             </TableHeader>
             {cartProducts.length > 0 ? (
-              <TableBody>
-                {cartProducts.map((item, i) => (
-                  <TableRow key={i}>
-                    <TableCell className="hidden sm:table-cell">
-                      <img
-                        alt="Product image"
-                        className="object-cover rounded-md aspect-square"
-                        height="64"
-                        src={item.imageUrl}
-                        width="64"
-                      />
+              <>
+                <TableBody>
+                  {cartProducts.map((item, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="hidden sm:table-cell">
+                        <img
+                          alt="Product image"
+                          className="object-cover rounded-md aspect-square"
+                          height="64"
+                          src={item.imageUrl}
+                          width="64"
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {item.title}
+                      </TableCell>
+                      <TableCell className="flex mt-4">
+                        <button
+                          onClick={() => handleQuantityChange(item._id, -1)}
+                          className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
+                        >
+                          -
+                        </button>
+                        <span className="px-4 py-2">{item.quantity || 1}</span>
+                        <button
+                          onClick={() => handleQuantityChange(item._id, 1)}
+                          className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
+                        >
+                          +
+                        </button>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        ₹{(item.price * 84).toFixed(2)}
+                      </TableCell>
+                      <TableCell className="relative">
+                        <Trash
+                          className="absolute top-9 left-7"
+                          size={20}
+                          onClick={() =>
+                            handleDeleteProduct(item._id, item.quantity)
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter className="w-full p-4">
+                  <TableRow>
+                    <TableCell colSpan="4" className="font-bold text-right">
+                      Subtotal:
                     </TableCell>
-                    <TableCell className="font-medium">{item.title}</TableCell>
-                    <TableCell className="flex mt-4">
-                      <button
-                        onClick={() => handleQuantityChange(item._id, -1)}
-                        className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
-                      >
-                        -
-                      </button>
-                      <span className="px-4 py-2">{item.quantity || 1}</span>
-                      <button
-                        onClick={() => handleQuantityChange(item._id, 1)}
-                        className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
-                      >
-                        +
-                      </button>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      ₹{(item.price * 84).toFixed(2)}
-                    </TableCell>
-                    <TableCell className="relative">
-                      <Trash className="absolute top-9 left-7" size={20} />
+                    <TableCell className="font-bold">
+                      ₹
+                      {cartProducts
+                        .reduce((acc, curr) => {
+                          return acc + curr.quantity * curr.price * 84;
+                        }, 0)
+                        .toFixed(2)}
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
+                </TableFooter>
+              </>
             ) : (
               <TableBody>
                 <TableRow>
@@ -162,7 +209,6 @@ export default function AddToCart() {
             )}
           </Table>
         </CardContent>
-        <CardFooter></CardFooter>
       </Card>
     </div>
   );
