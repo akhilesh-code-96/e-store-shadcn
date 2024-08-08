@@ -124,6 +124,44 @@ class ProductController {
     }
   }
 
+  async updateCartQuantity(req, res) {
+    const { id, value } = req.query;
+
+    const product = await ProductModel.findOne({ _id: id });
+
+    if (value === "1") {
+      try {
+        const newStock = product.stock - 1;
+
+        await ProductModel.updateOne(
+          { _id: id },
+          { $set: { stock: newStock } }
+        );
+
+        console.log("Stock updated successfully");
+
+        // Fetch the updated product details if needed
+        const updatedProduct = await ProductModel.findOne({ _id: id });
+        res.json({ product: updatedProduct });
+      } catch (error) {
+        console.error("Failed to update the product", error);
+        res
+          .status(500)
+          .json({ message: "Failed to update the product", error });
+      }
+    } else if (value === "-1") {
+      const newStock = product.stock + 1;
+
+      await ProductModel.updateOne({ _id: id }, { $set: { stock: newStock } });
+
+      // Fetch the updated product details if needed
+      const updatedProduct = await ProductModel.findOne({ _id: id });
+      res.json({ product: updatedProduct });
+    } else {
+      res.status(400).json({ message: "Invalid quantity value provided" });
+    }
+  }
+
   async deleteProduct(req, res) {
     const id = req.params.id;
     try {

@@ -23,5 +23,6 @@ router.put("/edit-product/", productController.editProduct);
 router.delete("/delete-product/:id", productController.deleteProduct);
 router.post("/register/", userController.addUser);
 router.get("/get-user/", userController.getUser);
+router.put("/update-quantity/", productController.updateCartQuantity);
 
 module.exports = router;

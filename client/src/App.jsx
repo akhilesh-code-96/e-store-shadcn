@@ -14,6 +14,7 @@ import LoginPage from "./app/LoginPage";
 import RegisterPage from "./app/RegisterPage";
 import AccountPage from "./app/AccountPage";
 import ProductDetailPage from "./app/components/ProductDetailPage";
+import AddToCart from "./app/AddToCart";
 import { Toaster } from "./components/ui/toaster";
 
 function AppContent() {
@@ -35,6 +36,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:id" element={<ProductDetailPage />} />
+        <Route path="/add-to-cart" element={<AddToCart />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/my-account" element={<AccountPage />} />
         <Route path="/register" element={<RegisterPage />} />

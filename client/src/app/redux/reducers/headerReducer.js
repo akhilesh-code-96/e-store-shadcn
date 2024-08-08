@@ -9,14 +9,42 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const updateProductQuantity = createAsyncThunk(
+  "header/updateProductQuantity",
+  async (queryParams) => {
+    const response = await axios.put(`/api/update-quantity?${queryParams}`);
+    return response.data.product;
+  }
+);
+
+// localStorage.clear();
+// Initialize cartProducts from localStorage with error handling
+const loadCartProducts = () => {
+  try {
+    const storedData = localStorage.getItem("cartProducts");
+    if (!storedData) {
+      localStorage.setItem("cartProducts", JSON.stringify([]));
+      return [];
+    } else {
+      return JSON.parse(storedData);
+    }
+  } catch (error) {
+    console.error("Failed to parse cartProducts from localStorage", error);
+    return [];
+  }
+};
+
 const initialState = {
   products: [],
+  cartProduct: {},
   categories: [],
   range: 0,
-  status: "idle", // status of the async operation
+  status: "idle",
   error: null,
   initialiMaxPrice: null,
   initialiMinPrice: null,
+  itemAdded: false,
+  cartCount: loadCartProducts().length,
 };
 
 const headerSlice = createSlice({
@@ -32,11 +60,11 @@ const headerSlice = createSlice({
       }
     },
     setRange(state, action) {
-      state.range = action.payload;
+      let newRange = action.payload;
+      state.range = newRange;
     },
     setInitialMaxPrice(state, action) {
       const products = action.payload;
-      console.log("Reducer", products);
       let max = Number.MIN_SAFE_INTEGER;
       for (const obj of products) {
         let price = obj.price;
@@ -53,6 +81,42 @@ const headerSlice = createSlice({
       }
       state.initialiMinPrice = Math.floor(min * 84);
     },
+    resetItemCartStatus(state, action) {
+      state.itemAdded = false;
+    },
+    addToCart(state, action) {
+      const newItem = action.payload;
+      let storedCartProducts =
+        JSON.parse(localStorage.getItem("cartProducts")) || [];
+      console.log("Stored Item", storedCartProducts);
+      const itemExists = storedCartProducts.find(
+        (item) => item._id === newItem._id
+      );
+
+      if (!itemExists) {
+        // Add the new item to the cart
+        // Clone the newItem object and add the quantity property
+        const itemToAdd = { ...newItem, quantity: 1 };
+        storedCartProducts.push(itemToAdd);
+        state.itemAdded = false;
+        // Update localStorage with new cartProducts
+        try {
+          localStorage.setItem(
+            "cartProducts",
+            JSON.stringify(storedCartProducts)
+          );
+
+          // Update state with cartCount based on localStorage
+          state.cartCount = storedCartProducts.length;
+        } catch (error) {
+          console.error("Failed to update cartProducts in localStorage", error);
+        }
+      } else {
+        // If item exists, no changes needed for cartProducts
+        state.itemAdded = true;
+        state.cartCount = storedCartProducts.length;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -67,6 +131,10 @@ const headerSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       });
+    builder.addCase(updateProductQuantity.fulfilled, (state, action) => {
+      state.status = "succedded";
+      state.cartProduct = action.payload;
+    });
   },
 });
 
@@ -75,13 +143,18 @@ export const {
   setRange,
   setInitialMaxPrice,
   setInitialMinPrice,
+  addToCart,
+  resetItemCartStatus,
 } = headerSlice.actions;
 export const minPrice = (state) => state.headerReducer.initialiMinPrice;
 export const maxPrice = (state) => state.headerReducer.initialiMaxPrice;
+export const cartValue = (state) => state.headerReducer.cartCount;
 export const selectRange = (state) => state.headerReducer.range;
 export const selectProducts = (state) => state.headerReducer.products;
 export const selectCategories = (state) => state.headerReducer.categories;
 export const selectProductsStatus = (state) => state.headerReducer.status;
 export const selectProductsError = (state) => state.headerReducer.error;
+export const itemInCartStatus = (state) => state.headerReducer.itemAdded;
+export const updatedProduct = (state) => state.headerReducer.cartProduct;
 
 export const headerReducer = headerSlice.reducer;

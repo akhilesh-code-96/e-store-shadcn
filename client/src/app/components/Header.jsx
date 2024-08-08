@@ -25,15 +25,24 @@ import { Input } from "@/components/ui/input";
 
 import { Menu } from "lucide-react";
 import { CiSearch } from "react-icons/ci";
-import { fetchProducts, selectProducts } from "../redux/reducers/headerReducer";
+import {
+  fetchProducts,
+  selectProducts,
+  cartValue,
+} from "../redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
+import { Badge } from "@/components/ui/badge";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
+  const cart = useSelector(cartValue);
   const user = window.localStorage.getItem("user");
+  const cartCount = JSON.parse(
+    window.localStorage.getItem("cartProducts")
+  ).length;
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -168,7 +177,15 @@ const Header = () => {
                 </Button>
               )}
             </Link>
-            <CiShoppingCart size={24} className="cursor-pointer" />
+            {/* Shopping Cart */}
+            <div className="relative inline-block">
+              <Link to="/add-to-cart">
+                <CiShoppingCart size={24} className="cursor-pointer" />
+              </Link>
+              <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
+                {cart === 0 ? cartCount : cart}
+              </Badge>
+            </div>
             <FaXTwitter className="cursor-pointer" />
             <IoLogoGithub className="cursor-pointer" size={19} />
             <span style={{ marginLeft: "2px" }}>

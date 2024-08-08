@@ -25,10 +25,13 @@ import {
   setInitialMinPrice,
   minPrice,
   maxPrice,
+  addToCart,
+  itemInCartStatus,
+  resetItemCartStatus,
 } from "./redux/reducers/headerReducer.js";
 import { Separator } from "@/components/ui/separator";
-import RangeInput from "./components/RangeInput.jsx";
 import { Slider } from "@/components/ui/slider.jsx";
+import { useToast } from "@/components/ui/use-toast.js";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -38,11 +41,17 @@ const Home = () => {
   const newRange = useSelector(selectRange);
   const newMinPrice = useSelector(minPrice);
   const newMaxPrice = useSelector(maxPrice);
+  const itemCart = useSelector(itemInCartStatus);
+  const { toast } = useToast();
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {
-    // let newValue = e.target.value;
     dispatch(setRange(newValue));
+  };
+
+  const handleCartItems = (item) => {
+    console.log(item);
+    dispatch(addToCart(item));
   };
 
   // Calling minPrice and maxPrice functions for the slider.
@@ -57,11 +66,22 @@ const Home = () => {
     }
   }, [products]);
 
+  // Watch for changes in itemCart state
+  useEffect(() => {
+    if (itemCart) {
+      toast({
+        description: "Item already added.",
+      });
+      dispatch(resetItemCartStatus());
+    }
+  }, [itemCart]);
+
   // Making api calls to fetch the products based on the query.
   useEffect(() => {
     const categoryQuery = categories.join(",");
-    const rangeQuery = (newRange / 84).toFixed(2);
-    if (newMinPrice !== null && newMaxPrice !== null) {
+    const rangeQuery = Math.floor(newRange / 84) + 1;
+    console.log("Range", rangeQuery);
+    if (newMinPrice !== null && newMaxPrice !== null && rangeQuery > 1) {
       try {
         dispatch(
           fetchProducts(`limit=9&category=${categoryQuery}&range=${rangeQuery}`)
@@ -102,17 +122,17 @@ const Home = () => {
         <Separator className="mt-2" />
         {/* Price Range */}
         <div className="py-10 w-[200px]">
-          <h4 className="mb-2 text-md text-neutral-300">Price Range</h4>
+          <h4 className="mb-2 text-md dark:text-neutral-300">Price Range</h4>
           {/* Slider */}
-          <p className="py-2 mb-2 text-sm font-light text-neutral-300">
-            ₹{newRange > 0 ? newRange : newMinPrice}
-          </p>
-          {/* <RangeInput
-            newMinPrice={newMinPrice}
-            newMaxPrice={newMaxPrice}
-            newRange={newRange}
-            handleValueChange={handleValueChange}
-          /> */}
+          <div className="flex justify-between">
+            <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
+              ₹{newRange > 0 ? newRange : newMinPrice}
+            </p>
+            <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
+              ₹{newMaxPrice}
+            </p>
+          </div>
+          {/* Price range Selector */}
           <Slider
             value={[newRange]}
             step={100}
@@ -152,9 +172,14 @@ const Home = () => {
                   className="object-contain w-full h-auto"
                 />
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline">Add to Cart</Button>
-                <Button>Buy Now</Button>
+              <CardFooter>
+                {/* Add to cart button */}
+                <Button
+                  variant="outline"
+                  onClick={() => handleCartItems(product)}
+                >
+                  Add to Cart
+                </Button>
               </CardFooter>
             </Card>
           ))}
