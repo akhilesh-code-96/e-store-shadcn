@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Card,
   CardContent,
@@ -18,17 +17,19 @@ import {
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import {
   updateProductQuantity,
   updatedProduct,
   updateDeletedCartCount,
 } from "./redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
+import BuyNowSection from "./BuyNowSection";
 
 export default function AddToCart() {
   const dispatch = useDispatch();
   const changedProduct = useSelector(updatedProduct);
+  const [colSpan, setColSpan] = useState(4); // Default to mobile colSpan
   // Function to safely load cart products from localStorage
   const loadCartProducts = () => {
     try {
@@ -92,6 +93,19 @@ export default function AddToCart() {
     }
   }, [changedProduct]);
 
+  useEffect(() => {
+    const updateColSpan = () => {
+      setColSpan(window.innerWidth >= 768 ? 4 : 2);
+    };
+
+    updateColSpan(); // Call on initial render
+    window.addEventListener("resize", updateColSpan); // Listen for resize events
+
+    return () => {
+      window.removeEventListener("resize", updateColSpan); // Clean up listener
+    };
+  }, []);
+
   const handleDeleteProduct = (id, quantity) => {
     const value = "delete";
     dispatch(
@@ -112,25 +126,27 @@ export default function AddToCart() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-[70px] p-10">
-      <Card className="w-3/4 border-none">
+    <div className="min-h-screen flex flex-col md:flex-row items-start pt-[70px] p-4">
+      <Card className="w-full border-none md:w-3/4">
         <CardHeader>
-          <CardTitle className="py-2">Shopping Cart</CardTitle>
+          <CardTitle className="py-2 text-lg md:text-xl">
+            Shopping Cart
+          </CardTitle>
           <Separator />
         </CardHeader>
         <CardContent>
-          <Table className="relative">
-            {" "}
-            {/* Add relative positioning if needed */}
+          <Table className="relative w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="hidden w-[100px] sm:table-cell">
+                <TableHead className="hidden w-[50px] sm:table-cell">
                   <span className="sr-only">Image</span>
                 </TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Qty</TableHead>
-                <TableHead className="hidden md:table-cell">Price</TableHead>
-                <TableHead>
+                <TableHead className="text-sm sm:text-base">Name</TableHead>
+                <TableHead className="text-sm sm:text-base">Qty</TableHead>
+                <TableHead className="hidden text-sm md:table-cell sm:text-base">
+                  Price
+                </TableHead>
+                <TableHead className="text-sm sm:text-base">
                   <span>Actions</span>
                 </TableHead>
               </TableRow>
@@ -139,30 +155,32 @@ export default function AddToCart() {
               <>
                 <TableBody>
                   {cartProducts.map((item, i) => (
-                    <TableRow key={i}>
+                    <TableRow key={i} className="text-xs sm:text-sm">
                       <TableCell className="hidden sm:table-cell">
                         <img
                           alt="Product image"
-                          className="object-cover rounded-md aspect-square"
-                          height="64"
+                          className="object-cover rounded-md"
+                          height="48"
                           src={item.imageUrl}
-                          width="64"
+                          width="48"
                         />
                       </TableCell>
                       <TableCell className="font-medium">
                         {item.title}
                       </TableCell>
-                      <TableCell className="flex mt-4">
+                      <TableCell className="flex items-center mt-2 md:mt-4">
                         <button
                           onClick={() => handleQuantityChange(item._id, -1)}
-                          className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
+                          className="flex items-center justify-center w-6 h-6 text-gray-700 bg-gray-300 rounded-full md:w-8 md:h-8"
                         >
                           -
                         </button>
-                        <span className="px-4 py-2">{item.quantity || 1}</span>
+                        <span className="px-2 py-1 text-sm md:px-4 md:py-2 md:text-base">
+                          {item.quantity || 1}
+                        </span>
                         <button
                           onClick={() => handleQuantityChange(item._id, 1)}
-                          className="flex items-center justify-center w-8 h-8 text-gray-700 bg-gray-300 rounded-full"
+                          className="flex items-center justify-center w-6 h-6 text-gray-700 bg-gray-300 rounded-full md:w-8 md:h-8"
                         >
                           +
                         </button>
@@ -172,8 +190,8 @@ export default function AddToCart() {
                       </TableCell>
                       <TableCell className="relative">
                         <Trash
-                          className="absolute top-9 left-7"
-                          size={20}
+                          className="absolute top-7 left-5 md:top-9 md:left-7"
+                          size={16}
                           onClick={() =>
                             handleDeleteProduct(item._id, item.quantity)
                           }
@@ -184,7 +202,10 @@ export default function AddToCart() {
                 </TableBody>
                 <TableFooter className="w-full p-4">
                   <TableRow>
-                    <TableCell colSpan="4" className="font-bold text-right">
+                    <TableCell
+                      colSpan={colSpan}
+                      className="font-bold text-right"
+                    >
                       Subtotal:
                     </TableCell>
                     <TableCell className="font-bold">
@@ -201,8 +222,11 @@ export default function AddToCart() {
             ) : (
               <TableBody>
                 <TableRow>
-                  <TableCell colSpan="5" className="py-4 text-center">
-                    <h1 className="text-xl">No Items to display</h1>
+                  <TableCell
+                    colSpan="5"
+                    className="py-4 text-sm text-center md:text-base"
+                  >
+                    <h1 className="text-lg">No Items to display</h1>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -210,6 +234,9 @@ export default function AddToCart() {
           </Table>
         </CardContent>
       </Card>
+      <div className="px-4 mt-4 md:w-[500px] w-full md:mt-0 md:ml-4">
+        <BuyNowSection />
+      </div>
     </div>
   );
 }
