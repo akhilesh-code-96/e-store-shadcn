@@ -100,7 +100,10 @@ const Header = () => {
     handleSearchChange();
   }, [products]);
 
-  if (location.pathname === "/my-account") {
+  if (
+    location.pathname === "/my-account" ||
+    location.pathname === "/add-to-cart"
+  ) {
     if (!user) {
       navigate("/login");
     }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -43,6 +43,8 @@ const Home = () => {
   const newMaxPrice = useSelector(maxPrice);
   const itemCart = useSelector(itemInCartStatus);
   const { toast } = useToast();
+  const user = localStorage.getItem("user");
+  const navigate = useNavigate();
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {
@@ -50,8 +52,11 @@ const Home = () => {
   };
 
   const handleCartItems = (item) => {
-    console.log(item);
-    dispatch(addToCart(item));
+    if (!user) {
+      navigate("/login");
+    } else {
+      dispatch(addToCart(item));
+    }
   };
 
   // Calling minPrice and maxPrice functions for the slider.
