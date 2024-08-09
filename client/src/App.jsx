@@ -22,6 +22,7 @@ import LoginSecurity from "./app/Account/Login-Security";
 import DeleteAccount from "./app/Account/DeleteAccount";
 import UserOrders from "./app/Account/User-Orders";
 import ContactUs from "./app/Account/ContactUs";
+import AddAddressForm from "./app/Account/AddAddressForm";
 
 function AppContent() {
   const [visible, setVisible] = useState(true);
@@ -46,17 +47,13 @@ function AppContent() {
         <Route path="/checkout-page" element={<CheckoutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/my-account" element={<AccountPage />}>
-          <Route path="/my-account/addresses" element={<Address />} />
-          <Route
-            path="/my-account/login-security"
-            element={<LoginSecurity />}
-          />
-          <Route
-            path="/my-account/delete-account"
-            element={<DeleteAccount />}
-          />
-          <Route path="/my-account/orders" element={<UserOrders />} />
-          <Route path="/my-account/contact-us" element={<ContactUs />} />
+          <Route path="addresses" element={<Address />}>
+            <Route path="add-address" element={<AddAddressForm />} />
+          </Route>
+          <Route path="login-security" element={<LoginSecurity />} />
+          <Route path="delete-account" element={<DeleteAccount />} />
+          <Route path="orders" element={<UserOrders />} />
+          <Route path="contact-us" element={<ContactUs />} />
         </Route>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin-panel" element={<AdminPanel />}>

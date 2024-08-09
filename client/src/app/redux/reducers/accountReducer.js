@@ -1,5 +1,24 @@
 import axios from "axios";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const addAddress = createAsyncThunk(
+  "account/addAddress",
+  async ({ queryParams, data }) => {
+    await axios.post(`/api/add-address?${queryParams}`, data, {
+      headers: { "Content-Type": "application/json" },
+    });
+    dispatch(getAddresses(`id=${userId}`));
+  }
+);
+
+export const getAddresses = createAsyncThunk(
+  "account/getAddresses",
+  async (queryParams) => {
+    const response = await axios.get(`/api/get-addresses?${queryParams}`);
+    const addresses = response.data.addresses;
+    return addresses;
+  }
+);
 
 const initialState = {
   addresses: [],
@@ -8,10 +27,11 @@ const initialState = {
 const accountSlice = createSlice({
   name: "account",
   initialState: initialState,
-  reducers: {
-    setAddresses(state, action) {
-      state.addresses.push(action.payload);
-    },
+  extraReducers: (builder) => {
+    builder.addCase(getAddresses.fulfilled, (state, action) => {
+      console.log("Reducer address", action.payload);
+      state.addresses = action.payload;
+    });
   },
 });
 

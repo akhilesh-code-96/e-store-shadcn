@@ -32,6 +32,7 @@ export default function LoginPage() {
       const user = response.data.user;
       if (user) {
         window.localStorage.setItem("user", user.firstname);
+        window.localStorage.setItem("userId", user._id);
       } else {
         throw new Error("Password or email incorrect. Please try again!");
       }

@@ -3,7 +3,6 @@ const UserModel = require("../models/user.model.js");
 class UserController {
   async addUser(req, res) {
     const { firstname, lastname, email, password } = req.body;
-    console.log(req.body);
     try {
       const record = await new UserModel({
         firstname: firstname,
@@ -20,11 +19,8 @@ class UserController {
 
   async getUser(req, res) {
     const { email, password } = req.query;
-    console.log(email);
-    console.log("I am here.");
     try {
       const user = await UserModel.findOne({ email });
-      console.log(user);
       if (user) {
         const userPassword = user.password;
         if (password === userPassword) {

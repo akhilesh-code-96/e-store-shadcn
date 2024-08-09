@@ -32,5 +32,6 @@ router.get("/get-user/", userController.getUser);
 
 // address routes
 router.post("/add-address/", addressController.addAddress);
+router.get("/get-addresses", addressController.getAddresses);
 
 module.exports = router;

@@ -47,13 +47,12 @@ const Header = () => {
 
   React.useEffect(() => {
     const down = (e) => {
-      if (
-        (e.key === "k" && (e.metaKey || e.ctrlKey)) ||
-        e.type === "click" ||
-        e.key === "Enter"
-      ) {
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.type === "click") {
         e.preventDefault();
         setOpen((open) => !open);
+      }
+      if (e.key === "Enter") {
+        setOpen(false);
       }
     };
 
