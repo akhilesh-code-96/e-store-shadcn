@@ -1,9 +1,12 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { cartItems } from "./redux/reducers/cartReducer";
+import { useSelector } from "react-redux";
 
 const BuyNowSection = () => {
-  const cartProducts = JSON.parse(localStorage.getItem("cartProducts"));
+  const cartProducts = useSelector(cartItems);
+
   if (cartProducts.length > 0) {
     return (
       <div className="flex items-start md:p-[55px] p-0 mt-2">

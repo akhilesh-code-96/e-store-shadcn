@@ -17,81 +17,19 @@ import {
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
-import { useEffect, useCallback, useState } from "react";
-import {
-  updateProductQuantity,
-  updatedProduct,
-  updateDeletedCartCount,
-} from "./redux/reducers/headerReducer";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { cartItems } from "./redux/reducers/cartReducer";
+import { getCartProducts } from "./redux/reducers/cartReducer";
 import BuyNowSection from "./BuyNowSection";
 
 export default function AddToCart() {
   const dispatch = useDispatch();
-  const changedProduct = useSelector(updatedProduct);
+  const cartProducts = useSelector(cartItems);
   const [colSpan, setColSpan] = useState(4); // Default to mobile colSpan
-  // Function to safely load cart products from localStorage
-  const loadCartProducts = () => {
-    try {
-      const storedData = localStorage.getItem("cartProducts");
-      return storedData ? JSON.parse(storedData) : [];
-    } catch (error) {
-      console.error("Failed to parse cartProducts from localStorage", error);
-      return [];
-    }
-  };
+  const userId = window.localStorage.getItem("userId");
 
-  // Get cart products with error handling
-  const cartProducts = loadCartProducts();
-
-  const handleQuantityChange = (id, value) => {
-    const productIndex = cartProducts.findIndex((item) => item._id === id);
-    if (productIndex === -1) return; // Product not found
-
-    const product = cartProducts[productIndex];
-
-    // Check for quantity constraints
-    if (value < 0 && product.quantity <= 1) return; // Prevent decrement below 1
-    if (value > 0 && product.quantity >= product.stock) return; // Prevent increment above stock
-
-    // Update quantity in local cartProducts
-    const updatedCartProducts = [...cartProducts];
-    updatedCartProducts[productIndex].quantity += value;
-
-    // Dispatch action to update product quantity
-    dispatch(updateProductQuantity(`id=${id}&value=${value}`));
-
-    // Update local storage
-    localStorage.setItem("cartProducts", JSON.stringify(updatedCartProducts));
-  };
-
-  useEffect(() => {
-    if (Object.keys(changedProduct).length > 0) {
-      const productIndex = cartProducts.findIndex(
-        (item) => item._id === changedProduct._id
-      );
-      if (productIndex !== -1) {
-        // Create a copy of cartProducts to avoid direct mutation
-        const updatedCartProducts = [...cartProducts];
-        const product = updatedCartProducts[productIndex];
-
-        // Update the product quantity
-        product.quantity = product.stock - changedProduct.stock;
-
-        // Update local storage
-        localStorage.setItem(
-          "cartProducts",
-          JSON.stringify(updatedCartProducts)
-        );
-      }
-    }
-  }, [changedProduct, cartProducts]);
-
-  useEffect(() => {
-    if (changedProduct) {
-      console.log("Product quantity updated:", changedProduct);
-    }
-  }, [changedProduct]);
+  console.log(cartProducts);
 
   useEffect(() => {
     const updateColSpan = () => {
@@ -106,24 +44,9 @@ export default function AddToCart() {
     };
   }, []);
 
-  const handleDeleteProduct = (id, quantity) => {
-    const value = "delete";
-    dispatch(
-      updateProductQuantity(`id=${id}&value=${value}&quantity=${quantity}`)
-    );
-    const productIndex = cartProducts.findIndex((item) => item._id === id);
-    if (productIndex !== -1) {
-      const updatedCartProducts = [...cartProducts];
-      updatedCartProducts.splice(productIndex, 1);
-
-      dispatch(updateDeletedCartCount());
-      // If the array is empty, set it as an empty array in localStorage
-      localStorage.setItem(
-        "cartProducts",
-        JSON.stringify(updatedCartProducts.length ? updatedCartProducts : [])
-      );
-    }
-  };
+  useEffect(() => {
+    dispatch(getCartProducts(`userId=${userId}`));
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-start pt-[70px] p-4">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -25,13 +25,15 @@ import {
   setInitialMinPrice,
   minPrice,
   maxPrice,
-  addToCart,
-  itemInCartStatus,
-  resetItemCartStatus,
 } from "./redux/reducers/headerReducer.js";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider.jsx";
 import { useToast } from "@/components/ui/use-toast.js";
+import {
+  addToCart,
+  updateCartItemStatus,
+} from "./redux/reducers/cartReducer.js";
+import { itemStatus } from "./redux/reducers/cartReducer.js";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -41,21 +43,24 @@ const Home = () => {
   const newRange = useSelector(selectRange);
   const newMinPrice = useSelector(minPrice);
   const newMaxPrice = useSelector(maxPrice);
-  const itemCart = useSelector(itemInCartStatus);
   const { toast } = useToast();
   const user = localStorage.getItem("user");
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const shouldAdd = useSelector(itemStatus);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {
     dispatch(setRange(newValue));
   };
 
-  const handleCartItems = (item) => {
+  const handleCartItems = (userId, productId) => {
     if (!user) {
       navigate("/login");
     } else {
-      dispatch(addToCart(item));
+      setSelectedProductId(productId);
+      dispatch(updateCartItemStatus(productId));
     }
   };
 
@@ -73,13 +78,21 @@ const Home = () => {
 
   // Watch for changes in itemCart state
   useEffect(() => {
-    if (itemCart) {
-      toast({
-        description: "Item already added.",
-      });
-      dispatch(resetItemCartStatus());
+    if (selectedProductId !== null) {
+      if (shouldAdd) {
+        dispatch(addToCart(`userId=${userId}&productId=${selectedProductId}`));
+        toast({
+          description: "Item added to cart.",
+        });
+      } else {
+        toast({
+          description: "Item already added.",
+        });
+      }
+      // Reset selectedProductId after handling
+      setSelectedProductId(null);
     }
-  }, [itemCart]);
+  }, [selectedProductId, shouldAdd, dispatch, userId, toast]);
 
   // Making api calls to fetch the products based on the query.
   useEffect(() => {
@@ -181,7 +194,7 @@ const Home = () => {
                 {/* Add to cart button */}
                 <Button
                   variant="outline"
-                  onClick={() => handleCartItems(product)}
+                  onClick={() => handleCartItems(userId, product._id)}
                 >
                   Add to Cart
                 </Button>

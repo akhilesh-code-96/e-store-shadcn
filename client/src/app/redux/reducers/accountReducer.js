@@ -7,7 +7,6 @@ export const addAddress = createAsyncThunk(
     await axios.post(`/api/add-address?${queryParams}`, data, {
       headers: { "Content-Type": "application/json" },
     });
-    dispatch(getAddresses(`id=${userId}`));
   }
 );
 
