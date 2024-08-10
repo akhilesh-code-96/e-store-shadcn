@@ -4,6 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoLogoGithub } from "react-icons/io5";
 import { CiShoppingCart } from "react-icons/ci";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   CommandDialog,
   CommandEmpty,
@@ -28,14 +29,24 @@ import { CiSearch } from "react-icons/ci";
 import { fetchProducts, selectProducts } from "../redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
+import { itemCount } from "../redux/reducers/cartReducer";
+import { getCartProducts, resetCart } from "../redux/reducers/cartReducer";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
+  const cartCount = useSelector(itemCount);
   const user = window.localStorage.getItem("user");
+  const userId = window.localStorage.getItem("userId");
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (userId) {
+      dispatch(getCartProducts(`userId=${userId}`));
+    }
+  }, [dispatch, userId]);
 
   React.useEffect(() => {
     const down = (e) => {
@@ -66,8 +77,11 @@ const Header = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     window.localStorage.removeItem("user");
+    window.localStorage.removeItem("userId");
+    dispatch(resetCart());
+    await axios.post("/api/logout");
   };
 
   React.useEffect(() => {
@@ -177,7 +191,7 @@ const Header = () => {
                 <CiShoppingCart size={24} className="cursor-pointer" />
               </Link>
               <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
-                0
+                {cartCount}
               </Badge>
             </div>
             <FaXTwitter className="cursor-pointer" />

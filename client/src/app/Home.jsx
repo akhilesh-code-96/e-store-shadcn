@@ -80,7 +80,15 @@ const Home = () => {
   useEffect(() => {
     if (selectedProductId !== null) {
       if (shouldAdd) {
-        dispatch(addToCart(`userId=${userId}&productId=${selectedProductId}`));
+        dispatch(
+          addToCart(
+            {
+              queryParams: `userId=${userId}&productId=${selectedProductId}`,
+              userId: userId,
+            },
+            { dispatch }
+          )
+        );
         toast({
           description: "Item added to cart.",
         });

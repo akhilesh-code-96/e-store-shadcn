@@ -27,12 +27,64 @@ class CartController {
 
   async getCartProducts(req, res) {
     const { userId } = req.query;
+
     try {
       const products = await CartModel.find({ userId: userId });
-      console.log(products);
       res.json({ products });
     } catch (error) {
       res.json({ message: "Failed to fetch the products with error: ", error });
+    }
+  }
+
+  async updateProductQuantity(req, res) {
+    const { userId, productId, value } = req.query;
+
+    const product = await ProductModel.findOne({ _id: productId });
+    const cartProduct = await CartModel.findOne({
+      $and: [{ userId: userId }, { productId: productId }],
+    });
+
+    let newQuantity;
+    let newStock;
+
+    try {
+      if (value === "1") {
+        newQuantity = cartProduct.quantity + 1;
+        newStock = product.stock - 1;
+      }
+
+      if (value === "-1") {
+        newQuantity = cartProduct.quantity - 1;
+        newStock = product.stock + 1;
+      }
+
+      await CartModel.updateOne(
+        { productId: productId },
+        { $set: { quantity: newQuantity } }
+      );
+      await ProductModel.updateOne(
+        { _id: productId },
+        { $set: { stock: newStock } }
+      );
+
+      const updatedCartProduct = await CartModel.find({ userId: userId });
+      res.json({ products: updatedCartProduct });
+    } catch (error) {
+      res.json({
+        message: "Failed to update the quantity with the error: ",
+        error,
+      });
+    }
+  }
+
+  async deleteCartProduct(req, res) {
+    const { productId } = req.query;
+
+    try {
+      await CartModel.deleteOne({ _id: productId });
+      res.json({ message: "Successfully deleted cart item." });
+    } catch (error) {
+      res.json({ message: "Failed to delete the item with error", error });
     }
   }
 }

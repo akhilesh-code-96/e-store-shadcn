@@ -1,11 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -20,7 +14,11 @@ import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { cartItems } from "./redux/reducers/cartReducer";
-import { getCartProducts } from "./redux/reducers/cartReducer";
+import {
+  getCartProducts,
+  updateProductQantity,
+  deleteCartProduct,
+} from "./redux/reducers/cartReducer";
 import BuyNowSection from "./BuyNowSection";
 
 export default function AddToCart() {
@@ -28,8 +26,7 @@ export default function AddToCart() {
   const cartProducts = useSelector(cartItems);
   const [colSpan, setColSpan] = useState(4); // Default to mobile colSpan
   const userId = window.localStorage.getItem("userId");
-
-  console.log(cartProducts);
+  const [checkDelete, setCheckDelete] = useState(false);
 
   useEffect(() => {
     const updateColSpan = () => {
@@ -46,7 +43,20 @@ export default function AddToCart() {
 
   useEffect(() => {
     dispatch(getCartProducts(`userId=${userId}`));
-  }, [dispatch]);
+  }, [dispatch, checkDelete]);
+
+  const handleQuantityChange = (productId, value) => {
+    dispatch(
+      updateProductQantity(
+        `userId=${userId}&productId=${productId}&value=${value}`
+      )
+    );
+  };
+
+  const handleDeleteProduct = (productId) => {
+    dispatch(deleteCartProduct(`productId=${productId}`));
+    setCheckDelete((prev) => !prev);
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-start pt-[70px] p-4">
@@ -93,7 +103,9 @@ export default function AddToCart() {
                       </TableCell>
                       <TableCell className="flex items-center mt-2 md:mt-4">
                         <button
-                          onClick={() => handleQuantityChange(item._id, -1)}
+                          onClick={() =>
+                            handleQuantityChange(item.productId, -1)
+                          }
                           className="flex items-center justify-center w-6 h-6 text-gray-700 bg-gray-300 rounded-full md:w-8 md:h-8"
                         >
                           -
@@ -102,7 +114,9 @@ export default function AddToCart() {
                           {item.quantity || 1}
                         </span>
                         <button
-                          onClick={() => handleQuantityChange(item._id, 1)}
+                          onClick={() =>
+                            handleQuantityChange(item.productId, 1)
+                          }
                           className="flex items-center justify-center w-6 h-6 text-gray-700 bg-gray-300 rounded-full md:w-8 md:h-8"
                         >
                           +
@@ -115,9 +129,7 @@ export default function AddToCart() {
                         <Trash
                           className="absolute top-7 left-5 md:top-9 md:left-7"
                           size={16}
-                          onClick={() =>
-                            handleDeleteProduct(item._id, item.quantity)
-                          }
+                          onClick={() => handleDeleteProduct(item._id)}
                         />
                       </TableCell>
                     </TableRow>

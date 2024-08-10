@@ -24,6 +24,7 @@ class UserController {
       if (user) {
         const userPassword = user.password;
         if (password === userPassword) {
+          req.session.userEmail = email;
           res.status(200).json({ user });
         } else {
           throw new Error("User not found.");
@@ -32,6 +33,16 @@ class UserController {
     } catch (error) {
       res.json({ message: error });
     }
+  }
+
+  async logoutUser(req, res) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({ message: "User succesfully logged out." });
+      }
+    });
   }
 }
 

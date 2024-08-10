@@ -7,12 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { getCartProducts } from "./redux/reducers/cartReducer";
+import { useDispatch } from "react-redux";
 import "./style.css";
 
 export default function LoginPage() {
   const [transitionClass, setTransitionClass] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { toast } = useToast();
+  const userId = window.localStorage.getItem("userId");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,6 +37,8 @@ export default function LoginPage() {
       if (user) {
         window.localStorage.setItem("user", user.firstname);
         window.localStorage.setItem("userId", user._id);
+
+        dispatch(getCartProducts(`userId=${userId}`));
       } else {
         throw new Error("Password or email incorrect. Please try again!");
       }

@@ -4,6 +4,7 @@ const uploadFile = require("../src/middlewares/file-upload.middleware.js");
 const UserController = require("../src/controllers/user.controller.js");
 const AddressController = require("../src/controllers/address.controller.js");
 const CartController = require("../src/controllers/cart.controller.js");
+const auth = require("../src/middlewares/auth.middleware.js");
 const router = express.Router();
 
 const productController = new ProductController();
@@ -26,18 +27,20 @@ router.post(
 router.get("/get-products/", productController.getAllProducts);
 router.put("/edit-product/", productController.editProduct);
 router.delete("/delete-product/:id", productController.deleteProduct);
-router.put("/update-quantity/", productController.updateCartQuantity);
 
 // user routes
 router.post("/register/", userController.addUser);
 router.get("/get-user/", userController.getUser);
+router.post("/logout/", userController.logoutUser);
 
 // address routes
 router.post("/add-address/", addressController.addAddress);
-router.get("/get-addresses", addressController.getAddresses);
+router.get("/get-addresses/", addressController.getAddresses);
 
 // cart routes
-router.post("/add-to-cart", cartController.addToCart);
-router.get("/get-cart-products", cartController.getCartProducts);
+router.post("/add-to-cart/", cartController.addToCart);
+router.get("/get-cart-products/", auth, cartController.getCartProducts);
+router.put("/update-quantity/", auth, cartController.updateProductQuantity);
+router.delete("/delete-cart-product/", auth, cartController.deleteCartProduct);
 
 module.exports = router;
