@@ -29,8 +29,11 @@ import { CiSearch } from "react-icons/ci";
 import { fetchProducts, selectProducts } from "../redux/reducers/headerReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
-import { itemCount } from "../redux/reducers/cartReducer";
-import { getCartProducts, resetCart } from "../redux/reducers/cartReducer";
+import { itemCount } from "../redux/reducers/checkoutReducers/cartReducer";
+import {
+  getCartProducts,
+  resetCart,
+} from "../redux/reducers/checkoutReducers/cartReducer";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
@@ -190,9 +193,11 @@ const Header = () => {
               <Link to="/add-to-cart">
                 <CiShoppingCart size={24} className="cursor-pointer" />
               </Link>
-              <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
-                {cartCount}
-              </Badge>
+              {cartCount > 0 && (
+                <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
+                  {cartCount}
+                </Badge>
+              )}
             </div>
             <FaXTwitter className="cursor-pointer" />
             <IoLogoGithub className="cursor-pointer" size={19} />

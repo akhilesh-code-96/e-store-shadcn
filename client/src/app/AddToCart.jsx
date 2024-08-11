@@ -13,12 +13,12 @@ import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { cartItems } from "./redux/reducers/cartReducer";
+import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import {
   getCartProducts,
   updateProductQantity,
   deleteCartProduct,
-} from "./redux/reducers/cartReducer";
+} from "./redux/reducers/checkoutReducers/cartReducer";
 import BuyNowSection from "./BuyNowSection";
 
 export default function AddToCart() {

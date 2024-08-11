@@ -32,8 +32,8 @@ import { useToast } from "@/components/ui/use-toast.js";
 import {
   addToCart,
   updateCartItemStatus,
-} from "./redux/reducers/cartReducer.js";
-import { itemStatus } from "./redux/reducers/cartReducer.js";
+} from "./redux/reducers/checkoutReducers/cartReducer.js";
+import { itemStatus } from "./redux/reducers/checkoutReducers/cartReducer.js";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const Home = () => {
     dispatch(setRange(newValue));
   };
 
-  const handleCartItems = (userId, productId) => {
+  const handleCartItems = (productId) => {
     if (!user) {
       navigate("/login");
     } else {
@@ -202,7 +202,7 @@ const Home = () => {
                 {/* Add to cart button */}
                 <Button
                   variant="outline"
-                  onClick={() => handleCartItems(userId, product._id)}
+                  onClick={() => handleCartItems(product._id)}
                 >
                   Add to Cart
                 </Button>

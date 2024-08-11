@@ -6,11 +6,81 @@ import "../style.css";
 import { Separator } from "@/components/ui/separator";
 import { Rate } from "antd";
 import { Badge } from "@/components/ui/badge";
+import {
+  updateCartItemStatus,
+  addToCart,
+} from "../redux/reducers/checkoutReducers/cartReducer";
+import { itemStatus } from "../redux/reducers/checkoutReducers/cartReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const shouldAdd = useSelector(itemStatus);
+  const user = window.localStorage.getItem("user");
+  const userId = window.localStorage.getItem("userId");
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const { id } = useParams();
+
+  const handleBuyNow = (productId) => {
+    handleCartItems(productId);
+    if (shouldAdd) {
+      dispatch(
+        addToCart(
+          {
+            queryParams: `userId=${userId}&productId=${selectedProductId}`,
+            userId: userId,
+          },
+          { dispatch }
+        )
+      ).then(() => {
+        navigate("/checkout-page", { state: { productId } });
+      });
+    } else {
+      toast({
+        description: "Item already added.",
+      });
+    }
+  };
+
+  const handleCartItems = (productId) => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      setSelectedProductId(productId);
+      dispatch(updateCartItemStatus(productId));
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProductId !== null) {
+      if (shouldAdd) {
+        dispatch(
+          addToCart(
+            {
+              queryParams: `userId=${userId}&productId=${selectedProductId}`,
+              userId: userId,
+            },
+            { dispatch }
+          )
+        );
+        toast({
+          description: "Item added to cart.",
+        });
+      } else {
+        toast({
+          description: "Item already added.",
+        });
+      }
+      // Reset selectedProductId after handling
+      setSelectedProductId(null);
+    }
+  }, [selectedProductId, shouldAdd, dispatch, userId, toast]);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -101,8 +171,13 @@ const ProductDetailPage = () => {
                 </ul>
               </div>
               <div className="flex flex-col justify-between pt-5 space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-                <Button variant="outline">Add to cart</Button>
-                <Button>Buy now</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleCartItems(prod._id)}
+                >
+                  Add to cart
+                </Button>
+                <Button onClick={() => handleBuyNow(prod._id)}>Buy now</Button>
               </div>
             </div>
           </div>

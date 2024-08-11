@@ -1,7 +1,7 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { cartItems } from "./redux/reducers/cartReducer";
+import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import { useSelector } from "react-redux";
 
 const BuyNowSection = () => {

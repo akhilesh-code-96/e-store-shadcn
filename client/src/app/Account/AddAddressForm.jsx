@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addAddress } from "../redux/reducers/accountReducer";
+import { addAddress } from "../redux/reducers/accountReducers/addressReducer";
 
 const AddAddressForm = () => {
   const userId = window.localStorage.getItem("userId");

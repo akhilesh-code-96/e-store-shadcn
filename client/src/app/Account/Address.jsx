@@ -9,7 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { allAddresses, getAddresses } from "../redux/reducers/accountReducer";
+import {
+  allAddresses,
+  getAddresses,
+} from "../redux/reducers/accountReducers/addressReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 const Address = () => {

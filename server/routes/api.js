@@ -5,12 +5,14 @@ const UserController = require("../src/controllers/user.controller.js");
 const AddressController = require("../src/controllers/address.controller.js");
 const CartController = require("../src/controllers/cart.controller.js");
 const auth = require("../src/middlewares/auth.middleware.js");
+const OrderController = require("../src/controllers/order.controller.js");
 const router = express.Router();
 
 const productController = new ProductController();
 const userController = new UserController();
 const addressController = new AddressController();
 const cartController = new CartController();
+const orderController = new OrderController();
 
 //create your api routes here.
 router.get("/", (req, res) => {
@@ -42,5 +44,8 @@ router.post("/add-to-cart/", cartController.addToCart);
 router.get("/get-cart-products/", auth, cartController.getCartProducts);
 router.put("/update-quantity/", auth, cartController.updateProductQuantity);
 router.delete("/delete-cart-product/", auth, cartController.deleteCartProduct);
+
+// order routes
+router.post("/place-order/", orderController.addOrder);
 
 module.exports = router;
