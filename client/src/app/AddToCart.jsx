@@ -127,7 +127,7 @@ export default function AddToCart() {
                       </TableCell>
                       <TableCell className="relative">
                         <Trash
-                          className="absolute top-7 left-5 md:top-9 md:left-7"
+                          className="absolute cursor-pointer top-7 left-5 md:top-9 md:left-7"
                           size={16}
                           onClick={() => handleDeleteProduct(item._id)}
                         />
