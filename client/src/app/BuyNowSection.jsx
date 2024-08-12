@@ -3,9 +3,11 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const BuyNowSection = () => {
   const cartProducts = useSelector(cartItems);
+  console.log("Cart Items", cartProducts);
 
   if (cartProducts.length > 0) {
     return (
@@ -25,9 +27,11 @@ const BuyNowSection = () => {
           </div>
           <Separator />
           <div className="p-5">
-            <Button className="text-xs font-bold w-30 md:text-xs h-7 md:w-30">
-              Go to checkout page
-            </Button>
+            <Link to="/checkout-page">
+              <Button className="text-xs font-bold w-30 md:text-xs h-7 md:w-30">
+                Go to checkout page
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

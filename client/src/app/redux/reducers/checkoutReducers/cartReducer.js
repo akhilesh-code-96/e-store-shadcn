@@ -15,6 +15,7 @@ export const getCartProducts = createAsyncThunk(
     try {
       const response = await axios.get(`/api/get-cart-products?${queryParams}`);
       const products = response.data.products;
+      console.log(products);
       return products;
     } catch (error) {
       console.error(error);
@@ -41,6 +42,21 @@ export const deleteCartProduct = createAsyncThunk(
   async (queryParams) => {
     try {
       await axios.delete(`/api/delete-cart-product?${queryParams}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
+export const emptyCart = createAsyncThunk(
+  "cart/emptyCart",
+  async (queryParams) => {
+    try {
+      const response = await axios.delete(`/api/empty-cart?${queryParams}`);
+      console.log(response.status);
+      if (response.status === 200) {
+        return [];
+      }
     } catch (error) {
       console.error(error);
     }
@@ -80,6 +96,10 @@ const cartSlice = createSlice({
     });
     builder.addCase(updateProductQantity.fulfilled, (state, action) => {
       state.cartProducts = action.payload;
+    });
+    builder.addCase(emptyCart.fulfilled, (state, action) => {
+      state.cartProducts = action.payload;
+      state.cartCount = 0;
     });
   },
 });

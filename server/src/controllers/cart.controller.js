@@ -14,6 +14,7 @@ class CartController {
         title: product.title,
         imageUrl: product.imageUrl,
         price: product.price,
+        discountPercentage: product.discountPercentage,
       });
       await record.save();
       res.json({ message: "Successfully added to the cart." });
@@ -85,6 +86,23 @@ class CartController {
       res.json({ message: "Successfully deleted cart item." });
     } catch (error) {
       res.json({ message: "Failed to delete the item with error", error });
+    }
+  }
+
+  async emptyCart(req, res) {
+    const { userId } = req.query;
+    console.log(req.query);
+    try {
+      await CartModel.deleteMany({ userId });
+      console.log("deleted all!");
+      res
+        .status(200)
+        .json({ message: "Successfully deleted all items from the cart." });
+    } catch (error) {
+      res.json({
+        message: "Failed the empty the cart with the error: ",
+        error,
+      });
     }
   }
 }

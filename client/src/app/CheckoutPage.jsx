@@ -15,20 +15,25 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
+import { emptyCart } from "./redux/reducers/checkoutReducers/cartReducer";
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const product = useSelector(selectProducts);
+  const cartProducts = useSelector(cartItems);
   const addresses = useSelector(allAddresses);
   const userId = window.localStorage.getItem("userId");
   const { productId } = location.state || {};
   const [selectedAddress, setSelectedAddress] = useState("");
   const [payment, setPayment] = useState("cash");
+  const [productsToDisplay, setProductsToDisplay] = useState([]);
 
+  console.log("Products at checkout", productsToDisplay);
   // Calculate total amount
-  const totalAmount = product
+  const totalAmount = productsToDisplay
     .reduce(
       (total, prod) =>
         total +
@@ -37,12 +42,6 @@ const CheckoutPage = () => {
       0
     )
     .toFixed(2);
-
-  useEffect(() => {
-    if (addresses.length > 0) {
-      setSelectedAddress(JSON.stringify(addresses[0]));
-    }
-  }, []);
 
   // Calculate delivery date (2 days ahead)
   const deliveryDate = new Date();
@@ -58,10 +57,19 @@ const CheckoutPage = () => {
   };
 
   const handlePlaceOrder = () => {
-    console.log(selectedAddress);
+    const productIds = JSON.stringify(
+      productsToDisplay.map((product) =>
+        !productId ? product.productId : product._id
+      )
+    );
+    const quantities = JSON.stringify(
+      productsToDisplay.map((product) => product.quantity)
+    );
+
     const queryParams = new URLSearchParams({
       userId,
-      productId,
+      productIds,
+      quantities,
       amount: totalAmount,
       deliveryDate: formattedDeliveryDate,
       address: selectedAddress,
@@ -69,7 +77,7 @@ const CheckoutPage = () => {
     }).toString();
 
     dispatch(placeOrder(queryParams));
-
+    dispatch(emptyCart(`userId=${userId}`));
     navigate("/");
   };
 
@@ -79,6 +87,18 @@ const CheckoutPage = () => {
     }
     dispatch(getAddresses(`id=${userId}`));
   }, [dispatch, productId, userId]);
+
+  useEffect(() => {
+    if (productId) {
+      setProductsToDisplay(product);
+    } else {
+      setProductsToDisplay(cartProducts);
+    }
+
+    if (addresses.length > 0) {
+      setSelectedAddress(JSON.stringify(addresses[0]));
+    }
+  }, [productId, product, cartProducts, addresses]);
 
   return (
     <div className="pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
@@ -131,22 +151,22 @@ const CheckoutPage = () => {
           <AccordionItem value="item-3">
             <AccordionTrigger>Order Summary</AccordionTrigger>
             <AccordionContent>
-              {product.length > 0 &&
-                product.map((prod, i) => (
+              {productsToDisplay.length > 0 &&
+                productsToDisplay.map((prod, i) => (
                   <div
                     key={i}
                     className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-2"
                   >
                     <img
                       src={prod.imageUrl}
-                      alt="product"
+                      alt="getProducts"
                       className="w-full md:w-[100px] h-auto"
                     />
                     <div>
                       <h3 className="mb-2 text-xl">{prod.title}</h3>
                       <div className="flex space-x-2">
                         <del className="mt-[3px] font-light text-neutral-700">
-                          ₹ {prod.price * 84}
+                          ₹ {(prod.price * 84).toFixed(2)}
                         </del>
                         <p className="text-[18px] font-bold">
                           ₹
@@ -173,8 +193,8 @@ const CheckoutPage = () => {
 
       <div className="relative w-full md:w-[300px] h-auto p-4 mt-5 md:mt-10 md:ms-5 border-2 border-gray-300 rounded-lg">
         <h1 className="mb-4 text-2xl">Price Details</h1>
-        {product.length > 0 &&
-          product.map((prod, i) => (
+        {productsToDisplay.length > 0 &&
+          productsToDisplay.map((prod, i) => (
             <div key={i} className="flex justify-between mb-2">
               <h3>
                 Price: ₹{" "}

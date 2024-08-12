@@ -44,6 +44,7 @@ router.post("/add-to-cart/", cartController.addToCart);
 router.get("/get-cart-products/", auth, cartController.getCartProducts);
 router.put("/update-quantity/", auth, cartController.updateProductQuantity);
 router.delete("/delete-cart-product/", auth, cartController.deleteCartProduct);
+router.delete("/empty-cart/", auth, cartController.emptyCart);
 
 // order routes
 router.post("/place-order/", orderController.addOrder);
