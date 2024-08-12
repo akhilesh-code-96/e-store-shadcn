@@ -1,5 +1,6 @@
 const ProductModel = require("../models/products.model.js");
 const uploadImageToCloudinary = require("../utils/cloudinary.js");
+const mongoose = require("mongoose");
 // const productJson = require("../../products.json");
 
 class ProductController {

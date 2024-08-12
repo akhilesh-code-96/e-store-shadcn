@@ -48,5 +48,6 @@ router.delete("/empty-cart/", auth, cartController.emptyCart);
 
 // order routes
 router.post("/place-order/", orderController.addOrder);
+router.get("/get-orders", orderController.getOrders);
 
 module.exports = router;

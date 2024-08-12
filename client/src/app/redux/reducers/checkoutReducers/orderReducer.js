@@ -13,6 +13,7 @@ export const getOrders = createAsyncThunk(
   async (queryParams) => {
     const response = await axios.get(`/api/get-orders?${queryParams}`);
     const orders = response.data.orders;
+    return orders;
   }
 );
 
@@ -33,7 +34,7 @@ const orderSlice = createSlice({
 // exporting actions
 
 // exporting states
-export const orders = (state) => state.orderReducer.orders;
+export const allOrders = (state) => state.orderReducer.orders;
 
 // export reducer
 export const orderReducer = orderSlice.reducer;

@@ -155,7 +155,10 @@ const Home = () => {
               ₹{newRange > 0 ? newRange : newMinPrice}
             </p>
             <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
-              ₹{newMaxPrice}
+              ₹
+              {newMaxPrice < 1000
+                ? newMaxPrice
+                : `${Math.floor(newMaxPrice / 1000)}k`}
             </p>
           </div>
           {/* Price range Selector */}
@@ -172,12 +175,12 @@ const Home = () => {
       <div className="flex self-start h-screen">
         <Separator orientation="vertical" className="w-[1px] h-screen" />
       </div>
-      <div className="grid grid-cols-1 gap-2 p-5 ms-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 p-5 ms-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
         {products &&
           products.map((product, index) => (
             <Card
               key={index}
-              className="w-full h-auto max-w-xs cursor-pointer border-neutral-700 dark:bg-black"
+              className="w-full h-auto max-w-xs rounded-sm cursor-pointer border-neutral-700 dark:bg-black"
             >
               <CardHeader>
                 <div className="flex justify-between">
@@ -188,20 +191,23 @@ const Home = () => {
                   </Link>
                   <MdFavoriteBorder />
                 </div>
-                <div>{product.brand}</div>
-                <CardDescription>{product.description}</CardDescription>
+                <div className="text-sm font-semibold text-blue-400 dark:text-blue-300">
+                  {product.brand}
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex justify-center items-center h-[200px]">
                 <img
                   src={`${product.imageUrl}`}
                   alt="images"
-                  className="object-contain w-full h-auto"
+                  width="200"
+                  height="200"
+                  className="object-contain"
                 />
               </CardContent>
               <CardFooter>
                 {/* Add to cart button */}
                 <Button
-                  variant="outline"
+                  variant="destructive"
                   onClick={() => handleCartItems(product._id)}
                 >
                   Add to Cart

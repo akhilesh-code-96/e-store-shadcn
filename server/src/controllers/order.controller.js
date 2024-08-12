@@ -50,6 +50,24 @@ class OrderController {
       });
     }
   }
+
+  async getOrders(req, res) {
+    const { userId } = req.query;
+
+    try {
+      // Fetch orders and populate product details
+      const orders = await OrderModel.find({ userId }).populate({
+        path: "products.productId",
+        select: "title price imageUrl", // Select only the fields you need
+      });
+
+      res.json({ orders });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Failed to fetch the orders with error: ", error });
+    }
+  }
 }
 
 module.exports = OrderController;
