@@ -120,7 +120,7 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100  bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-80 px-4">
+    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-80 px-4">
       <section
         id="navigation"
         className="relative flex items-center justify-between w-full px-3"
@@ -135,7 +135,7 @@ const Header = () => {
             <span className="text-sm ms-2 me-2">E-Store</span>
           </Link>
           {/* Main Header */}
-          <div className="hidden space-x-6 md:flex">
+          <div className="hidden space-x-6 lg:flex">
             {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
               (link) => {
                 // Determine the path based on the link
@@ -164,7 +164,7 @@ const Header = () => {
           </div>
         </div>
         {/* Icons and sign in button */}
-        <div className="items-center hidden space-x-4 md:flex">
+        <div className="items-center hidden space-x-4 lg:flex">
           <div
             className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
             onClick={() => setOpen((prevOpen) => !prevOpen)}
@@ -211,7 +211,7 @@ const Header = () => {
         {/* Secondary Header */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" className="md:hidden">
+            <Button variant="ghost" className="lg:hidden">
               <Menu className="w-6 h-6" />
             </Button>
           </SheetTrigger>
@@ -256,11 +256,11 @@ const Header = () => {
                 <ModeToggle />
               </div>
             </ul>
-            <SheetClose asChild>
+            {/* <SheetClose asChild>
               <Button variant="ghost" className="mt-4 ms-[-10px]">
                 Close
               </Button>
-            </SheetClose>
+            </SheetClose> */}
           </SheetContent>
         </Sheet>
       </section>

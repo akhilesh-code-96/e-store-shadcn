@@ -15,6 +15,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Toggle from "./components/Toggle.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
   fetchProducts,
   selectCategories,
   selectProducts,
@@ -121,9 +131,82 @@ const Home = () => {
   }, [categories, dispatch, newRange]);
 
   return (
-    <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-start md:items-center">
-      {/* Filter and sorting section */}
-      <div className="w-full md:w-[300px] p-5 flex flex-col md:sticky md:top-20 md:self-start">
+    <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-center">
+      {/* Filters Button for small screens */}
+      <div className="flex items-center justify-center w-full py-2 border-2 md:hidden">
+        <Drawer>
+          <DrawerTrigger asChild>
+            {/* <Button variant="outline">Filters</Button> */}
+            <div className="text-xl font-semibold rounded-sm">Filters</div>
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="w-full max-w-sm mx-auto">
+              <DrawerHeader>
+                <DrawerTitle>Filters</DrawerTitle>
+                <DrawerDescription>
+                  Set your filter preferences.
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="p-4 pb-0">
+                <div onClick={() => setExpand(!expand)}>
+                  <Toggle name={"Categories"} />
+                </div>
+                <div
+                  style={{ display: expand ? "block" : "none" }}
+                  className="py-2 pl-5"
+                >
+                  {["beauty", "fragrances", "furniture"].map((category) => (
+                    <div key={category} className="flex items-center space-x-2">
+                      <div onClick={() => dispatch(toggleCategory(category))}>
+                        <Checkbox id={category} />
+                      </div>
+                      <label
+                        htmlFor={category}
+                        className="text-sm font-medium leading-none cursor-pointer hover:text-primary text-neutral-400 peer-disabled:opacity-70"
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <Separator className="mt-2" />
+                <div className="py-10 w-[200px]">
+                  <h4 className="mb-2 text-md dark:text-neutral-300">
+                    Price Range
+                  </h4>
+                  <div className="flex justify-between">
+                    <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
+                      ₹{newRange > 0 ? newRange : newMinPrice}
+                    </p>
+                    <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
+                      ₹
+                      {newMaxPrice < 1000
+                        ? newMaxPrice
+                        : `${Math.floor(newMaxPrice / 1000)}k`}
+                    </p>
+                  </div>
+                  <Slider
+                    value={[newRange]}
+                    step={100}
+                    onValueChange={handleValueChange}
+                    min={newMinPrice}
+                    max={newMaxPrice}
+                  />
+                </div>
+              </div>
+              {/* <DrawerFooter>
+                <Button variant="outline">Close</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline">Close</Button>
+                </DrawerClose>
+              </DrawerFooter> */}
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* Filter and sorting section for larger screens */}
+      <div className="hidden md:w-[300px] md:p-5 md:flex md:flex-col md:sticky md:top-20 md:self-start">
         <div onClick={() => setExpand(!expand)}>
           <Toggle name={"Categories"} />
         </div>
@@ -146,10 +229,8 @@ const Home = () => {
           ))}
         </div>
         <Separator className="mt-2" />
-        {/* Price Range */}
         <div className="py-10 w-[200px]">
           <h4 className="mb-2 text-md dark:text-neutral-300">Price Range</h4>
-          {/* Slider */}
           <div className="flex justify-between">
             <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
               ₹{newRange > 0 ? newRange : newMinPrice}
@@ -161,7 +242,6 @@ const Home = () => {
                 : `${Math.floor(newMaxPrice / 1000)}k`}
             </p>
           </div>
-          {/* Price range Selector */}
           <Slider
             value={[newRange]}
             step={100}
@@ -171,44 +251,43 @@ const Home = () => {
           />
         </div>
       </div>
+
       {/* Product Display Section */}
-      <div className="flex self-start h-screen">
+      {/* <div className="flex self-start h-screen">
         <Separator orientation="vertical" className="w-[1px] h-screen" />
-      </div>
-      <div className="grid grid-cols-1 gap-4 p-5 ms-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+      </div> */}
+      <div className="grid gap-6 p-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {products &&
           products.map((product, index) => (
             <Card
               key={index}
-              className="w-full h-auto max-w-xs rounded-sm cursor-pointer border-neutral-700 dark:bg-black"
+              className="w-full h-auto max-w-xs bg-white rounded-sm cursor-pointer border-neutral-700 dark:text-gray-900"
             >
               <CardHeader>
                 <div className="flex justify-between">
                   <Link to={`/${product._id}`}>
-                    <CardTitle className="hover:underline hover:text-blue-300">
+                    <CardTitle className="text-sm md:text-base lg:text-lg hover:underline hover:text-blue-300 dark:hover:text-gray-500">
                       {product.title}
                     </CardTitle>
                   </Link>
                   <MdFavoriteBorder />
                 </div>
-                <div className="text-sm font-semibold text-blue-400 dark:text-blue-300">
+                <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
                   {product.brand}
                 </div>
               </CardHeader>
-              <CardContent className="flex justify-center items-center h-[200px]">
+              <CardContent className="flex justify-center items-center h-[150px] sm:h-[200px] md:h-[250px]">
                 <img
                   src={`${product.imageUrl}`}
                   alt="images"
-                  width="200"
-                  height="200"
-                  className="object-contain"
+                  className="object-contain w-full h-full bg-gray-300"
                 />
               </CardContent>
               <CardFooter>
-                {/* Add to cart button */}
                 <Button
                   variant="destructive"
                   onClick={() => handleCartItems(product._id)}
+                  className="text-xs md:text-sm lg:text-base"
                 >
                   Add to Cart
                 </Button>
