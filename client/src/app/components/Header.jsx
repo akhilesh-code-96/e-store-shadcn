@@ -43,6 +43,7 @@ const Header = () => {
   const cartCount = useSelector(itemCount);
   const user = window.localStorage.getItem("user");
   const userId = window.localStorage.getItem("userId");
+  const role = JSON.parse(window.localStorage.getItem("role"));
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -83,6 +84,7 @@ const Header = () => {
   const handleLogout = async () => {
     window.localStorage.removeItem("user");
     window.localStorage.removeItem("userId");
+    window.localStorage.removeItem("role");
     dispatch(resetCart());
     await axios.post("/api/logout");
   };
@@ -136,31 +138,34 @@ const Header = () => {
           </Link>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
-            {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
-              (link) => {
-                // Determine the path based on the link
-                let path;
-                if (link.startsWith("Hello")) {
-                  path = "/my-account"; // Redirect to the my-account page
-                } else if (link === "Orders") {
-                  path = "/my-account/orders";
-                } else {
-                  path = `/${link.toLowerCase().replace(" ", "-")}`;
-                }
-
-                return (
-                  <Link
-                    key={path}
-                    to={path}
-                    className={`cursor-pointer text-sm font-bold ${
-                      isActive(path) ? "text-gray-300" : "text-neutral-500"
-                    } hover:text-neutral-200`}
-                  >
-                    {link}
-                  </Link>
-                );
+            {[
+              `Hello, ${user || "Guest"}`,
+              role === 1 ? "Admin Panel" : null,
+              "Orders",
+            ].map((link) => {
+              if (!link) return null;
+              // Determine the path based on the link
+              let path;
+              if (link.startsWith("Hello")) {
+                path = "/my-account"; // Redirect to the my-account page
+              } else if (link === "Orders") {
+                path = "/my-account/orders";
+              } else {
+                path = `/${link.toLowerCase().replace(" ", "-")}`;
               }
-            )}
+
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`cursor-pointer text-sm font-bold ${
+                    isActive(path) ? "text-gray-300" : "text-neutral-500"
+                  } hover:text-neutral-200`}
+                >
+                  {link}
+                </Link>
+              );
+            })}
           </div>
         </div>
         {/* Icons and sign in button */}
@@ -252,7 +257,16 @@ const Header = () => {
                 </CommandShortcut>
               </div>
               <div className="flex items-center space-x-2">
-                <CiShoppingCart className="cursor-pointer" />
+                <div className="relative inline-block">
+                  <Link to="/add-to-cart">
+                    <CiShoppingCart size={24} className="cursor-pointer" />
+                  </Link>
+                  {cartCount > 0 && (
+                    <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
+                      {cartCount}
+                    </Badge>
+                  )}
+                </div>
                 <FaXTwitter className="cursor-pointer" />
                 <IoLogoGithub className="cursor-pointer" />
                 <ModeToggle />

@@ -1,4 +1,7 @@
 const UserModel = require("../models/user.model.js");
+const OrderModel = require("../models/order.model.js");
+const CartModel = require("../models/cart.model.js");
+const AddressModel = require("../models/address.model.js");
 
 class UserController {
   async addUser(req, res) {
@@ -29,6 +32,8 @@ class UserController {
         } else {
           throw new Error("User not found.");
         }
+      } else {
+        throw new Error("User doesn't exist.");
       }
     } catch (error) {
       res.json({ message: error });
@@ -57,6 +62,25 @@ class UserController {
         res.json({ message: "User succesfully logged out." });
       }
     });
+  }
+
+  async deleteUser(req, res) {
+    const { id } = req.query;
+
+    try {
+      await UserModel.deleteOne({ _id: id });
+
+      // delete all the documents related to this user.
+      await AddressModel.deleteMany({ userId: id });
+      await CartModel.deleteMany({ userId: id });
+      await OrderModel.deleteMany({ userId: id });
+      res.json({ message: "User successfully deleted." });
+    } catch (error) {
+      res.json({
+        message: "Failed to delete the user with the error: ",
+        error,
+      });
+    }
   }
 }
 

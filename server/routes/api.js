@@ -35,6 +35,7 @@ router.post("/register/", userController.addUser);
 router.get("/login-user/", userController.loginUser);
 router.post("/logout/", userController.logoutUser);
 router.get("/get-users/", userController.getUsers);
+router.delete("/delete-account/", userController.deleteUser);
 
 // address routes
 router.post("/add-address/", addressController.addAddress);

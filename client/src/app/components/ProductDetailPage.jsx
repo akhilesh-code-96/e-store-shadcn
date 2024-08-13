@@ -102,7 +102,7 @@ const ProductDetailPage = () => {
       {product.length > 0 &&
         product.map((prod, i) => (
           <div className="flex flex-col w-full p-10 md:flex-row">
-            <div className="w-1/2 p-10">
+            <div className="w-full p-10 md:w-1/2">
               <img
                 src={prod.imageUrl}
                 alt="product image"
@@ -111,7 +111,7 @@ const ProductDetailPage = () => {
                 className="object-cover dark:bg-neutral-900 rounded-lg shadow-lg transition border border-gray-700 hover:shadow-xl hover:dark:shadow-[0_4px_30px_-1px_rgba(255,255,255,0.2),_0_2px_4px_-1px_rgba(255,255,255,0.1)]"
               />
             </div>
-            <div className="flex flex-col items-start justify-center w-1/2">
+            <div className="flex flex-col items-start justify-center w-full md:w-1/2">
               <h1 className="text-3xl font-bold">{prod.title}</h1>
               <Separator className="mt-2" />
               {/* Product Rating */}
@@ -170,7 +170,7 @@ const ProductDetailPage = () => {
                     ))}
                 </ul>
               </div>
-              <div className="flex flex-col justify-between pt-5 space-y-2 md:flex-row md:space-x-2 md:space-y-0">
+              <div className="flex flex-row justify-between pt-5 space-x-2 md:space-y-0">
                 <Button
                   variant="outline"
                   onClick={() => handleCartItems(prod._id)}

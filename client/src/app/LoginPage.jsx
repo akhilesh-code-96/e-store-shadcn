@@ -37,7 +37,7 @@ export default function LoginPage() {
       if (user) {
         window.localStorage.setItem("user", user.firstname);
         window.localStorage.setItem("userId", user._id);
-
+        window.localStorage.setItem("role", user.role);
         dispatch(getCartProducts(`userId=${userId}`));
       } else {
         throw new Error("Password or email incorrect. Please try again!");

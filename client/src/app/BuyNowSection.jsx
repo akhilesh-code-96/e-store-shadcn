@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const BuyNowSection = () => {
   const cartProducts = useSelector(cartItems);
-  console.log("Cart Items", cartProducts);
 
   if (cartProducts.length > 0) {
     return (
@@ -28,7 +27,7 @@ const BuyNowSection = () => {
           <Separator />
           <div className="p-5">
             <Link to="/checkout-page">
-              <Button className="text-xs font-bold w-30 md:text-xs h-7 md:w-30">
+              <Button className="h-10 font-bold text-white bg-orange-500 text-[14px] w-30 md:text-xs md:w-30">
                 Go to checkout page
               </Button>
             </Link>
