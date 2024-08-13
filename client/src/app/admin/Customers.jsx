@@ -52,7 +52,7 @@ const Customers = () => {
               <TableHead className="hidden sm:table-cell">Email</TableHead>
               <TableHead className="hidden sm:table-cell">Status</TableHead>
               <TableHead className="hidden md:table-cell">Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -88,12 +88,12 @@ const Customers = () => {
                       <DropdownMenuItem
                       // onClick={() => handleEditClick(product)}
                       >
-                        Edit
+                        Activate
                       </DropdownMenuItem>
                       <DropdownMenuItem
                       // onClick={() => handleDeleteClick(product)}
                       >
-                        Delete
+                        Suspend
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

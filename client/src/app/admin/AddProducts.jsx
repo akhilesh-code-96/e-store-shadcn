@@ -35,17 +35,10 @@ export default function AddProducts() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("photo", photo); // Assuming `photo` is a File object
-    formData.append("price", price);
-    formData.append("discountPercentage", discountPercentage);
-    formData.append("category", category);
-    formData.append("brand", brand);
-    formData.append("rating", rating);
+    const data = Object.fromEntries(formData.entries());
 
     try {
-      await axios.post("/api/add-products", formData, {
+      await axios.post("/api/add-products", data, {
         headers: { "Content-type": "multipart/form-data" },
       });
       navigate("/");
@@ -55,7 +48,7 @@ export default function AddProducts() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-2/4">
+    <div className="flex flex-col items-center justify-center w-full md:w-2/4">
       <form onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="pb-12 border-b border-gray-900/10">

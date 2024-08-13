@@ -24,29 +24,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { totalCount } from "../redux/reducers/checkoutReducers/orderReducer";
 import { useSelector } from "react-redux";
 
+// Function to get link class name based on current route
+const getLinkClassName = (path, currentPath) =>
+  `flex items-center gap-3 px-3 py-2 transition-all rounded-lg ${
+    currentPath === path
+      ? "bg-muted text-primary"
+      : "text-muted-foreground hover:text-primary"
+  }`;
+
 export default function AdminPanel() {
-  const linksRef = useRef([]);
+  const location = useLocation();
   const count = useSelector(totalCount);
 
-  const handleClick = (index) => {
-    linksRef.current.forEach((link, i) => {
-      if (link) {
-        if (i === index) {
-          link.classList.add("bg-muted", "text-primary");
-          link.classList.remove("text-muted-foreground");
-        } else {
-          link.classList.remove("bg-muted", "text-primary");
-          link.classList.add("text-muted-foreground");
-        }
-      }
-    });
-  };
-
-  console.log(linksRef);
+  console.log(location.pathname);
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -81,9 +75,10 @@ export default function AdminPanel() {
                 <Link
                   key={index}
                   to={`${link.text.toLowerCase().replace(" ", "-")}`}
-                  className="flex items-center gap-3 px-3 py-2 transition-all rounded-lg text-muted-foreground hover:text-primary"
-                  ref={(el) => (linksRef.current[index] = el)}
-                  onClick={() => handleClick(index)}
+                  className={getLinkClassName(
+                    `/admin-panel/${link.text.toLowerCase().replace(" ", "-")}`,
+                    location.pathname
+                  )}
                 >
                   {link.icon}
                   {link.text}
@@ -125,7 +120,7 @@ export default function AdminPanel() {
                   {
                     icon: <ShoppingCart className="w-4 h-4" />,
                     text: "Orders",
-                    badge: 6,
+                    badge: `${count}`,
                   },
                   { icon: <Package className="w-4 h-4" />, text: "Products" },
                   { icon: <Users className="w-4 h-4" />, text: "Customers" },
@@ -137,9 +132,12 @@ export default function AdminPanel() {
                   <Link
                     key={index}
                     to={`${link.text.toLowerCase().replace(" ", "-")}`}
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                    ref={(el) => (linksRef.current[index] = el)}
-                    onClick={() => handleClick(index)}
+                    className={getLinkClassName(
+                      `/admin-panel/${link.text
+                        .toLowerCase()
+                        .replace(" ", "-")}`,
+                      location.pathname
+                    )}
                   >
                     {link.icon}
                     {link.text}

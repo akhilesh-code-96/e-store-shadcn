@@ -246,9 +246,6 @@ const Home = () => {
       </div>
 
       {/* Product Display Section */}
-      {/* <div className="flex self-start h-screen">
-        <Separator orientation="vertical" className="w-[1px] h-screen" />
-      </div> */}
       <div className="grid gap-6 p-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {products &&
           products.map((product, index) => (
@@ -259,7 +256,7 @@ const Home = () => {
               <CardHeader>
                 <div className="flex justify-between">
                   <Link to={`/${product._id}`}>
-                    <CardTitle className="text-sm md:text-base lg:text-lg hover:underline hover:text-blue-300 dark:hover:text-gray-500">
+                    <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-500">
                       {product.title}
                     </CardTitle>
                   </Link>
