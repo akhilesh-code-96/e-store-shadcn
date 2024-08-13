@@ -32,7 +32,7 @@ export default function LoginPage() {
     const data = Object.fromEntries(formData);
     try {
       const queryParams = new URLSearchParams(data).toString();
-      const response = await axios.get(`/api/get-user?${queryParams}`);
+      const response = await axios.get(`/api/login-user?${queryParams}`);
       const user = response.data.user;
       if (user) {
         window.localStorage.setItem("user", user.firstname);

@@ -37,11 +37,18 @@ class OrderController {
 
       await record.save();
 
+      // Populate product details
+      const populatedRecord = await record.populate({
+        path: "products.productId",
+        select: "title price imageUrl",
+      });
+
       const user = await UserModel.findOne({ _id: userId });
       const email = user.email;
       console.log("added!");
 
-      sendMail(email);
+      sendMail(email, populatedRecord);
+
       res.json({ message: "Order successully placed." });
     } catch (error) {
       res.json({
@@ -54,14 +61,31 @@ class OrderController {
   async getOrders(req, res) {
     const { userId } = req.query;
 
-    try {
-      // Fetch orders and populate product details
-      const orders = await OrderModel.find({ userId }).populate({
+    const queryObject = {};
+
+    const totalCount = await OrderModel.countDocuments(queryObject);
+    let apiData;
+
+    if (userId) {
+      queryObject.userId = userId;
+      apiData = await OrderModel.find(queryObject).populate({
         path: "products.productId",
         select: "title price imageUrl", // Select only the fields you need
       });
+    }
 
-      res.json({ orders });
+    if (!userId) {
+      apiData = await OrderModel.find(queryObject).populate({
+        path: "userId",
+        select: "firstname lastname email",
+      });
+    }
+
+    try {
+      // Fetch orders and populate product details
+      const orders = apiData;
+
+      res.json({ orders: orders, count: totalCount });
     } catch (error) {
       res
         .status(500)

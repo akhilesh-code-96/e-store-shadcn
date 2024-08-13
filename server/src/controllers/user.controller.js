@@ -17,7 +17,7 @@ class UserController {
     }
   }
 
-  async getUser(req, res) {
+  async loginUser(req, res) {
     const { email, password } = req.query;
     try {
       const user = await UserModel.findOne({ email });
@@ -32,6 +32,20 @@ class UserController {
       }
     } catch (error) {
       res.json({ message: error });
+    }
+  }
+
+  async getUsers(req, res) {
+    console.log("User");
+    try {
+      const users = await UserModel.find();
+      console.log(users);
+      res.json({ users });
+    } catch (error) {
+      res.json({
+        message: "Failed to fetch the users with the error: ",
+        error,
+      });
     }
   }
 

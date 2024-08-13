@@ -25,9 +25,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRef } from "react";
+import { totalCount } from "../redux/reducers/checkoutReducers/orderReducer";
+import { useSelector } from "react-redux";
 
 export default function AdminPanel() {
   const linksRef = useRef([]);
+  const count = useSelector(totalCount);
 
   const handleClick = (index) => {
     linksRef.current.forEach((link, i) => {
@@ -66,7 +69,7 @@ export default function AdminPanel() {
                 {
                   icon: <ShoppingCart className="w-4 h-4" />,
                   text: "Orders",
-                  badge: 6,
+                  badge: `${count}`,
                 },
                 { icon: <Package className="w-4 h-4" />, text: "Products" },
                 { icon: <Users className="w-4 h-4" />, text: "Customers" },

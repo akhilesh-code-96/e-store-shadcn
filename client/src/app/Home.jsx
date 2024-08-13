@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Toggle from "./components/Toggle.jsx";
@@ -194,12 +193,6 @@ const Home = () => {
                   />
                 </div>
               </div>
-              {/* <DrawerFooter>
-                <Button variant="outline">Close</Button>
-                <DrawerClose asChild>
-                  <Button variant="outline">Close</Button>
-                </DrawerClose>
-              </DrawerFooter> */}
             </div>
           </DrawerContent>
         </Drawer>
@@ -270,7 +263,6 @@ const Home = () => {
                       {product.title}
                     </CardTitle>
                   </Link>
-                  <MdFavoriteBorder />
                 </div>
                 <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
                   {product.brand}

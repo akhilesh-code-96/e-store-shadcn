@@ -38,7 +38,8 @@ const CheckoutPage = () => {
       (total, prod) =>
         total +
         (prod.price - (prod.price * prod.discountPercentage) / 100) * 84 +
-        prod.price * 0.02 * 84,
+        prod.price * 0.02 * 84 +
+        (prod.quantity || 1),
       0
     )
     .toFixed(2);

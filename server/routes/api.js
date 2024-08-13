@@ -32,8 +32,9 @@ router.delete("/delete-product/:id", productController.deleteProduct);
 
 // user routes
 router.post("/register/", userController.addUser);
-router.get("/get-user/", userController.getUser);
+router.get("/login-user/", userController.loginUser);
 router.post("/logout/", userController.logoutUser);
+router.get("/get-users/", userController.getUsers);
 
 // address routes
 router.post("/add-address/", addressController.addAddress);

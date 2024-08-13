@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
+const generateOrderHTML = require("./orderTemplate.js");
 
-async function sendMail(email) {
+async function sendMail(email, order) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -13,7 +14,7 @@ async function sendMail(email) {
     from: "ak.sender19@gmail.com",
     to: `${email}`,
     subject: "Your order has been placed successfully",
-    text: "Please find your order details below",
+    html: generateOrderHTML(order),
   };
 
   try {

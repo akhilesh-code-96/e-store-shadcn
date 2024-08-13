@@ -226,6 +226,8 @@ const Header = () => {
                   let path;
                   if (link.startsWith("Hello")) {
                     path = "/my-account"; // Redirect to the my-account page
+                  } else if (link === "Orders") {
+                    path = "/my-account/orders";
                   } else {
                     path = `/${link.toLowerCase().replace(" ", "-")}`;
                   }

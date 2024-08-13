@@ -13,12 +13,14 @@ export const getOrders = createAsyncThunk(
   async (queryParams) => {
     const response = await axios.get(`/api/get-orders?${queryParams}`);
     const orders = response.data.orders;
-    return orders;
+    const count = response.data.count;
+    return { orders, count };
   }
 );
 
 const initialState = {
   orders: [],
+  count: 0,
 };
 
 const orderSlice = createSlice({
@@ -26,7 +28,9 @@ const orderSlice = createSlice({
   initialState: initialState,
   extraReducers: (buider) => {
     buider.addCase(getOrders.fulfilled, (state, action) => {
-      state.orders = action.payload;
+      const { orders, count } = action.payload;
+      state.orders = orders;
+      state.count = count;
     });
   },
 });
@@ -35,6 +39,7 @@ const orderSlice = createSlice({
 
 // exporting states
 export const allOrders = (state) => state.orderReducer.orders;
+export const totalCount = (state) => state.orderReducer.count;
 
 // export reducer
 export const orderReducer = orderSlice.reducer;

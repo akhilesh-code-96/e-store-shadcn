@@ -26,11 +26,15 @@ const UserOrders = () => {
     });
   });
 
+  // console.log(orders);
+
   return (
     <div className="justify-center w-full md:w-3/5">
-      <h1 className="mt-5 text-xl font-bold md:text-2xl">Your Orders</h1>
+      <h1 className="px-4 mt-5 text-xl font-bold md:px-0 md:text-2xl">
+        Your Orders
+      </h1>
       <Separator />
-      <div className="p-2 space-y-4 md:p-4">
+      <div className="p-6 space-y-4 md:p-4">
         {orders.map((order, index) => (
           <div
             key={index}
@@ -56,14 +60,13 @@ const UserOrders = () => {
                     className="w-full md:w-[100px] h-auto"
                   />
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold md:text-base">
-                      {product.productId.title}
-                    </h3>
+                    <Link to={`/${product.productId._id}`}>
+                      <h3 className="text-sm font-semibold cursor-pointer md:text-base hover:text-blue-500 hover:underline">
+                        {product.productId.title}
+                      </h3>
+                    </Link>
                     <p className="text-xs text-gray-600 md:text-sm">
                       Quantity: {product.quantity}
-                    </p>
-                    <p className="text-xs text-gray-600 md:text-sm">
-                      Price: ₹{(product.productId.price * 84).toFixed(2)}
                     </p>
                   </div>
                 </div>
