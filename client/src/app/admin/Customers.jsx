@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import {
   Table,
@@ -25,18 +25,47 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  allUsers,
+  totalCounts,
+  totalPage,
+} from "../redux/reducers/userReducer/userReducers";
+import { getUsers } from "../redux/reducers/userReducer/userReducers";
+import { MdArrowLeft } from "react-icons/md";
+import { MdArrowRight } from "react-icons/md";
 
 const Customers = () => {
-  const [users, setUsers] = useState([]);
+  const users = useSelector(allUsers);
+  const totalPages = useSelector(totalPage);
+  const totalCount = useSelector(totalCounts);
+  const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
+  const inputRef = useRef([]);
 
   useEffect(() => {
-    async function getAllUsers() {
-      const response = await axios.get("/api/get-users");
-      const allUsers = response.data.users;
-      setUsers(allUsers);
+    dispatch(getUsers(`page=${page}`));
+  }, [page]);
+
+  useEffect(() => {
+    inputRef.current.forEach((ref, index) => {
+      if (index === page - 1) {
+        ref.classList.add("text-primary");
+        ref.classList.remove("text-muted-foreground");
+      } else {
+        ref.classList.remove("text-primary");
+        ref.classList.add("text-muted-foreground");
+      }
+    });
+  }, [page]);
+
+  const selectPageHandler = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setPage(page);
     }
-    getAllUsers();
-  }, []);
+  };
+
+  console.log("User", users);
 
   return (
     <Card>
@@ -103,6 +132,43 @@ const Customers = () => {
           </TableBody>
         </Table>
       </CardContent>
+      <CardFooter>
+        <div className="text-xs text-muted-foreground">
+          Showing{" "}
+          <strong>
+            {page * 10 - 10 + 1}-{page === totalPages ? totalCount : page * 10}
+          </strong>{" "}
+          of <strong>{totalCount}</strong> products
+        </div>
+        <div className="absolute flex space-x-2 right-16">
+          <span
+            className={page > 1 ? "cursor-pointer" : "pagination__disabled"}
+            onClick={() => selectPageHandler(page - 1)}
+          >
+            <MdArrowLeft />
+          </span>
+          {[...Array(totalPages)].map((_, i) => (
+            <span
+              key={i}
+              className="text-xs font-bold cursor-pointer text-muted-foreground hover:text-primary"
+              ref={(el) => (inputRef.current[i] = el)}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </span>
+          ))}
+          {
+            <span
+              className={
+                page < totalPages ? "cursor-pointer" : "pagination__disabled"
+              }
+              onClick={() => selectPageHandler(page + 1)}
+            >
+              <MdArrowRight />
+            </span>
+          }
+        </div>
+      </CardFooter>
     </Card>
   );
 };

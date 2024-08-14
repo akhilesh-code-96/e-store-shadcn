@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import { emptyCart } from "./redux/reducers/checkoutReducers/cartReducer";
+import { Link } from "react-router-dom";
 
 const CheckoutPage = () => {
   const location = useLocation();
@@ -112,7 +113,7 @@ const CheckoutPage = () => {
                 defaultValue="address-1"
                 onValueChange={handleAddressChange}
               >
-                {addresses.length > 0 &&
+                {addresses.length > 0 ? (
                   addresses.map((add, i) => (
                     <div key={i} className="flex items-center mb-2 space-x-2">
                       <RadioGroupItem
@@ -125,7 +126,16 @@ const CheckoutPage = () => {
                         {add.pincode}, {add.country}
                       </Label>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <h3 className="font-semibold text-md">
+                    Click{" "}
+                    <Link to="/my-account/addresses" className="text-blue-500">
+                      here
+                    </Link>{" "}
+                    to add a delivery address
+                  </h3>
+                )}
               </RadioGroup>
             </AccordionContent>
           </AccordionItem>

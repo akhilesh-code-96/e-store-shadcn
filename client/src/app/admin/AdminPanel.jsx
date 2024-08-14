@@ -25,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLocation } from "react-router-dom";
-import { totalCount } from "../redux/reducers/checkoutReducers/orderReducer";
+import { totalCounts } from "../redux/reducers/checkoutReducers/orderReducer";
 import { useSelector } from "react-redux";
 
 // Function to get link class name based on current route
@@ -38,7 +38,7 @@ const getLinkClassName = (path, currentPath) =>
 
 export default function AdminPanel() {
   const location = useLocation();
-  const count = useSelector(totalCount);
+  const count = useSelector(totalCounts);
 
   console.log(location.pathname);
 

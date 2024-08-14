@@ -41,11 +41,24 @@ class UserController {
   }
 
   async getUsers(req, res) {
-    console.log("User");
+    const { page = 1, limit = 10 } = req.query;
+
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const skip = (pageNum - 1) * limitNum;
+
     try {
-      const users = await UserModel.find();
-      console.log(users);
-      res.json({ users });
+      // Apply skip and limit on the query before executing it
+      const users = await UserModel.find().skip(skip).limit(limitNum);
+
+      // Get the total count of documents
+      const totalCount = await UserModel.countDocuments({});
+
+      res.json({
+        users: users,
+        count: totalCount,
+        totalPages: Math.ceil(totalCount / limitNum),
+      });
     } catch (error) {
       res.json({
         message: "Failed to fetch the users with the error: ",

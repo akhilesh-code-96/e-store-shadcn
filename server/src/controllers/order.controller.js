@@ -59,33 +59,46 @@ class OrderController {
   }
 
   async getOrders(req, res) {
-    const { userId } = req.query;
+    const { userId, page = 1, limit = 10 } = req.query;
 
     const queryObject = {};
 
-    const totalCount = await OrderModel.countDocuments(queryObject);
-    let apiData;
-
+    // Add userId to queryObject if it exists
     if (userId) {
       queryObject.userId = userId;
-      apiData = await OrderModel.find(queryObject).populate({
+    }
+
+    // Fetch the total count of documents that match the query
+    const totalCount = await OrderModel.countDocuments(queryObject);
+
+    // Define the query and populate the necessary fields
+    let apiData = OrderModel.find(queryObject);
+
+    if (userId) {
+      apiData = apiData.populate({
         path: "products.productId",
         select: "title price imageUrl", // Select only the fields you need
       });
-    }
-
-    if (!userId) {
-      apiData = await OrderModel.find(queryObject).populate({
+    } else {
+      apiData = apiData.populate({
         path: "userId",
         select: "firstname lastname email",
       });
     }
 
-    try {
-      // Fetch orders and populate product details
-      const orders = apiData;
+    // Convert page and limit to numbers and calculate skip
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const skip = (pageNum - 1) * limitNum;
 
-      res.json({ orders: orders, count: totalCount });
+    try {
+      const orders = await apiData.skip(skip).limit(limitNum).exec();
+
+      res.json({
+        orders: orders,
+        count: totalCount,
+        totalPages: Math.ceil(totalCount / limitNum),
+      });
     } catch (error) {
       res
         .status(500)

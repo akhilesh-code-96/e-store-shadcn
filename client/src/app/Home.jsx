@@ -132,7 +132,7 @@ const Home = () => {
   return (
     <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-center">
       {/* Filters Button for small screens */}
-      <div className="flex items-center justify-center w-full py-2 border-2 md:hidden">
+      <div className="flex items-center justify-center w-full py-2 mt-1 border-2 md:hidden">
         <Drawer>
           <DrawerTrigger asChild>
             {/* <Button variant="outline">Filters</Button> */}
@@ -246,12 +246,12 @@ const Home = () => {
       </div>
 
       {/* Product Display Section */}
-      <div className="grid gap-6 p-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-[-10px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3">
         {products &&
           products.map((product, index) => (
             <Card
               key={index}
-              className="w-full h-auto max-w-xs bg-white rounded-sm cursor-pointer border-neutral-700 dark:text-gray-900"
+              className="h-auto max-w-xs mt-0 bg-white rounded-sm cursor-pointer sm:mt-5 border-neutral-700 dark:text-gray-900 sm:w-11/12"
             >
               <CardHeader>
                 <div className="flex justify-between">
@@ -269,14 +269,15 @@ const Home = () => {
                 <img
                   src={`${product.imageUrl}`}
                   alt="images"
-                  className="object-contain w-full h-full bg-gray-300"
+                  className={`object-contain w-full h-full ${
+                    index % 2 === 0 ? "bg-gray-300" : "bg-blue-300"
+                  }`}
                 />
               </CardContent>
               <CardFooter>
                 <Button
-                  variant="destructive"
                   onClick={() => handleCartItems(product._id)}
-                  className="text-xs md:text-sm lg:text-base"
+                  className="text-xs text-white bg-yellow-500 md:text-sm lg:text-base hover:bg-yellow-400"
                 >
                   Add to Cart
                 </Button>

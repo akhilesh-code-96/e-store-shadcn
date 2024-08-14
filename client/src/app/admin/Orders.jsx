@@ -7,6 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import {
   Table,
@@ -17,19 +18,46 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getOrders } from "../redux/reducers/checkoutReducers/orderReducer";
-import { allOrders } from "../redux/reducers/checkoutReducers/orderReducer";
-import { useEffect } from "react";
+import {
+  allOrders,
+  totalCounts,
+  allPages,
+} from "../redux/reducers/checkoutReducers/orderReducer";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { MdArrowLeft } from "react-icons/md";
+import { MdArrowRight } from "react-icons/md";
+import "../style.css";
 
 export default function Orders() {
   const dispatch = useDispatch();
   const orders = useSelector(allOrders);
+  const totalPages = useSelector(allPages);
+  const totalCount = useSelector(totalCounts);
+  const [page, setPage] = useState(1);
+  const inputRef = useRef([]);
 
   useEffect(() => {
-    dispatch(getOrders());
-  }, []);
+    inputRef.current.forEach((ref, index) => {
+      if (index === page - 1) {
+        ref.classList.add("text-primary");
+        ref.classList.remove("text-muted-foreground");
+      } else {
+        ref.classList.remove("text-primary");
+        ref.classList.add("text-muted-foreground");
+      }
+    });
+  }, [page]);
 
-  console.log(orders);
+  const selectPageHandler = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setPage(page);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getOrders(`page=${page}`));
+  }, [page]);
 
   return (
     <Card>
@@ -72,6 +100,43 @@ export default function Orders() {
           </TableBody>
         </Table>
       </CardContent>
+      <CardFooter>
+        <div className="text-xs text-muted-foreground">
+          Showing{" "}
+          <strong>
+            {page * 10 - 10 + 1}-{page === totalPages ? totalCount : page * 10}
+          </strong>{" "}
+          of <strong>{totalCount}</strong> products
+        </div>
+        <div className="absolute flex space-x-2 right-16">
+          <span
+            className={page > 1 ? "cursor-pointer" : "pagination__disabled"}
+            onClick={() => selectPageHandler(page - 1)}
+          >
+            <MdArrowLeft />
+          </span>
+          {[...Array(totalPages)].map((_, i) => (
+            <span
+              key={i}
+              className="text-xs font-bold cursor-pointer text-muted-foreground hover:text-primary"
+              ref={(el) => (inputRef.current[i] = el)}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </span>
+          ))}
+          {
+            <span
+              className={
+                page < totalPages ? "cursor-pointer" : "pagination__disabled"
+              }
+              onClick={() => selectPageHandler(page + 1)}
+            >
+              <MdArrowRight />
+            </span>
+          }
+        </div>
+      </CardFooter>
     </Card>
   );
 }

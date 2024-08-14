@@ -24,7 +24,7 @@ const AddAddressForm = () => {
   };
 
   return (
-    <div className="pt-5">
+    <div className="w-3/4 pt-5 sm:w-2/4">
       <h2 className="text-3xl font-semibold leading-7">Add a new address</h2>
       <p className="mt-1 text-sm leading-6 text-gray-600">
         Use a permanent address where you can receive your orders.
@@ -178,7 +178,7 @@ const AddAddressForm = () => {
             </div>
           </div>
         </div>
-        <Button variant="outline" className="mt-4" type="submit">
+        <Button variant="outline" className="mt-4 mb-3" type="submit">
           Submit
         </Button>
       </form>
