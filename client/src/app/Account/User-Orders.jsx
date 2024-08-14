@@ -1,19 +1,48 @@
 import React from "react";
-import { allOrders } from "../redux/reducers/checkoutReducers/orderReducer";
+import {
+  allOrders,
+  totalCounts,
+  allPages,
+} from "../redux/reducers/checkoutReducers/orderReducer";
 import { getOrders } from "../redux/reducers/checkoutReducers/orderReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { Separator } from "@/components/ui/separator";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { MdArrowLeft } from "react-icons/md";
+import { MdArrowRight } from "react-icons/md";
+import "../style.css";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
   const orders = useSelector(allOrders);
+  const totalPages = useSelector(allPages);
+  const totalCount = useSelector(totalCounts);
+  const [page, setPage] = useState(1);
   const userId = window.localStorage.getItem("userId");
+  const inputRef = useRef([]);
 
   useEffect(() => {
-    dispatch(getOrders(`userId=${userId}`));
-  }, [dispatch]);
+    inputRef.current.forEach((ref, index) => {
+      if (index === page - 1) {
+        ref.classList.add("text-primary");
+        ref.classList.remove("text-muted-foreground");
+      } else {
+        ref.classList.remove("text-primary");
+        ref.classList.add("text-muted-foreground");
+      }
+    });
+  }, [page]);
+
+  const selectPageHandler = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setPage(page);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getOrders(`userId=${userId}&page=${page}`));
+  }, [dispatch, page]);
 
   useEffect(() => {
     const all_products = [];
@@ -26,7 +55,7 @@ const UserOrders = () => {
     });
   });
 
-  // console.log(orders);
+  console.log(orders);
 
   return (
     <div className="justify-center w-full md:w-3/5">
@@ -86,6 +115,46 @@ const UserOrders = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="relative flex mb-5">
+            <div className="text-xs text-muted-foreground sm:ms-0 ms-5">
+              Showing{" "}
+              <strong>
+                {page * 10 - 10 + 1}-
+                {page === totalPages ? totalCount : page * 10}
+              </strong>{" "}
+              of <strong>{totalCount}</strong> products
+            </div>
+            <div className="absolute bottom-0 flex space-x-2 sm:right-1 right-10">
+              <span
+                className={page > 1 ? "cursor-pointer" : "pagination__disabled"}
+                onClick={() => selectPageHandler(page - 1)}
+              >
+                <MdArrowLeft />
+              </span>
+              {[...Array(totalPages)].map((_, i) => (
+                <span
+                  key={i}
+                  className="text-xs font-bold cursor-pointer text-muted-foreground hover:text-primary"
+                  ref={(el) => (inputRef.current[i] = el)}
+                  onClick={() => setPage(i + 1)}
+                >
+                  {i + 1}
+                </span>
+              ))}
+              {
+                <span
+                  className={
+                    page < totalPages
+                      ? "cursor-pointer"
+                      : "pagination__disabled"
+                  }
+                  onClick={() => selectPageHandler(page + 1)}
+                >
+                  <MdArrowRight />
+                </span>
+              }
+            </div>
           </div>
         </div>
       ) : (

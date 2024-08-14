@@ -59,7 +59,7 @@ class OrderController {
   }
 
   async getOrders(req, res) {
-    const { userId, page = 1, limit = 10 } = req.query;
+    const { userId, sort = "-createdAt", page = 1, limit = 10 } = req.query;
 
     const queryObject = {};
 
@@ -73,6 +73,8 @@ class OrderController {
 
     // Define the query and populate the necessary fields
     let apiData = OrderModel.find(queryObject);
+
+    apiData = apiData.sort(sort);
 
     if (userId) {
       apiData = apiData.populate({
