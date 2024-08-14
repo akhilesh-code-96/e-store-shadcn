@@ -8,13 +8,14 @@ import { getOrders } from "../redux/reducers/checkoutReducers/orderReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdArrowLeft } from "react-icons/md";
 import { MdArrowRight } from "react-icons/md";
 import "../style.css";
 
 const UserOrders = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const orders = useSelector(allOrders);
   const totalPages = useSelector(allPages);
   const totalCount = useSelector(totalCounts);
@@ -34,12 +35,6 @@ const UserOrders = () => {
     });
   }, [page]);
 
-  const selectPageHandler = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setPage(page);
-    }
-  };
-
   useEffect(() => {
     dispatch(getOrders(`userId=${userId}&page=${page}`));
   }, [dispatch, page]);
@@ -55,7 +50,17 @@ const UserOrders = () => {
     });
   });
 
-  console.log(orders);
+  const selectPageHandler = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setPage(page);
+    }
+  };
+
+  const handleReoder = (id) => {
+    navigate("/checkout-page", { state: { productId: id } });
+  };
+
+  // console.log(orders);
 
   return (
     <div className="justify-center w-full md:w-3/5">
@@ -107,11 +112,15 @@ const UserOrders = () => {
                   <p className="text-base font-semibold md:text-lg">
                     Total: ₹{order.amount}
                   </p>
-                  <Link to="/checkout-page">
-                    <button className="px-3 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600 md:text-base md:px-4 md:py-2">
+                  {order.products.map((product, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleReoder(product.productId._id)}
+                      className="px-3 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600 md:text-base md:px-4 md:py-2"
+                    >
                       Re-order
                     </button>
-                  </Link>
+                  ))}
                 </div>
               </div>
             ))}
