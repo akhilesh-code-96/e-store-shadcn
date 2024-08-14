@@ -18,6 +18,15 @@ import {
 import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import { emptyCart } from "./redux/reducers/checkoutReducers/cartReducer";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const CheckoutPage = () => {
   const location = useLocation();
@@ -80,7 +89,11 @@ const CheckoutPage = () => {
 
     dispatch(placeOrder(queryParams));
     dispatch(emptyCart(`userId=${userId}`));
-    navigate("/");
+
+    // todo // add a order placed ui.
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -191,12 +204,24 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                 ))}
-              <Button
-                onClick={handlePlaceOrder}
-                className="w-full md:w-[150px] px-4 py-2 text-xs mt-4 rounded-lg ms-0 md:ms-4 bg-yellow-600 text-white hover:bg-yellow-700"
-              >
-                Place your order
-              </Button>
+              <Dialog>
+                <DialogTrigger>
+                  <Button
+                    onClick={handlePlaceOrder}
+                    className="w-full md:w-[150px] px-4 py-2 text-xs mt-4 rounded-lg ms-0 md:ms-4 bg-yellow-600 text-white hover:bg-yellow-700"
+                  >
+                    Place your order
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Congratulations!!</DialogTitle>
+                    <DialogDescription>
+                      Your order has been placed successfully.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
