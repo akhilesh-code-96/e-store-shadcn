@@ -115,7 +115,7 @@ const CheckoutPage = () => {
   }, [productId, product, cartProducts, addresses]);
 
   return (
-    <div className="pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
+    <div className="pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full bg-[#0f1214]">
       <div className="w-full px-5 mt-5 md:w-4/6 md:mt-10">
         <Accordion type="single" collapsible defaultValue="item-1">
           <AccordionItem value="item-1">

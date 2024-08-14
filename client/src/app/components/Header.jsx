@@ -121,7 +121,7 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-[#0f1214] dark:bg-opacity-80 px-4 border-[1px]">
+    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-[#0f1214] dark:bg-opacity-80 px-4 border-b-[1px] z-50">
       <section
         id="navigation"
         className="relative flex items-center justify-between w-full px-3"

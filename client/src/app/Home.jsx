@@ -15,10 +15,8 @@ import Toggle from "./components/Toggle.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -45,6 +43,7 @@ import {
 import { itemStatus } from "./redux/reducers/checkoutReducers/cartReducer.js";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Example from "./components/Carousel.jsx";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -132,9 +131,9 @@ const Home = () => {
   }, [categories, dispatch, newRange]);
 
   return (
-    <div className="min-h-screen pt-[50px] dark:bg-[#0f1214] flex flex-col md:flex-row items-center">
+    <div className="min-h-screen pt-[55px] dark:bg-[#0f1214] flex flex-col md:flex-row items-center">
       {/* Filters Button for small screens */}
-      <div className="flex items-center justify-center w-full py-2 mt-1 border-2 md:hidden">
+      <div className="flex items-center justify-center w-full py-2 border-b-[1px] md:hidden">
         <Drawer>
           <DrawerTrigger asChild>
             {/* <Button variant="outline">Filters</Button> */}
@@ -248,42 +247,45 @@ const Home = () => {
       </div>
 
       {/* Product Display Section */}
-      <div className="mt-[-10px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3">
-        {products &&
-          products.map((product, index) => (
-            <Card
-              key={index}
-              className="flex flex-col justify-between h-auto max-w-xs mt-0 bg-[#1e1e1e] rounded-sm shadow-lg cursor-pointer sm:mt-5 sm:w-11/12"
-            >
-              <CardHeader className="bg-[#121212]">
-                <div className="flex justify-between">
-                  <Link to={`/${product._id}`}>
-                    <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-500">
-                      {product.title}
-                    </CardTitle>
-                  </Link>
-                </div>
-                <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
-                  {product.brand}
-                </div>
-              </CardHeader>
-              <CardContent className="flex justify-center items-center h-[150px] sm:h-[200px] md:h-[250px]">
-                <img
-                  src={`${product.imageUrl}`}
-                  alt="images"
-                  className={`object-contain w-full h-full`}
-                />
-              </CardContent>
-              <CardFooter className="bg-[#0f171f] py-4">
-                <Button
-                  onClick={() => handleCartItems(product._id)}
-                  className="text-xs text-white bg-[#a578fd] md:text-sm lg:text-base hover:bg-[#af8cf7] rounded-sm shadow-md"
-                >
-                  Add to Cart
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+      <div className="flex flex-col">
+        <Example />
+        <div className="mt-[-120px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3 z-20">
+          {products &&
+            products.map((product, index) => (
+              <Card
+                key={index}
+                className="flex flex-col justify-between h-auto max-w-xs mt-0 bg-[#1e1e1e] rounded-sm shadow-custom-dark cursor-pointer sm:mt-5 sm:w-11/12"
+              >
+                <CardHeader className="bg-[#121212]">
+                  <div className="flex justify-between">
+                    <Link to={`/${product._id}`}>
+                      <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-500">
+                        {product.title}
+                      </CardTitle>
+                    </Link>
+                  </div>
+                  <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
+                    {product.brand}
+                  </div>
+                </CardHeader>
+                <CardContent className="flex justify-center items-center h-[150px] sm:h-[200px] md:h-[250px]">
+                  <img
+                    src={`${product.imageUrl}`}
+                    alt="images"
+                    className={`object-contain w-full h-full`}
+                  />
+                </CardContent>
+                <CardFooter className="bg-[#0f171f] py-4">
+                  <Button
+                    onClick={() => handleCartItems(product._id)}
+                    className="text-xs text-white bg-[#a578fd] md:text-sm lg:text-base hover:bg-[#af8cf7] rounded-sm shadow-md"
+                  >
+                    Add to Cart
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+        </div>
       </div>
     </div>
   );
