@@ -91,7 +91,7 @@ const CheckoutPage = () => {
 
     // todo // add a order placed ui.
     setTimeout(() => {
-      navigate("/");
+      navigate("/my-account/orders");
     }, 2000);
   };
 
@@ -212,7 +212,7 @@ const CheckoutPage = () => {
                     Place your order
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="dark:bg-white dark:text-gray-950">
+                <DialogContent className="w-3/4 dark:bg-white dark:text-gray-950 sm:w-full">
                   <DialogHeader>
                     <DialogTitle>Congratulations!!</DialogTitle>
                     <DialogDescription className="dark:text-neutral-600">

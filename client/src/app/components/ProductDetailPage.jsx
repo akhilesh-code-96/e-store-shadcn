@@ -22,24 +22,31 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const userId = window.localStorage.getItem("userId");
   const [loading, setLoading] = useState(false);
+  const [process, setProcess] = useState(false);
 
   const shouldAdd = useSelector(itemStatus);
 
   useEffect(() => {
-    if (shouldAdd) {
-      dispatch(
-        addToCart({
-          queryParams: `userId=${userId}&productId=${id}`,
-          userId,
-        })
-      ).then(() => {
-        navigate("/checkout-page", { state: { productId: id } });
-      });
+    if (process) {
+      if (shouldAdd) {
+        dispatch(
+          addToCart({
+            queryParams: `userId=${userId}&productId=${id}`,
+            userId,
+          })
+        ).then(() => {
+          navigate("/checkout-page", { state: { productId: id } });
+        });
+      }
     }
-  }, [shouldAdd, id, userId, navigate, dispatch]);
+
+    // setting the flag as false again.
+    setProcess(false);
+  }, [shouldAdd, id, userId, navigate, dispatch, process]);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(false);
       try {
         const response = await axios.get(`/api/get-products?id=${id}`);
         setProduct(response.data.products);
@@ -55,9 +62,17 @@ const ProductDetailPage = () => {
       navigate("/login");
       return;
     } else {
-      navigate("/checkout-page", { state: { productId: id } });
+      setProcess(true); // setting the flag as true to enable the cart adding mechanism.
+      setLoading(true); // to show the loading effect on the buy now button.
+
+      // for updating the status whether the product needs to be added to cart or not.
+      dispatch(updateCartItemStatus(productId));
+
+      // will redirect to checkout-page after a certain delay just to show case the processing effect on the buy now since it will redirecting very quickly.
+      setTimeout(() => {
+        navigate("/checkout-page", { state: { productId: id } });
+      }, 100);
     }
-    dispatch(updateCartItemStatus(productId));
   };
 
   console.log("Should Add", shouldAdd);
