@@ -41,7 +41,6 @@ const CheckoutPage = () => {
   const [payment, setPayment] = useState("cash");
   const [productsToDisplay, setProductsToDisplay] = useState([]);
 
-  console.log("Products at checkout", productsToDisplay);
   // Calculate total amount
   const totalAmount = productsToDisplay
     .reduce(
@@ -213,10 +212,10 @@ const CheckoutPage = () => {
                     Place your order
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="dark:bg-white dark:text-gray-950">
                   <DialogHeader>
                     <DialogTitle>Congratulations!!</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="dark:text-neutral-600">
                       Your order has been placed successfully.
                     </DialogDescription>
                   </DialogHeader>
