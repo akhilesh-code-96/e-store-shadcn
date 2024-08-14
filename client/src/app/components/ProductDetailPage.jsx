@@ -4,7 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import "../style.css";
 import { Separator } from "@/components/ui/separator";
-import { Rate } from "antd";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 import { Badge } from "@/components/ui/badge";
 import {
   updateCartItemStatus,
@@ -12,12 +13,10 @@ import {
   itemStatus,
 } from "../redux/reducers/checkoutReducers/cartReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { useToast } from "@/components/ui/use-toast";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState([]);
   const dispatch = useDispatch();
-  const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
   const userId = window.localStorage.getItem("userId");
@@ -77,7 +76,7 @@ const ProductDetailPage = () => {
 
   console.log("Should Add", shouldAdd);
   return (
-    <div className="min-h-screen pt-[55px] flex flex-col items-center">
+    <div className="min-h-screen pt-[55px] flex flex-col items-center bg-[#101316]">
       {product.map((prod) => (
         <div key={prod._id} className="flex flex-col w-full p-10 md:flex-row">
           <div className="w-full p-10 md:w-1/2">
@@ -93,14 +92,12 @@ const ProductDetailPage = () => {
             <h1 className="text-3xl font-bold">{prod.title}</h1>
             <Separator className="mt-2" />
             <div className="flex space-x-2">
-              <p className="p-1 text-sm font-bold dark:text-neutral-300">
-                {prod.rating}
-              </p>
-              <Rate
-                disabled
-                allowHalf
-                defaultValue={prod.rating}
-                className="p-1 text-sm"
+              <Typography component="legend">{prod.rating}</Typography>
+              <Rating
+                name="half-rating-read"
+                defaultValue={prod.rating.toFixed(1)}
+                precision={0.5}
+                readOnly
               />
             </div>
             <div className="py-2">

@@ -15,11 +15,9 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -34,6 +32,7 @@ import {
   getCartProducts,
   resetCart,
 } from "../redux/reducers/checkoutReducers/cartReducer";
+import { Typography } from "@mui/material";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
@@ -122,7 +121,7 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-80 px-4">
+    <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-[#0f1214] dark:bg-opacity-80 px-4 border-[1px]">
       <section
         id="navigation"
         className="relative flex items-center justify-between w-full px-3"
@@ -134,7 +133,9 @@ const Header = () => {
               alt="logo"
               className="object-contain w-10 h-7"
             />
-            <span className="text-sm ms-2 me-2">E-Store</span>
+            <span className="text-sm font-bold ms-2 me-2 text-[#0273e4]">
+              E-Store
+            </span>
           </Link>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
@@ -171,26 +172,25 @@ const Header = () => {
         {/* Icons and sign in button */}
         <div className="items-center hidden space-x-4 lg:flex">
           <div
-            className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
+            className="flex justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
             onClick={() => setOpen((prevOpen) => !prevOpen)}
           >
             Search Products...
-            <CommandShortcut className="rounded-md px-[5px] py-[1px] w-7 outline-1 dark:bg-neutral-600 bg-neutral-300">
-              ⌘k
+            <CommandShortcut className="rounded-md px-[5px] mt-[-2px] w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
+              <Typography component={"legend"}>⌘k</Typography>
             </CommandShortcut>
           </div>
           <div className="flex items-center space-x-3">
             <Link to="/login">
               {user ? (
                 <Button
-                  variant="outline"
-                  className="hover:underline h-[30px]"
+                  className="hover:bg-[#53abf4] h-[30px] bg-[#6fb9f6] text-gray-900"
                   onClick={() => handleLogout()}
                 >
                   Sign out
                 </Button>
               ) : (
-                <Button variant="outline" className="hover:underline h-[30px]">
+                <Button className="hover:hover:bg-[#53abf4] h-[30px] bg-[#6fb9f6]">
                   Sign in
                 </Button>
               )}
@@ -248,12 +248,12 @@ const Header = () => {
                 }
               )}
               <div
-                className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-full h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
+                className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-full h-8 rounded-xl dark:bg-[#14171b] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
               >
                 Search Products...
                 <CommandShortcut className="rounded-md px-[5px] py-[1px] w-7 outline-1 dark:bg-neutral-600 bg-neutral-300">
-                  ⌘k
+                  <Typography component="legend">⌘k</Typography>
                 </CommandShortcut>
               </div>
               <div className="flex items-center space-x-2">
@@ -262,7 +262,7 @@ const Header = () => {
                     <CiShoppingCart size={24} className="cursor-pointer" />
                   </Link>
                   {cartCount > 0 && (
-                    <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
+                    <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-[#fd5361] rounded-full left-6">
                       {cartCount}
                     </Badge>
                   )}
@@ -272,11 +272,6 @@ const Header = () => {
                 <ModeToggle />
               </div>
             </ul>
-            {/* <SheetClose asChild>
-              <Button variant="ghost" className="mt-4 ms-[-10px]">
-                Close
-              </Button>
-            </SheetClose> */}
           </SheetContent>
         </Sheet>
       </section>

@@ -22,6 +22,11 @@ module.exports = {
       },
     },
     extend: {
+      boxShadow: {
+        "custom-light": "0 2px 2px rgba(255, 255, 255, 0.1)", // Light shadow color
+        "custom-dark": "0 2px 4px rgba(0, 0, 0, 0.8)", // Dark shadow color
+        "custom-blue": "0 0px 4px rgba(59, 130, 246, 0.1)", // Blue shadow color
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

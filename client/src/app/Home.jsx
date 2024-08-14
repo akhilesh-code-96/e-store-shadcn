@@ -43,6 +43,8 @@ import {
   updateCartItemStatus,
 } from "./redux/reducers/checkoutReducers/cartReducer.js";
 import { itemStatus } from "./redux/reducers/checkoutReducers/cartReducer.js";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -130,7 +132,7 @@ const Home = () => {
   }, [categories, dispatch, newRange]);
 
   return (
-    <div className="min-h-screen pt-[50px] dark:bg-black flex flex-col md:flex-row items-center">
+    <div className="min-h-screen pt-[50px] dark:bg-[#0f1214] flex flex-col md:flex-row items-center">
       {/* Filters Button for small screens */}
       <div className="flex items-center justify-center w-full py-2 mt-1 border-2 md:hidden">
         <Drawer>
@@ -251,9 +253,9 @@ const Home = () => {
           products.map((product, index) => (
             <Card
               key={index}
-              className="h-auto max-w-xs mt-0 bg-white rounded-sm cursor-pointer sm:mt-5 border-neutral-700 dark:text-gray-900 sm:w-11/12"
+              className="flex flex-col justify-between h-auto max-w-xs mt-0 bg-[#1e1e1e] rounded-sm shadow-lg cursor-pointer sm:mt-5 sm:w-11/12"
             >
-              <CardHeader>
+              <CardHeader className="bg-[#121212]">
                 <div className="flex justify-between">
                   <Link to={`/${product._id}`}>
                     <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-500">
@@ -269,15 +271,13 @@ const Home = () => {
                 <img
                   src={`${product.imageUrl}`}
                   alt="images"
-                  className={`object-contain w-full h-full ${
-                    index % 2 === 0 ? "bg-gray-300" : "bg-blue-300"
-                  }`}
+                  className={`object-contain w-full h-full`}
                 />
               </CardContent>
-              <CardFooter>
+              <CardFooter className="bg-[#0f171f] py-4">
                 <Button
                   onClick={() => handleCartItems(product._id)}
-                  className="text-xs text-white bg-yellow-500 md:text-sm lg:text-base hover:bg-yellow-400"
+                  className="text-xs text-white bg-[#a578fd] md:text-sm lg:text-base hover:bg-[#af8cf7] rounded-sm shadow-md"
                 >
                   Add to Cart
                 </Button>
