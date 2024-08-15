@@ -59,13 +59,17 @@ class OrderController {
   }
 
   async getOrders(req, res) {
-    const { userId, sort = "-createdAt", page = 1, limit = 10 } = req.query;
+    const { userId, sort = "-createdAt", page = 1, limit = 10, id } = req.query;
 
     const queryObject = {};
 
     // Add userId to queryObject if it exists
     if (userId) {
       queryObject.userId = userId;
+    }
+
+    if (id) {
+      queryObject._id = id;
     }
 
     // Fetch the total count of documents that match the query
@@ -76,10 +80,10 @@ class OrderController {
 
     apiData = apiData.sort(sort);
 
-    if (userId) {
+    if (userId || id) {
       apiData = apiData.populate({
         path: "products.productId",
-        select: "title price imageUrl", // Select only the fields you need
+        select: "title price imageUrl discountPercentage", // Select only the fields you need
       });
     } else {
       apiData = apiData.populate({
@@ -105,6 +109,42 @@ class OrderController {
       res
         .status(500)
         .json({ message: "Failed to fetch the orders with error: ", error });
+    }
+  }
+
+  // Aggregation function to sum sales by day
+  async aggregateDailySales(req, res) {
+    try {
+      const dailySales = await OrderModel.aggregate([
+        {
+          // Project the createdAt field to extract the date only
+          $project: {
+            date: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$createdAt",
+              },
+            },
+            amountInRupees: { $multiply: ["$amount", 84] }, // Keep the amount field for summing
+          },
+        },
+        {
+          // Group by the date and sum the amount
+          $group: {
+            _id: "$date",
+            totalSales: { $sum: "$amountInRupees" },
+          },
+        },
+        {
+          // Sort by date in ascending order
+          $sort: { _id: -1 },
+        },
+      ]);
+
+      // console.log("Daily Sales:", dailySales);
+      res.json({ dailySales });
+    } catch (error) {
+      res.json({ message: "Error aggregating daily sales:", error });
     }
   }
 }

@@ -57,7 +57,7 @@ const UserOrders = () => {
   };
 
   const handleReoder = (id) => {
-    navigate("/checkout-page", { state: { productId: id } });
+    navigate("/checkout-page", { state: { orderId: id } });
   };
 
   // console.log(orders);
@@ -112,15 +112,12 @@ const UserOrders = () => {
                   <p className="text-base font-semibold md:text-lg">
                     Total: ₹{order.amount}
                   </p>
-                  {order.products.map((product, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleReoder(product.productId._id)}
-                      className="px-3 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600 md:text-base md:px-4 md:py-2"
-                    >
-                      Re-order
-                    </button>
-                  ))}
+                  <button
+                    onClick={() => handleReoder(order._id)}
+                    className="px-3 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600 md:text-base md:px-4 md:py-2"
+                  >
+                    Re-order
+                  </button>
                 </div>
               </div>
             ))}

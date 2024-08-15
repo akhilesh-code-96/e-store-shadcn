@@ -27,16 +27,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getOrders } from "./redux/reducers/checkoutReducers/orderReducer";
+import { allOrders } from "./redux/reducers/checkoutReducers/orderReducer";
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const product = useSelector(selectProducts);
+  const orders = useSelector(allOrders);
   const cartProducts = useSelector(cartItems);
   const addresses = useSelector(allAddresses);
   const userId = window.localStorage.getItem("userId");
-  const { productId } = location.state || {};
+  const { productId, orderId } = location.state || {};
   const [selectedAddress, setSelectedAddress] = useState("");
   const [payment, setPayment] = useState("cash");
   const [productsToDisplay, setProductsToDisplay] = useState([]);
@@ -96,15 +99,31 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
+    if (orders.length > 0) {
+      const prods = [];
+      for (let i = 0; i < orders.length; i++) {
+        for (let j = 0; j < orders[i].products.length; j++) {
+          prods.push(orders[i].products[j].productId);
+        }
+      }
+      setProductsToDisplay(prods);
+    }
+  }, [orders]);
+
+  useEffect(() => {
     if (productId) {
       dispatch(fetchProducts(`id=${productId}`));
+    } else if (orderId) {
+      dispatch(getOrders(`id=${orderId}`));
     }
     dispatch(getAddresses(`id=${userId}`));
-  }, [dispatch, productId, userId]);
+  }, [dispatch, productId, orderId, userId]);
 
   useEffect(() => {
     if (productId) {
       setProductsToDisplay(product);
+    } else if (orderId) {
+      console.log("order id", orderId);
     } else {
       setProductsToDisplay(cartProducts);
     }
@@ -112,10 +131,13 @@ const CheckoutPage = () => {
     if (addresses.length > 0) {
       setSelectedAddress(JSON.stringify(addresses[0]));
     }
-  }, [productId, product, cartProducts, addresses]);
+  }, [productId, orderId, product, cartProducts, addresses]);
+
+  console.log("Checkout page orders", orders);
+  console.log("Products to display", productsToDisplay);
 
   return (
-    <div className="pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full bg-[#0f1214]">
+    <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full bg-[#0f1214]">
       <div className="w-full px-5 mt-5 md:w-4/6 md:mt-10">
         <Accordion type="single" collapsible defaultValue="item-1">
           <AccordionItem value="item-1">
