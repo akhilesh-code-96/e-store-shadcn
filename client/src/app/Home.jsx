@@ -41,9 +41,8 @@ import {
   updateCartItemStatus,
 } from "./redux/reducers/checkoutReducers/cartReducer.js";
 import { itemStatus } from "./redux/reducers/checkoutReducers/cartReducer.js";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import Example from "./components/Carousel.jsx";
+import Carousel_ from "./components/Carousel.jsx";
+import { Typography } from "@mui/material";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -120,18 +119,20 @@ const Home = () => {
     if (newMinPrice !== null && newMaxPrice !== null && rangeQuery > 1) {
       try {
         dispatch(
-          fetchProducts(`limit=9&category=${categoryQuery}&range=${rangeQuery}`)
+          fetchProducts(
+            `limit=10&category=${categoryQuery}&range=${rangeQuery}`
+          )
         );
       } catch (error) {
         console.error(error);
       }
     } else {
-      dispatch(fetchProducts(`limit=9&category=${categoryQuery}`));
+      dispatch(fetchProducts(`limit=10&category=${categoryQuery}`));
     }
   }, [categories, dispatch, newRange]);
 
   return (
-    <div className="min-h-screen pt-[55px] dark:bg-[#0f1214] flex flex-col md:flex-row items-center">
+    <div className="min-h-screen pt-[55px] flex flex-col md:flex-row items-center">
       {/* Filters Button for small screens */}
       <div className="flex items-center justify-center w-full py-2 border-b-[1px] md:hidden">
         <Drawer>
@@ -227,13 +228,15 @@ const Home = () => {
           <h4 className="mb-2 text-md dark:text-neutral-300">Price Range</h4>
           <div className="flex justify-between">
             <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
-              ₹{newRange > 0 ? newRange : newMinPrice}
+              <Typography>₹{newRange > 0 ? newRange : newMinPrice}</Typography>
             </p>
             <p className="py-2 mb-2 text-sm font-light dark:text-neutral-300">
-              ₹
-              {newMaxPrice < 1000
-                ? newMaxPrice
-                : `${Math.floor(newMaxPrice / 1000)}k`}
+              <Typography component="legend">
+                ₹
+                {newMaxPrice < 1000
+                  ? newMaxPrice
+                  : `${Math.floor(newMaxPrice / 1000)}k`}
+              </Typography>
             </p>
           </div>
           <Slider
@@ -247,19 +250,19 @@ const Home = () => {
       </div>
 
       {/* Product Display Section */}
-      <div className="flex flex-col">
-        <Example />
+      <div className="relative flex flex-col">
+        <Carousel_ />
         <div className="mt-[-120px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3 z-20">
           {products &&
             products.map((product, index) => (
               <Card
                 key={index}
-                className="flex flex-col justify-between h-auto max-w-xs mt-0 bg-[#1e1e1e] rounded-sm shadow-custom-dark cursor-pointer sm:mt-5 sm:w-11/12"
+                className="flex flex-col justify-between h-auto max-w-xs mt-0 dark:bg-[#1e1e1e] rounded-sm shadow-lg cursor-pointer sm:mt-5 sm:w-11/12"
               >
-                <CardHeader className="bg-[#121212]">
+                <CardHeader className="dark:bg-[#121212]">
                   <div className="flex justify-between">
                     <Link to={`/${product._id}`}>
-                      <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-500">
+                      <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-400">
                         {product.title}
                       </CardTitle>
                     </Link>

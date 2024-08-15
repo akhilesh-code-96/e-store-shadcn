@@ -151,6 +151,8 @@ const Header = () => {
                 path = "/my-account"; // Redirect to the my-account page
               } else if (link === "Orders") {
                 path = "/my-account/orders";
+              } else if (link === "Admin Panel") {
+                path = "/admin-panel/dashboard";
               } else {
                 path = `/${link.toLowerCase().replace(" ", "-")}`;
               }
@@ -184,13 +186,14 @@ const Header = () => {
             <Link to="/login">
               {user ? (
                 <Button
-                  className="hover:bg-[#53abf4] h-[30px] bg-[#6fb9f6] text-gray-900"
+                  // variant="outline"
+                  className="h-[30px]"
                   onClick={() => handleLogout()}
                 >
                   Sign out
                 </Button>
               ) : (
-                <Button className="hover:hover:bg-[#53abf4] h-[30px] bg-[#6fb9f6]">
+                <Button variant="outline" className="h-[30px]">
                   Sign in
                 </Button>
               )}
@@ -252,8 +255,10 @@ const Header = () => {
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
               >
                 Search Products...
-                <CommandShortcut className="rounded-md px-[5px] py-[1px] w-7 outline-1 dark:bg-neutral-600 bg-neutral-300">
-                  <Typography component="legend">⌘k</Typography>
+                <CommandShortcut className="rounded-md md:px-[5px] px-[4px] py-[1.6px] md:py-[1px] w-7 outline-1 dark:bg-neutral-600 bg-neutral-300">
+                  <Typography component="legend" sx={{ fontSize: "12px" }}>
+                    ⌘k
+                  </Typography>
                 </CommandShortcut>
               </div>
               <div className="flex items-center space-x-2">

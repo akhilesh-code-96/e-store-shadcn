@@ -1,6 +1,6 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import { cartItems } from "./redux/reducers/checkoutReducers/cartReducer";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -28,9 +28,7 @@ const BuyNowSection = () => {
           <Separator />
           <div className="flex justify-center w-full p-5 dark:bg-[#121518]">
             <Link to="/checkout-page">
-              <Button className="h-10 font-bold text-white bg-orange-500 hover:bg-orange-400 text-[14px] w-30 md:text-xs md:w-30">
-                <Typography component="legend">Go to checkout page</Typography>
-              </Button>
+              <Button variant="contained">Checkout</Button>
             </Link>
           </div>
         </div>

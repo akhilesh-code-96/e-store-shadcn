@@ -8,7 +8,7 @@ import { allAddresses } from "./redux/reducers/accountReducers/addressReducer";
 import { placeOrder } from "./redux/reducers/checkoutReducers/orderReducer"; // Import your placeOrder action
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import {
   Accordion,
   AccordionContent,
@@ -137,7 +137,7 @@ const CheckoutPage = () => {
   console.log("Products to display", productsToDisplay);
 
   return (
-    <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full bg-[#0f1214]">
+    <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
       <div className="w-full px-5 mt-5 md:w-4/6 md:mt-10">
         <Accordion type="single" collapsible defaultValue="item-1">
           <AccordionItem value="item-1">
@@ -228,8 +228,22 @@ const CheckoutPage = () => {
               <Dialog>
                 <DialogTrigger>
                   <Button
+                    variant="contained"
                     onClick={handlePlaceOrder}
-                    className="w-full md:w-[150px] px-4 py-2 text-xs mt-4 rounded-lg ms-0 md:ms-4 bg-yellow-600 text-white hover:bg-yellow-700"
+                    sx={{
+                      width: {
+                        xs: "100%", // Adjust for small screens
+                        md: "150px", // Fixed width for medium and larger screens
+                      },
+                      padding: "8px 16px", // Equivalent to px-4 py-2
+                      fontSize: "12px", // Adjust text size to be smaller
+                      mt: 2, // Equivalent to mt-4
+                      borderRadius: "8px", // Equivalent to rounded-lg
+                      marginInlineStart: {
+                        xs: 0, // Margin start for small screens
+                        md: "16px", // Margin start for medium and larger screens
+                      },
+                    }}
                   >
                     Place your order
                   </Button>

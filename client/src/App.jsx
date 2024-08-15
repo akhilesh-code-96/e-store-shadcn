@@ -57,12 +57,14 @@ function AppContent() {
         </Route>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin-panel" element={<AdminPanel />}>
-          <Route path="/admin-panel/add-product" element={<AddProducts />} />
-          <Route path="/admin-panel/products" element={<Products />} />
-          <Route path="/admin-panel/orders" element={<Orders />} />
-          <Route path="/admin-panel/customers" element={<Customers />} />
-          <Route path="/admin-panel" element={<Dashboard />} />
-          <Route path="/admin-panel/dashboard" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />{" "}
+          {/* Default route when accessing /admin-panel */}
+          <Route path="add-product" element={<AddProducts />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="dashboard" element={<Dashboard />} />{" "}
+          {/* Explicit dashboard route */}
         </Route>
       </Routes>
     </>

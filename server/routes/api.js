@@ -51,6 +51,7 @@ router.delete("/empty-cart/", auth, cartController.emptyCart);
 // order routes
 router.post("/place-order/", orderController.addOrder);
 router.get("/get-orders/", orderController.getOrders);
-router.get("/aggregate-orders/", orderController.aggregateDailySales);
+router.get("/daily-sales/", orderController.dailyAggregration);
+router.get("/category-sales/", orderController.categoryAggregation);
 
 module.exports = router;

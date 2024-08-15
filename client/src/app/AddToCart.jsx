@@ -59,7 +59,7 @@ export default function AddToCart() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-start pt-[70px] p-4 dark:bg-[#0f1214]">
+    <div className="min-h-screen flex flex-col md:flex-row items-start pt-[70px] p-4">
       <Card className="w-full border-none md:w-3/4">
         <CardHeader>
           <CardTitle className="py-2 text-lg md:text-xl">

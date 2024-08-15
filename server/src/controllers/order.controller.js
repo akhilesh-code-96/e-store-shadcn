@@ -113,7 +113,7 @@ class OrderController {
   }
 
   // Aggregation function to sum sales by day
-  async aggregateDailySales(req, res) {
+  async dailyAggregration(req, res) {
     try {
       const dailySales = await OrderModel.aggregate([
         {
@@ -125,19 +125,19 @@ class OrderController {
                 date: "$createdAt",
               },
             },
-            amountInRupees: { $multiply: ["$amount", 84] }, // Keep the amount field for summing
+            amount: 1, // Keep the amount field for summing
           },
         },
         {
           // Group by the date and sum the amount
           $group: {
             _id: "$date",
-            totalSales: { $sum: "$amountInRupees" },
+            totalSales: { $sum: "$amount" },
           },
         },
         {
-          // Sort by date in ascending order
-          $sort: { _id: -1 },
+          // Sort by date in descending order
+          $sort: { _id: 1 },
         },
       ]);
 
@@ -145,6 +145,73 @@ class OrderController {
       res.json({ dailySales });
     } catch (error) {
       res.json({ message: "Error aggregating daily sales:", error });
+    }
+  }
+
+  async categoryAggregation(req, res) {
+    try {
+      const conversionRate = 84;
+
+      const categorySales = await OrderModel.aggregate([
+        // Step 1: Unwind the products array
+        { $unwind: "$products" },
+
+        // Step 2: Populate the productId with the price and category fields
+        {
+          $lookup: {
+            from: "products", // Assuming your product collection is named "products"
+            localField: "products.productId",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+
+        // Step 3: Unwind the populated productDetails array (as lookup returns an array)
+        { $unwind: "$productDetails" },
+
+        // Step 4: Calculate the amount considering discount
+        {
+          $addFields: {
+            salesAmount: {
+              $multiply: [
+                {
+                  $subtract: [
+                    "$productDetails.price",
+                    {
+                      $multiply: [
+                        "$productDetails.price",
+                        {
+                          $divide: ["$productDetails.discountPercentage", 100],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                "$products.quantity",
+              ],
+            },
+          },
+        },
+
+        // Step 5: Group by category and sum the total sales for each category
+        {
+          $group: {
+            _id: "$productDetails.category",
+            totalSales: { $sum: "$salesAmount" },
+          },
+        },
+
+        // Step 6: Apply the conversion rate at the end
+        {
+          $addFields: {
+            totalSales: { $multiply: ["$totalSales", conversionRate] },
+          },
+        },
+      ]);
+
+      res.json({ categorySales });
+    } catch (error) {
+      res.json({ message: "Failed to fetch the data with the error: ", error });
     }
   }
 }

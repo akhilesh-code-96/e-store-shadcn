@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import "../style.css";
 import { Separator } from "@/components/ui/separator";
 import Rating from "@mui/material/Rating";
@@ -76,7 +76,7 @@ const ProductDetailPage = () => {
 
   console.log("Should Add", shouldAdd);
   return (
-    <div className="min-h-screen pt-[55px] flex flex-col items-center bg-[#101316]">
+    <div className="min-h-screen pt-[55px] flex flex-col items-center">
       {product.map((prod) => (
         <div key={prod._id} className="flex flex-col w-full p-10 md:flex-row">
           <div className="w-full p-10 md:w-1/2">
@@ -123,7 +123,9 @@ const ProductDetailPage = () => {
             <div className="flex space-x-1">
               <p className="pl-1 text-xs text-neutral-400">M.R.P:&nbsp;</p>
               <del>
-                <p className="text-xs font-light">₹{prod.price * 84}</p>
+                <p className="text-xs font-light">
+                  ₹{(prod.price * 84).toFixed(2)}
+                </p>
               </del>
             </div>
             <Separator className="mt-2" />
@@ -138,12 +140,16 @@ const ProductDetailPage = () => {
             </ul>
             <div className="flex flex-row justify-between pt-5 space-x-2">
               <Button
-                variant="outline"
+                variant="outlined"
                 onClick={() => handleCartItems(prod._id)}
               >
                 Add to cart
               </Button>
-              <Button onClick={() => handleBuyNow(prod._id)} disabled={loading}>
+              <Button
+                variant="contained"
+                onClick={() => handleBuyNow(prod._id)}
+                disabled={loading}
+              >
                 {loading ? "processing..." : "Buy Now"}
               </Button>
             </div>
