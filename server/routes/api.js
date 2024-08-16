@@ -45,7 +45,7 @@ router.get("/get-addresses/", addressController.getAddresses);
 
 // cart routes
 router.post("/add-to-cart/", cartController.addToCart);
-router.get("/get-cart-products/", auth, cartController.getCartProducts);
+router.get("/get-cart-products/", cartController.getCartProducts);
 router.put("/update-quantity/", auth, cartController.updateProductQuantity);
 router.delete("/delete-cart-product/", auth, cartController.deleteCartProduct);
 router.delete("/empty-cart/", auth, cartController.emptyCart);
