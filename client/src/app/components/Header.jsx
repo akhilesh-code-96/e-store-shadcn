@@ -209,8 +209,12 @@ const Header = () => {
                 </Badge>
               )}
             </div>
-            <FaXTwitter className="cursor-pointer" />
-            <IoLogoGithub className="cursor-pointer" size={19} />
+            <a href="https://x.com/Akhilesh77_sr" target="_blank">
+              <FaXTwitter className="cursor-pointer" />
+            </a>
+            <a href="https://github.com/akhilesh-code-96" target="_blank">
+              <IoLogoGithub className="cursor-pointer" size={19} />
+            </a>
             <span style={{ marginLeft: "2px" }}>
               <ModeToggle />
             </span>
