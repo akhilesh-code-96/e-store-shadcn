@@ -134,7 +134,7 @@ const Header = () => {
               className="object-contain w-10 h-7"
             />
             <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
-              FusionFinds
+              FusionFind
             </span>
           </Link>
           {/* Main Header */}
@@ -232,28 +232,31 @@ const Header = () => {
               <SheetTitle className="mb-2">Menu</SheetTitle>
             </SheetHeader>
             <ul className="flex flex-col space-y-4">
-              {[`Hello, ${user || "Guest"}`, "Admin Panel", "Orders"].map(
-                (link) => {
-                  // Determine the path based on the link
-                  let path;
-                  if (link.startsWith("Hello")) {
-                    path = "/my-account"; // Redirect to the my-account page
-                  } else if (link === "Orders") {
-                    path = "/my-account/orders";
-                  } else {
-                    path = `/${link.toLowerCase().replace(" ", "-")}`;
-                  }
-                  return (
-                    <Link
-                      key={path}
-                      to={path}
-                      className="text-neutral-500 hover:text-neutral-200"
-                    >
-                      {link}
-                    </Link>
-                  );
+              {[
+                `Hello, ${user || "Guest"}`,
+                role === 1 ? "Admin Panel" : null,
+                "Orders",
+              ].map((link) => {
+                if (!link) return;
+                // Determine the path based on the link
+                let path;
+                if (link.startsWith("Hello")) {
+                  path = "/my-account"; // Redirect to the my-account page
+                } else if (link === "Orders") {
+                  path = "/my-account/orders";
+                } else {
+                  path = `/${link.toLowerCase().replace(" ", "-")}`;
                 }
-              )}
+                return (
+                  <Link
+                    key={path}
+                    to={path}
+                    className="text-neutral-500 hover:text-neutral-200"
+                  >
+                    {link}
+                  </Link>
+                );
+              })}
               <div
                 className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-full h-8 rounded-xl dark:bg-[#14171b] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
