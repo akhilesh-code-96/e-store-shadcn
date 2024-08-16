@@ -47,7 +47,7 @@ const AccountPage = () => {
                     </CardHeader>
                   </Card>
                 </Link>
-                <Link to="/my-account/login-security">
+                {/* <Link to="/my-account/login-security">
                   <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
                     <CardHeader>
                       <div className="flex space-x-2">
@@ -63,6 +63,24 @@ const AccountPage = () => {
                           <CardDescription>
                             Edit login, name and password
                           </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                </Link> */}
+                <Link to="/my-account/addresses">
+                  <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
+                    <CardHeader>
+                      <div className="flex space-x-2">
+                        <img
+                          src="https://www.vhv.rs/dpng/d/503-5038283_address-location-pin-icon-orange-hd-png-download.png"
+                          alt="your-addresses"
+                          width="50"
+                          height="50"
+                          className="self-start"
+                        />
+                        <div className="flex flex-col">
+                          <CardTitle>Your Addresses</CardTitle>
                         </div>
                       </div>
                     </CardHeader>
@@ -90,25 +108,7 @@ const AccountPage = () => {
                     </CardHeader>
                   </Card>
                 </Link>
-                <Link to="/my-account/addresses">
-                  <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
-                    <CardHeader>
-                      <div className="flex space-x-2">
-                        <img
-                          src="https://www.vhv.rs/dpng/d/503-5038283_address-location-pin-icon-orange-hd-png-download.png"
-                          alt="your-addresses"
-                          width="50"
-                          height="50"
-                          className="self-start"
-                        />
-                        <div className="flex flex-col">
-                          <CardTitle>Your Addresses</CardTitle>
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                </Link>
-                <Link to="/my-account/contact-us">
+                {/* <Link to="/my-account/contact-us">
                   <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b] transition-colors duration-30">
                     <CardHeader>
                       <div className="flex space-x-2">
@@ -125,7 +125,7 @@ const AccountPage = () => {
                       </div>
                     </CardHeader>
                   </Card>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </section>

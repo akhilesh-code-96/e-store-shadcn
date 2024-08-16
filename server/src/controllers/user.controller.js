@@ -98,10 +98,12 @@ class UserController {
   }
 
   async storeUserQuery(req, res) {
-    const { email } = req.body;
+    const { email, issue } = req.body;
+    console.log(req.body);
     try {
       const record = await QueryModel({
         email: email,
+        issue: issue,
       });
 
       record.save();

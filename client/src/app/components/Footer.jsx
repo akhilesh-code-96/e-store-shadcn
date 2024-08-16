@@ -29,6 +29,7 @@ const Footer = () => {
         });
       }
       document.getElementById("email").value = "";
+      document.getElementById("issue").value = "";
     } catch (error) {
       console.error(error);
     }
@@ -75,6 +76,13 @@ const Footer = () => {
                 type="email"
                 name="email"
                 placeholder="Your email"
+                className="w-full px-4 py-2 rounded-md focus:outline-none"
+              />
+              <Input
+                id="issue"
+                type="text"
+                name="issue"
+                placeholder="Your issue"
                 className="w-full px-4 py-2 rounded-md focus:outline-none"
               />
               <Button variant="contained" type="submit" sx={{ height: "35px" }}>

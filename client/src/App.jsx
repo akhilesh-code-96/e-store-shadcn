@@ -51,10 +51,10 @@ function AppContent() {
           <Route path="addresses" element={<Address />}>
             <Route path="add-address" element={<AddAddressForm />} />
           </Route>
-          <Route path="login-security" element={<LoginSecurity />} />
+          {/* <Route path="login-security" element={<LoginSecurity />} /> */}
           <Route path="delete-account" element={<DeleteAccount />} />
           <Route path="orders" element={<UserOrders />} />
-          <Route path="contact-us" element={<ContactUs />} />
+          {/* <Route path="contact-us" element={<ContactUs />} /> */}
         </Route>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin-panel" element={<AdminPanel />}>
