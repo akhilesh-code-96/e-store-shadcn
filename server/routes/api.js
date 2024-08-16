@@ -46,9 +46,9 @@ router.get("/get-addresses/", addressController.getAddresses);
 // cart routes
 router.post("/add-to-cart/", cartController.addToCart);
 router.get("/get-cart-products/", cartController.getCartProducts);
-router.put("/update-quantity/", auth, cartController.updateProductQuantity);
-router.delete("/delete-cart-product/", auth, cartController.deleteCartProduct);
-router.delete("/empty-cart/", auth, cartController.emptyCart);
+router.put("/update-quantity/", cartController.updateProductQuantity);
+router.delete("/delete-cart-product/", cartController.deleteCartProduct);
+router.delete("/empty-cart/", cartController.emptyCart);
 
 // order routes
 router.post("/place-order/", orderController.addOrder);
