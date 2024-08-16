@@ -12,7 +12,7 @@ const BuyNowSection = () => {
   if (cartProducts.length > 0) {
     return (
       <div className="flex items-start md:p-[55px] p-0 mt-2">
-        <div className="flex flex-col items-center justify-center w-full border-2 rounded-md">
+        <div className="flex flex-col items-center justify-center w-full border-[1px] rounded-sm bg-neutral-900 shadow-md">
           <h1 className="p-2 text-lg font-semibold md:text-xl">
             Process to checkout
           </h1>

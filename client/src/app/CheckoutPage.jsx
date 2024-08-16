@@ -139,7 +139,12 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
       <div className="w-full px-5 mt-5 md:w-4/6 md:mt-10">
-        <Accordion type="single" collapsible defaultValue="item-1">
+        <Accordion
+          type="single"
+          collapsible
+          defaultValue="item-1"
+          className="p-5 bg-neutral-900 rounded-sm border-[1px]"
+        >
           <AccordionItem value="item-1">
             <AccordionTrigger>Delivery Address</AccordionTrigger>
             <AccordionContent>
@@ -262,7 +267,7 @@ const CheckoutPage = () => {
         </Accordion>
       </div>
 
-      <div className="relative w-full md:w-[300px] h-auto p-4 mt-5 md:mt-10 md:ms-5 border-2 border-gray-300 rounded-lg">
+      <div className="relative w-full md:w-[300px] h-auto p-4 mt-5 md:mt-10 md:ms-5 border-[1px] rounded-sm shadow-md">
         <h1 className="mb-4 text-2xl">Price Details</h1>
         {productsToDisplay.length > 0 &&
           productsToDisplay.map((prod, i) => (

@@ -53,7 +53,7 @@ const Footer = () => {
               <XIcon fontSize="small" />
             </a>
             <a
-              href="www.linkedin.com/in/akhilesh-srivastav"
+              href="https://linkedin.com/in/akhilesh-srivastav"
               target="_blank"
               className="text-gray-400 hover:text-white"
             >

@@ -133,7 +133,7 @@ const Header = () => {
               alt="logo"
               className="object-contain w-10 h-7"
             />
-            <span className="md:text-xl text-sm font-bold ms-2 me-2 text-[#0273e4]">
+            <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
               E-Store
             </span>
           </Link>
@@ -142,7 +142,7 @@ const Header = () => {
             {[
               `Hello, ${user || "Guest"}`,
               role === 1 ? "Admin Panel" : null,
-              "Orders",
+              user ? "Orders" : null,
             ].map((link) => {
               if (!link) return null;
               // Determine the path based on the link
@@ -187,13 +187,13 @@ const Header = () => {
               {user ? (
                 <Button
                   // variant="outline"
-                  className="h-[30px]"
+                  className="h-[30px] rounded-sm"
                   onClick={() => handleLogout()}
                 >
                   Sign out
                 </Button>
               ) : (
-                <Button variant="outline" className="h-[30px]">
+                <Button variant="outline" className="h-[30px] rounded-sm">
                   Sign in
                 </Button>
               )}

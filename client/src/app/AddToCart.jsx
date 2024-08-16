@@ -68,7 +68,7 @@ export default function AddToCart() {
           <Separator />
         </CardHeader>
         <CardContent>
-          <Table className="relative w-full">
+          <Table className="relative w-full border-[1px]">
             <TableHeader>
               <TableRow>
                 <TableHead className="hidden w-[50px] sm:table-cell">

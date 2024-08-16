@@ -53,6 +53,10 @@ const headerSlice = createSlice({
       }
       state.initialiMinPrice = Math.floor(min * 84);
     },
+    clearFilters(state) {
+      state.categories = [];
+      state.range = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -75,6 +79,7 @@ export const {
   setRange,
   setInitialMaxPrice,
   setInitialMinPrice,
+  clearFilters,
 } = headerSlice.actions;
 export const minPrice = (state) => state.headerReducer.initialiMinPrice;
 export const maxPrice = (state) => state.headerReducer.initialiMaxPrice;

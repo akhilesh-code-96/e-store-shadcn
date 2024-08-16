@@ -88,21 +88,21 @@ export default function LoginPage() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link
+                  {/* <Link
                     to="/forgot-password"
                     className="inline-block ml-auto text-sm underline"
                   >
                     Forgot your password?
-                  </Link>
+                  </Link> */}
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" className="w-full">
+              {/* <Button variant="outline" className="w-full">
                 Login with Google
-              </Button>
+              </Button> */}
             </div>
             <div className="mt-4 text-sm text-center">
               Don&apos;t have an account?{" "}
