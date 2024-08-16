@@ -7,6 +7,7 @@ const CartController = require("../src/controllers/cart.controller.js");
 const auth = require("../src/middlewares/auth.middleware.js");
 const OrderController = require("../src/controllers/order.controller.js");
 const router = express.Router();
+const validationRequest = require("../src/middlewares/validation.middleware.js");
 
 const productController = new ProductController();
 const userController = new UserController();
@@ -36,6 +37,7 @@ router.get("/login-user/", userController.loginUser);
 router.post("/logout/", userController.logoutUser);
 router.get("/get-users/", userController.getUsers);
 router.delete("/delete-account/", userController.deleteUser);
+router.post("/user-query", validationRequest, userController.storeUserQuery);
 
 // address routes
 router.post("/add-address/", addressController.addAddress);

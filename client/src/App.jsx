@@ -23,6 +23,7 @@ import DeleteAccount from "./app/Account/DeleteAccount";
 import UserOrders from "./app/Account/User-Orders";
 import ContactUs from "./app/Account/ContactUs";
 import AddAddressForm from "./app/Account/AddAddressForm";
+import Footer from "./app/components/Footer";
 
 function AppContent() {
   const [visible, setVisible] = useState(true);
@@ -67,6 +68,7 @@ function AppContent() {
           {/* Explicit dashboard route */}
         </Route>
       </Routes>
+      {visible && <Footer />}
     </>
   );
 }

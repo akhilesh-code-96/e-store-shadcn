@@ -2,6 +2,7 @@ const UserModel = require("../models/user.model.js");
 const OrderModel = require("../models/order.model.js");
 const CartModel = require("../models/cart.model.js");
 const AddressModel = require("../models/address.model.js");
+const QueryModel = require("../models/query.model.js");
 
 class UserController {
   async addUser(req, res) {
@@ -91,6 +92,23 @@ class UserController {
     } catch (error) {
       res.json({
         message: "Failed to delete the user with the error: ",
+        error,
+      });
+    }
+  }
+
+  async storeUserQuery(req, res) {
+    const { email } = req.body;
+    try {
+      const record = await QueryModel({
+        email: email,
+      });
+
+      record.save();
+      res.json({ message: "Successfully stored the email." });
+    } catch (error) {
+      res.json({
+        message: "Failed to the store the user email with the error: ",
         error,
       });
     }

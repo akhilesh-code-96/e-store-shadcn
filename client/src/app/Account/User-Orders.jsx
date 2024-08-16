@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdArrowLeft } from "react-icons/md";
 import { MdArrowRight } from "react-icons/md";
+import { Button } from "@mui/material";
 import "../style.css";
 
 const UserOrders = () => {
@@ -112,12 +113,12 @@ const UserOrders = () => {
                   <p className="text-base font-semibold md:text-lg">
                     Total: ₹{order.amount}
                   </p>
-                  <button
+                  <Button
+                    variant="contained"
                     onClick={() => handleReoder(order._id)}
-                    className="px-3 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600 md:text-base md:px-4 md:py-2"
                   >
                     Re-order
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

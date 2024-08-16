@@ -133,7 +133,7 @@ const Header = () => {
               alt="logo"
               className="object-contain w-10 h-7"
             />
-            <span className="text-sm font-bold ms-2 me-2 text-[#0273e4]">
+            <span className="md:text-xl text-sm font-bold ms-2 me-2 text-[#0273e4]">
               E-Store
             </span>
           </Link>
