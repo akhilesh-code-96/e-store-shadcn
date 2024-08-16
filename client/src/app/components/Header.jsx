@@ -134,7 +134,7 @@ const Header = () => {
               className="object-contain w-10 h-7"
             />
             <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
-              E-Store
+              FusionFinds
             </span>
           </Link>
           {/* Main Header */}
