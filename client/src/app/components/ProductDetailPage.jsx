@@ -13,6 +13,8 @@ import {
   itemStatus,
 } from "../redux/reducers/checkoutReducers/cartReducer";
 import { useDispatch, useSelector } from "react-redux";
+import P_Backdrop from "./Backdrop";
+import { useToast } from "@/components/ui/use-toast";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState([]);
@@ -22,8 +24,9 @@ const ProductDetailPage = () => {
   const userId = window.localStorage.getItem("userId");
   const [loading, setLoading] = useState(false);
   const [process, setProcess] = useState(false);
-
+  const user = window.localStorage.getItem("user");
   const shouldAdd = useSelector(itemStatus);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (process) {
@@ -33,8 +36,13 @@ const ProductDetailPage = () => {
             queryParams: `userId=${userId}&productId=${id}`,
             userId,
           })
-        ).then(() => {
-          navigate("/checkout-page", { state: { productId: id } });
+        );
+        toast({
+          description: "Item added to the cart",
+        });
+      } else {
+        toast({
+          description: "Item already added",
         });
       }
     }
@@ -74,88 +82,101 @@ const ProductDetailPage = () => {
     }
   };
 
-  console.log("Should Add", shouldAdd);
+  // handle cart item addition
+  const handleCartItems = (productId) => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      setProcess(true);
+      dispatch(updateCartItemStatus(productId));
+    }
+  };
+
   return (
     <div className="min-h-screen pt-[55px] flex flex-col items-center">
-      {product.map((prod) => (
-        <div key={prod._id} className="flex flex-col w-full p-10 md:flex-row">
-          <div className="w-full p-10 md:w-1/2">
-            <img
-              src={prod.imageUrl}
-              alt="product"
-              className="object-cover transition border border-gray-700 rounded-lg shadow-lg dark:bg-neutral-900 hover:shadow-xl"
-              width="500"
-              height="500"
-            />
-          </div>
-          <div className="flex flex-col items-start justify-center w-full md:w-1/2">
-            <h1 className="text-3xl font-bold">{prod.title}</h1>
-            <Separator className="mt-2" />
-            <div className="flex space-x-2">
-              <Typography component="legend">{prod.rating}</Typography>
-              <Rating
-                name="half-rating-read"
-                defaultValue={prod.rating.toFixed(1)}
-                precision={0.5}
-                readOnly
+      {product.length > 0 ? (
+        product.map((prod) => (
+          <div key={prod._id} className="flex flex-col w-full p-10 md:flex-row">
+            <div className="w-full p-10 md:w-1/2">
+              <img
+                src={prod.imageUrl}
+                alt="product"
+                className="object-cover transition border border-gray-700 rounded-lg shadow-lg dark:bg-neutral-900 hover:shadow-xl"
+                width="500"
+                height="500"
               />
             </div>
-            <div className="py-2">
-              <Badge
-                variant="destructive"
-                className="p-[4px] px-2 text-xs rounded-md"
-              >
-                Limited time Deal
-              </Badge>
-            </div>
-            <div className="flex space-x-2">
-              <p className="text-2xl font-light text-green-500">
-                {prod.discountPercentage}%
-              </p>
-              <p className="text-2xl">
-                ₹
-                {(
-                  prod.price * 84 -
-                  (prod.discountPercentage / 100) * prod.price
-                ).toFixed(2)}
-              </p>
-            </div>
-            <div className="flex space-x-1">
-              <p className="pl-1 text-xs text-neutral-400">M.R.P:&nbsp;</p>
-              <del>
-                <p className="text-xs font-light">
-                  ₹{(prod.price * 84).toFixed(2)}
+            <div className="flex flex-col items-start justify-center w-full md:w-1/2">
+              <h1 className="text-3xl font-bold">{prod.title}</h1>
+              <Separator className="mt-2" />
+              <div className="flex space-x-2">
+                <Typography component="legend">{prod.rating}</Typography>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={prod.rating.toFixed(1)}
+                  precision={0.5}
+                  readOnly
+                />
+              </div>
+              <div className="py-2">
+                <Badge
+                  variant="destructive"
+                  className="p-[4px] px-2 text-xs rounded-md"
+                >
+                  Limited time Deal
+                </Badge>
+              </div>
+              <div className="flex space-x-2">
+                <p className="text-2xl font-light text-green-500">
+                  {prod.discountPercentage}%
                 </p>
-              </del>
-            </div>
-            <Separator className="mt-2" />
-            <h3 className="mt-2 text-xl">About this Item</h3>
-            <ul className="pt-2 pl-5 text-gray-400 list-disc">
-              {prod.description
-                .split(".")
-                .filter(Boolean)
-                .map((desc, i) => (
-                  <li key={i}>{desc.trim()}.</li>
-                ))}
-            </ul>
-            <div className="flex flex-row justify-between pt-5 space-x-2">
-              <Button
-                variant="outlined"
-                onClick={() => handleCartItems(prod._id)}
-              >
-                Add to cart
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => handleBuyNow(prod._id)}
-                disabled={loading}
-              >
-                {loading ? "processing..." : "Buy Now"}
-              </Button>
+                <p className="text-2xl">
+                  ₹
+                  {(
+                    prod.price * 84 -
+                    (prod.discountPercentage / 100) * prod.price * 84
+                  ).toFixed(2)}
+                </p>
+              </div>
+              <div className="flex space-x-1">
+                <p className="pl-1 text-xs text-neutral-400">M.R.P:&nbsp;</p>
+                <del>
+                  <p className="text-xs font-light">
+                    ₹{(prod.price * 84).toFixed(2)}
+                  </p>
+                </del>
+              </div>
+              <Separator className="mt-2" />
+              <h3 className="mt-2 text-xl">About this Item</h3>
+              <ul className="pt-2 pl-5 text-gray-400 list-disc">
+                {prod.description
+                  .split(".")
+                  .filter(Boolean)
+                  .map((desc, i) => (
+                    <li key={i}>{desc.trim()}.</li>
+                  ))}
+              </ul>
+              <div className="flex flex-row justify-between pt-5 space-x-2">
+                <Button
+                  variant="outlined"
+                  onClick={() => handleCartItems(prod._id)}
+                >
+                  Add to cart
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => handleBuyNow(prod._id)}
+                  disabled={loading}
+                >
+                  {loading ? "Processing..." : "Buy Now"}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <P_Backdrop />
+      )}
     </div>
   );
 };

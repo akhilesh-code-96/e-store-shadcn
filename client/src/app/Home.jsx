@@ -44,6 +44,8 @@ import { itemStatus } from "./redux/reducers/checkoutReducers/cartReducer.js";
 import Carousel_ from "./components/Carousel.jsx";
 import { Typography } from "@mui/material";
 import { clearFilters } from "./redux/reducers/headerReducer.js";
+import SkeletonCard from "./components/SkeletonCard.jsx";
+import P_Backdrop from "./components/Backdrop.jsx";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -59,7 +61,8 @@ const Home = () => {
   const navigate = useNavigate();
   const shouldAdd = useSelector(itemStatus);
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [value, setValue] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {
@@ -122,26 +125,29 @@ const Home = () => {
         dispatch(
           fetchProducts(
             `limit=10&category=${categoryQuery}&range=${rangeQuery}`
-          )
+          ).finally(() => setLoading(false))
         );
       } catch (error) {
         console.error(error);
       }
     } else {
-      dispatch(fetchProducts(`limit=10&category=${categoryQuery}`));
+      dispatch(fetchProducts(`limit=10&category=${categoryQuery}`)).finally(
+        () => setLoading(false)
+      );
     }
   }, [categories, dispatch, newRange]);
 
   // handle clear search
   const clearSearch = () => {
-    dispatch(fetchProducts(`limit=10`));
+    setOpen(true);
+    dispatch(fetchProducts(`limit=10`)).finally(() => setOpen(false));
   };
 
   const clearFiter = () => {
     dispatch(clearFilters());
   };
 
-  console.log("category", categories);
+  // console.log("category", categories);
 
   return (
     <div className="min-h-screen pt-[55px] flex flex-col md:flex-row items-center">
@@ -284,69 +290,82 @@ const Home = () => {
       </div>
 
       {/* Product Display Section */}
-      {products.length > 0 ? (
+      {loading ? (
         <div className="relative flex flex-col">
           <Carousel_ />
           <div className="mt-[-120px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3 z-20">
-            {products &&
-              products.map((product, index) => (
-                <Card
-                  key={index}
-                  className="flex flex-col justify-between h-auto max-w-xs mt-0 dark:bg-[#1e1e1e] rounded-sm shadow-lg cursor-pointer sm:mt-5 sm:w-11/12"
-                >
-                  <CardHeader className="dark:bg-[#121212]">
-                    <div className="flex justify-between">
-                      <Link to={`/${product._id}`}>
-                        <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-400">
-                          {product.title}
-                        </CardTitle>
-                      </Link>
-                    </div>
-                    <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
-                      {product.brand}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex justify-center items-center h-[150px] sm:h-[200px] md:h-[250px]">
-                    <img
-                      src={`${product.imageUrl}`}
-                      alt="images"
-                      className={`object-contain w-full h-full`}
-                    />
-                  </CardContent>
-                  <CardFooter className="bg-[#0f171f] py-4">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        </div>
+      ) : products.length > 0 ? (
+        <div className="relative flex flex-col">
+          <Carousel_ />
+          <div className="mt-[-120px] grid grid-cols-2 gap-4 sm:gap-0 p-5 md:grid-cols-2 lg:grid-cols-3 z-20">
+            {products.map((product, index) => (
+              <Card
+                key={index}
+                className="flex flex-col justify-between h-auto max-w-xs mt-0 dark:bg-[#1e1e1e] rounded-sm shadow-lg cursor-pointer sm:mt-5 sm:w-11/12"
+              >
+                <CardHeader className="dark:bg-[#121212]">
+                  <Link to={`/${product._id}`}>
+                    <CardTitle className="text-sm md:text-base lg:text-xl hover:underline hover:text-blue-300 dark:hover:text-gray-400">
+                      {product.title}
+                    </CardTitle>
+                  </Link>
+                  <div className="text-xs font-semibold text-blue-400 md:text-sm lg:text-base dark:text-blue-300">
+                    {product.brand}
+                  </div>
+                </CardHeader>
+                <CardContent className="flex justify-center items-center h-[150px] sm:h-[200px] md:h-[250px]">
+                  <img
+                    src={product.imageUrl}
+                    alt={product.title}
+                    className="object-cover w-full h-full"
+                  />
+                </CardContent>
+                <CardFooter className="bg-[#0f171f] py-4">
+                  <div className="flex flex-col items-center justify-between text-lg text-white">
                     <Button
                       onClick={() => handleCartItems(product._id)}
                       className="text-xs text-white bg-[#a578fd] md:text-sm lg:text-base hover:bg-[#af8cf7] rounded-sm shadow-md"
                     >
                       Add to Cart
                     </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+                  </div>
+                </CardFooter>
+              </Card>
+            ))}
           </div>
         </div>
       ) : (
         <div className="flex items-center justify-center w-full min-h-screen">
-          <div className="text-center">
-            <h1 className="text-6xl font-bold text-gray-900 dark:text-white">
-              404
-            </h1>
-            <p className="mt-2 text-xl font-semibold text-gray-600 dark:text-gray-400">
-              No products found!
-            </p>
-            <p className="mt-4 text-lg text-gray-500 dark:text-gray-300">
-              Sorry, we couldn't find any products matching your search
-              criteria.
-            </p>
-            <div className="mt-6">
-              <Button
-                onClick={clearSearch}
-                className="px-6 py-3 text-lg font-medium text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                Clear Search
-              </Button>
+          {!open && (
+            <div className="text-center">
+              <h1 className="text-6xl font-bold text-gray-900 dark:text-white">
+                404
+              </h1>
+              <p className="mt-2 text-xl font-semibold text-gray-600 dark:text-gray-400">
+                No products found!
+              </p>
+              <p className="mt-4 text-lg text-gray-500 dark:text-gray-300">
+                Sorry, we couldn't find any products matching your search
+                criteria.
+              </p>
+              <div className="mt-6">
+                <Button
+                  onClick={clearSearch}
+                  className="px-6 py-3 text-lg font-medium text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
+                >
+                  Clear Search
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Backdrop */}
+          {open && <P_Backdrop />}
         </div>
       )}
     </div>
