@@ -27,33 +27,33 @@ router.post(
 );
 
 // product routes
-router.get("/get-products/", productController.getAllProducts);
-router.put("/edit-product/", productController.editProduct);
+router.get("/get-products", productController.getAllProducts);
+router.put("/edit-product", productController.editProduct);
 router.delete("/delete-product/:id", productController.deleteProduct);
 
 // user routes
-router.post("/register/", userController.addUser);
-router.get("/login-user/", userController.loginUser);
-router.post("/logout/", userController.logoutUser);
-router.get("/get-users/", userController.getUsers);
-router.delete("/delete-account/", userController.deleteUser);
+router.post("/register", userController.addUser);
+router.get("/login-user", userController.loginUser);
+router.post("/logout", userController.logoutUser);
+router.get("/get-users", userController.getUsers);
+router.delete("/delete-account", userController.deleteUser);
 router.post("/user-query", validationRequest, userController.storeUserQuery);
 
 // address routes
-router.post("/add-address/", addressController.addAddress);
-router.get("/get-addresses/", addressController.getAddresses);
+router.post("/add-address", addressController.addAddress);
+router.get("/get-addresses", addressController.getAddresses);
 
 // cart routes
-router.post("/add-to-cart/", cartController.addToCart);
-router.get("/get-cart-products/", cartController.getCartProducts);
-router.put("/update-quantity/", cartController.updateProductQuantity);
-router.delete("/delete-cart-product/", cartController.deleteCartProduct);
-router.delete("/empty-cart/", cartController.emptyCart);
+router.post("/add-to-cart", cartController.addToCart);
+router.get("/get-cart-products", cartController.getCartProducts);
+router.put("/update-quantity", cartController.updateProductQuantity);
+router.delete("/delete-cart-product", cartController.deleteCartProduct);
+router.delete("/empty-cart", cartController.emptyCart);
 
 // order routes
-router.post("/place-order/", orderController.addOrder);
-router.get("/get-orders/", orderController.getOrders);
-router.get("/daily-sales/", orderController.dailyAggregration);
-router.get("/category-sales/", orderController.categoryAggregation);
+router.post("/place-order", orderController.addOrder);
+router.get("/get-orders", orderController.getOrders);
+router.get("/daily-sales", orderController.dailyAggregration);
+router.get("/category-sales", orderController.categoryAggregation);
 
 module.exports = router;
