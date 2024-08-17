@@ -36,7 +36,7 @@ const Footer = () => {
   };
   return (
     <div>
-      <footer className="py-8 bg-gray-200 dark:bg-gray-900">
+      <footer className="py-8 mt-auto bg-gray-200 dark:bg-gray-900">
         <div className="container flex flex-col items-center justify-between mx-auto space-y-6 md:flex-row md:space-y-0">
           <div className="flex space-x-6">
             <a

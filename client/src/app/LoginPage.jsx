@@ -17,6 +17,7 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const userId = window.localStorage.getItem("userId");
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,6 +29,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
     try {
@@ -40,8 +42,10 @@ export default function LoginPage() {
         window.localStorage.setItem("role", user.role);
         dispatch(getCartProducts(`userId=${userId}`));
       } else {
+        setloading(false);
         throw new Error("Password or email incorrect. Please try again!");
       }
+      setloading(false);
       navigate("/");
     } catch (error) {
       toast({
@@ -97,8 +101,8 @@ export default function LoginPage() {
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "logging you in..." : "Login"}
               </Button>
               {/* <Button variant="outline" className="w-full">
                 Login with Google

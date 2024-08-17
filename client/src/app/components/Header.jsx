@@ -177,7 +177,7 @@ const Header = () => {
           className="flex w-[200px] lg:hidden justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out sm:w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
           onClick={() => setOpen((prevOpen) => !prevOpen)}
         >
-          <span className="text-[10px] xs:text-[11px] sm:text-md">
+          <span className="text-[10px] xs:text-[11px] sm:text-[12px]">
             Search Products...
           </span>
           <CommandShortcut className="rounded-md px-[5px] mt-[-1px] sm:mt-[-2px] w-9 h-5 xs:h-auto xs:w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
@@ -277,6 +277,23 @@ const Header = () => {
                   </Link>
                 );
               })}
+              <div>
+                <Link to="/login">
+                  {user ? (
+                    <Button
+                      // variant="outline"
+                      className="h-[30px] rounded-sm"
+                      onClick={() => handleLogout()}
+                    >
+                      Sign out
+                    </Button>
+                  ) : (
+                    <Button variant="outline" className="h-[30px] rounded-sm">
+                      Sign in
+                    </Button>
+                  )}
+                </Link>
+              </div>
               <div className="flex items-center space-x-2">
                 <div className="relative inline-block">
                   <Link to="/add-to-cart">
