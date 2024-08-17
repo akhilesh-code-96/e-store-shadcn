@@ -14,7 +14,7 @@ export default function Carousel_(props) {
     },
     {
       image:
-        "https://img.freepik.com/free-photo/arrangement-black-friday-shopping-carts-with-copy-space_23-2148667047.jpg?t=st=1723891225~exp=1723894825~hmac=b0678508ad91efbbbec643d5f52b651c7e2d86f262057bf9d8e9f00ae7070180&w=996",
+        "https://img.freepik.com/free-photo/purchasing-shop-buying-selling-teade_53876-134043.jpg?t=st=1723925283~exp=1723928883~hmac=9af475fabcaa661d02e7d21222673c1fbec37d9b65ed4c2c5dec3f5c325c7d53&w=1380",
     },
     {
       image:
