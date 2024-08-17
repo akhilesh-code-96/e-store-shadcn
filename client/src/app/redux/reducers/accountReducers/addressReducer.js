@@ -1,10 +1,11 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const addAddress = createAsyncThunk(
   "account/addAddress",
   async ({ queryParams, data }) => {
-    await axios.post(`/api/add-address?${queryParams}`, data, {
+    await axios.post(`${BASE_URL}/api/add-address?${queryParams}`, data, {
       headers: { "Content-Type": "application/json" },
     });
   }
@@ -13,7 +14,9 @@ export const addAddress = createAsyncThunk(
 export const getAddresses = createAsyncThunk(
   "account/getAddresses",
   async (queryParams) => {
-    const response = await axios.get(`/api/get-addresses?${queryParams}`);
+    const response = await axios.get(
+      `${BASE_URL}/api/get-addresses?${queryParams}`
+    );
     const addresses = response.data.addresses;
     return addresses;
   }

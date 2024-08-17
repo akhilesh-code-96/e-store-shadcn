@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ queryParams, userId }, { dispatch }) => {
-    await axios.post(`/api/add-to-cart?${queryParams}`);
+    await axios.post(`${BASE_URL}/api/add-to-cart?${queryParams}`);
     dispatch(getCartProducts(`userId=${userId}`));
   }
 );
@@ -13,7 +14,9 @@ export const getCartProducts = createAsyncThunk(
   "cart/getCartProducts",
   async (queryParams) => {
     try {
-      const response = await axios.get(`/api/get-cart-products?${queryParams}`);
+      const response = await axios.get(
+        `${BASE_URL}/api/get-cart-products?${queryParams}`
+      );
       const products = response.data.products;
       console.log(products);
       return products;
@@ -28,7 +31,9 @@ export const updateProductQantity = createAsyncThunk(
   async (queryParams) => {
     console.log(queryParams);
     try {
-      const response = await axios.put(`/api/update-quantity?${queryParams}`);
+      const response = await axios.put(
+        `${BASE_URL}/api/update-quantity?${queryParams}`
+      );
       const products = response.data.products;
       return products;
     } catch (error) {
@@ -41,7 +46,7 @@ export const deleteCartProduct = createAsyncThunk(
   "cart/deleteCartProduct",
   async (queryParams) => {
     try {
-      await axios.delete(`/api/delete-cart-product?${queryParams}`);
+      await axios.delete(`${BASE_URL}/api/delete-cart-product?${queryParams}`);
     } catch (error) {
       console.error(error);
     }
@@ -52,7 +57,9 @@ export const emptyCart = createAsyncThunk(
   "cart/emptyCart",
   async (queryParams) => {
     try {
-      const response = await axios.delete(`/api/empty-cart?${queryParams}`);
+      const response = await axios.delete(
+        `${BASE_URL}/api/empty-cart?${queryParams}`
+      );
       console.log(response.status);
       if (response.status === 200) {
         return [];

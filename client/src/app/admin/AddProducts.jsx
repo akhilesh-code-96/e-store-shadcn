@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddProducts() {
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ export default function AddProducts() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      await axios.post("/api/add-products", data, {
+      await axios.post(`${BASE_URL}/api/add-products`, data, {
         headers: { "Content-type": "multipart/form-data" },
       });
       navigate("/");

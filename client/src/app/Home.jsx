@@ -63,7 +63,6 @@ const Home = () => {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("indeterminate");
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {

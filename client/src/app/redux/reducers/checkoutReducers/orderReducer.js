@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const placeOrder = createAsyncThunk(
   "order/placeOrder",
   async (queryParams) => {
-    await axios.post(`/api/place-order?${queryParams}`);
+    await axios.post(`${BASE_URL}/api/place-order?${queryParams}`);
   }
 );
 
 export const getOrders = createAsyncThunk(
   "order/getOrders",
   async (queryParams) => {
-    const response = await axios.get(`/api/get-orders?${queryParams}`);
+    const response = await axios.get(
+      `${BASE_URL}/api/get-orders?${queryParams}`
+    );
     const orders = response.data.orders;
     const count = response.data.count;
     const totalPages = response.data.totalPages;
@@ -22,7 +25,9 @@ export const getOrders = createAsyncThunk(
 export const getDailySales = createAsyncThunk(
   "order/getDailySales",
   async (queryParams) => {
-    const response = await axios.get(`/api/daily-sales?${queryParams}`);
+    const response = await axios.get(
+      `${BASE_URL}/api/daily-sales?${queryParams}`
+    );
     const sales = response.data.dailySales;
     return sales;
   }
@@ -31,7 +36,9 @@ export const getDailySales = createAsyncThunk(
 export const getCategory = createAsyncThunk(
   "order/getCategory",
   async (queryParams) => {
-    const response = await axios.get(`/api/category-sales?${queryParams}`);
+    const response = await axios.get(
+      `${BASE_URL}/api/category-sales?${queryParams}`
+    );
     const orders = response.data.categorySales;
     return orders;
   }

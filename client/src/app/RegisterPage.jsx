@@ -10,6 +10,7 @@ import "./style.css";
 const RegisterPage = () => {
   const [transitionClass, setTransitionClass] = useState("");
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,7 +25,7 @@ const RegisterPage = () => {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
     try {
-      await axios.post("/api/register", data, {
+      await axios.post(`${BASE_URL}/api/register`, data, {
         headers: { "Content-Type": "application/json" },
       });
       navigate("/login");

@@ -18,6 +18,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const userId = window.localStorage.getItem("userId");
   const [loading, setloading] = useState(false);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,7 +35,9 @@ export default function LoginPage() {
     const data = Object.fromEntries(formData);
     try {
       const queryParams = new URLSearchParams(data).toString();
-      const response = await axios.get(`/api/login-user?${queryParams}`);
+      const response = await axios.get(
+        `${BASE_URL}/api/login-user?${queryParams}`
+      );
       const user = response.data.user;
       if (user) {
         window.localStorage.setItem("user", user.firstname);

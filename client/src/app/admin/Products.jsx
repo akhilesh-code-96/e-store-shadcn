@@ -70,6 +70,7 @@ export default function Products() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [page, setPage] = useState(1);
   const inputRef = useRef([]);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   function formatDate(isoString) {
     const date = new Date(isoString);
@@ -98,7 +99,7 @@ export default function Products() {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        `/api/get-products?limit=10&page=${page}`
+        `${BASE_URL}/api/get-products?limit=10&page=${page}`
       );
       const data = response.data.products;
       const prods = response.data.total;
@@ -135,7 +136,7 @@ export default function Products() {
   const editProduct = async (id, price, stock) => {
     try {
       const response = await axios.put(
-        "/api/edit-product",
+        `${BASE_URL}/api/edit-product`,
         { id, price, stock },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -152,7 +153,9 @@ export default function Products() {
   const handleDeleteProduct = async (id) => {
     console.log(id);
     try {
-      const response = await axios.delete(`/api/delete-product/${id}`);
+      const response = await axios.delete(
+        `${BASE_URL}/api/delete-product/${id}`
+      );
       if (response.status === 200) {
         getProducts();
       }
