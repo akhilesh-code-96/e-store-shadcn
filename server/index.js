@@ -10,7 +10,7 @@ const PORT = 3000;
 const app = express();
 app.use(
   cors({
-    origin: ["https://twirl-tau.vercel.app"],
+    origin: ["https://twirl-one.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true,
   })
