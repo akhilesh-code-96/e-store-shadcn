@@ -49,7 +49,7 @@ export default function AdminPanel() {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="w-6 h-6" />
-              <span>FusionFind</span>
+              <span>Twirl</span>
             </Link>
             <Button variant="outline" size="icon" className="w-8 h-8 ml-auto">
               <Bell className="w-4 h-4" />
@@ -113,7 +113,7 @@ export default function AdminPanel() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="w-6 h-6" />
-                  <span>FusionFind</span>
+                  <span>Twirl</span>
                 </Link>
                 {[
                   { icon: <Home className="w-4 h-4" />, text: "Dashboard" },

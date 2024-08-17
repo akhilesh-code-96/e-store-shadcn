@@ -70,6 +70,7 @@ const Header = () => {
     if (e) {
       const value = e.target.textContent;
       if (value) {
+        navigate("/");
         try {
           dispatch(fetchProducts(`title=${value}`));
           setOpen((open) => !open);
@@ -124,18 +125,18 @@ const Header = () => {
     <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-[#0f1214] dark:bg-opacity-80 px-4 border-b-[1px] z-50">
       <section
         id="navigation"
-        className="relative flex items-center justify-between w-full px-3"
+        className="relative flex items-center justify-center w-full px-3 space-x-6 sm:ms-0 ms-3 sm:space-x-0 sm:justify-between"
       >
         <div className="flex items-center space-x-4">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center sm:me-0 me-1">
             <img
-              src="/e-store-logo.jpg"
+              src="/twirl.svg"
               alt="logo"
-              className="object-contain w-10 h-7"
+              className="object-contain h-10 w-14"
             />
-            <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
-              FusionFind
-            </span>
+            {/* <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
+              Twirl
+            </span> */}
           </Link>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
@@ -172,6 +173,25 @@ const Header = () => {
           </div>
         </div>
         {/* Icons and sign in button */}
+        <div
+          className="flex w-[200px] lg:hidden justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out sm:w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
+          onClick={() => setOpen((prevOpen) => !prevOpen)}
+        >
+          <span className="text-[10px] xs:text-[11px] sm:text-md">
+            Search Products...
+          </span>
+          <CommandShortcut className="rounded-md px-[5px] mt-[-1px] sm:mt-[-2px] w-9 h-5 xs:h-auto xs:w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
+            <Typography
+              component="legend"
+              sx={{
+                fontSize: { xs: "12px" },
+                marginTop: { xs: "1.4px" },
+              }}
+            >
+              ⌘k
+            </Typography>
+          </CommandShortcut>
+        </div>
         <div className="items-center hidden space-x-4 lg:flex">
           <div
             className="flex justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
@@ -179,7 +199,7 @@ const Header = () => {
           >
             Search Products...
             <CommandShortcut className="rounded-md px-[5px] mt-[-2px] w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
-              <Typography component={"legend"}>⌘k</Typography>
+              <Typography component="legend">⌘k</Typography>
             </CommandShortcut>
           </div>
           <div className="flex items-center space-x-3">
@@ -257,17 +277,6 @@ const Header = () => {
                   </Link>
                 );
               })}
-              <div
-                className="flex justify-between cursor-pointer dark:hover:bg-neutral-800 dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-full h-8 rounded-xl dark:bg-[#14171b] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400"
-                onClick={() => setOpen((prevOpen) => !prevOpen)}
-              >
-                Search Products...
-                <CommandShortcut className="rounded-md md:px-[5px] px-[4px] py-[1.6px] md:py-[1px] w-7 outline-1 dark:bg-neutral-600 bg-neutral-300">
-                  <Typography component="legend" sx={{ fontSize: "12px" }}>
-                    ⌘k
-                  </Typography>
-                </CommandShortcut>
-              </div>
               <div className="flex items-center space-x-2">
                 <div className="relative inline-block">
                   <Link to="/add-to-cart">
