@@ -27,6 +27,7 @@ const ProductDetailPage = () => {
   const user = window.localStorage.getItem("user");
   const shouldAdd = useSelector(itemStatus);
   const { toast } = useToast();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (process) {
@@ -55,7 +56,9 @@ const ProductDetailPage = () => {
     const fetchProduct = async () => {
       setLoading(false);
       try {
-        const response = await axios.get(`/api/get-products?id=${id}`);
+        const response = await axios.get(
+          `${BASE_URL}/api/get-products?id=${id}`
+        );
         setProduct(response.data.products);
       } catch (error) {
         console.error("Failed to fetch product:", error);
