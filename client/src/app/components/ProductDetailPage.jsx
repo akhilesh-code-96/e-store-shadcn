@@ -158,12 +158,14 @@ const ProductDetailPage = () => {
               </ul>
               <div className="flex flex-row justify-between pt-5 space-x-2">
                 <Button
+                  sx={{ textTransform: "none" }}
                   variant="outlined"
                   onClick={() => handleCartItems(prod._id)}
                 >
                   Add to cart
                 </Button>
                 <Button
+                  sx={{ textTransform: "none" }}
                   variant="contained"
                   onClick={() => handleBuyNow(prod._id)}
                   disabled={loading}

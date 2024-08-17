@@ -63,6 +63,7 @@ const Home = () => {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("indeterminate");
 
   // Handling the change in slider
   const handleValueChange = (newValue) => {
@@ -179,7 +180,10 @@ const Home = () => {
                   {["beauty", "fragrances", "furniture"].map((category) => (
                     <div key={category} className="flex items-center space-x-2">
                       <div onClick={() => dispatch(toggleCategory(category))}>
-                        <Checkbox id={category} />
+                        <Checkbox
+                          id={category}
+                          checked={categories.includes(category)}
+                        />
                       </div>
                       <label
                         htmlFor={category}
@@ -242,7 +246,10 @@ const Home = () => {
           {["beauty", "fragrances", "furniture"].map((category) => (
             <div key={category} className="flex items-center space-x-2">
               <div onClick={() => dispatch(toggleCategory(category))}>
-                <Checkbox id={category} />
+                <Checkbox
+                  id={category}
+                  checked={categories.includes(category)}
+                />
               </div>
               <label
                 htmlFor={category}

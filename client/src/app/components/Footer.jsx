@@ -85,7 +85,11 @@ const Footer = () => {
                 placeholder="Your issue"
                 className="w-full px-4 py-2 rounded-md focus:outline-none"
               />
-              <Button variant="contained" type="submit" sx={{ height: "35px" }}>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ height: "35px", textTransform: "none" }}
+              >
                 Submit
               </Button>
             </form>

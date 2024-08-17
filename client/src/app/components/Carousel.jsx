@@ -14,11 +14,11 @@ export default function Carousel_(props) {
     },
     {
       image:
-        "https://img.freepik.com/free-vector/horizontal-sale-banner-template_23-2148897327.jpg?t=st=1723833589~exp=1723837189~hmac=1f93aa4ff4cad1dbe1c90680d49872fffd3094dd2f67104a4b19d86cff315df3&w=996",
+        "https://img.freepik.com/free-photo/arrangement-black-friday-shopping-carts-with-copy-space_23-2148667047.jpg?t=st=1723891225~exp=1723894825~hmac=b0678508ad91efbbbec643d5f52b651c7e2d86f262057bf9d8e9f00ae7070180&w=996",
     },
     {
       image:
-        "https://img.freepik.com/free-photo/black-friday-elements-assortment_23-2149074076.jpg?t=st=1723833781~exp=1723837381~hmac=1819cf6dafc8b76e20175460c8c5c51b53b3199166ef52e3505e68c36383b6d2&w=996",
+        "https://img.freepik.com/free-photo/front-view-woman-with-shopping-bag-concept_23-2148674158.jpg?t=st=1723891329~exp=1723894929~hmac=453857824ec6d885669c1a2645c9838cea0739f4ce8562b23317fa409913952e&w=1380",
     },
   ];
 
@@ -39,16 +39,29 @@ export default function Carousel_(props) {
 
 function Item(props) {
   return (
-    <Paper>
+    <Paper
+      sx={{
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+        paddingTop: {
+          xs: "70%", // 16:9 aspect ratio for smaller screens
+          sm: "40%", // Slightly taller aspect ratio for small screens
+          md: "30%", // Wider aspect ratio for medium screens
+          lg: "40%", // Even wider aspect ratio for large screens
+        },
+      }}
+    >
       <img
         src={`${props.item.image}`}
         alt="image"
         style={{
-          height: "50vh",
+          position: "absolute",
+          top: 0,
+          left: 0,
           width: "100%",
+          height: "100%",
           objectFit: "cover",
-          aspectRatio: "16/9", // Maintain a 16:9 aspect ratio
-          maxHeight: "100%",
         }}
       />
     </Paper>

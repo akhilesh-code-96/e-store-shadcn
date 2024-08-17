@@ -114,6 +114,7 @@ const UserOrders = () => {
                     Total: ₹{order.amount}
                   </p>
                   <Button
+                    sx={{ textTransform: "none" }}
                     variant="contained"
                     onClick={() => handleReoder(order._id)}
                   >
