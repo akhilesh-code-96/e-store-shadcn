@@ -10,7 +10,7 @@ const PORT = 3000;
 const app = express();
 app.use(
   cors({
-    origin: ["https://fusionfind-api.vercel.app"],
+    origin: ["https://twirl-tau.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true,
   })
