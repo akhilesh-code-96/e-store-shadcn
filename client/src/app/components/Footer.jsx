@@ -10,13 +10,14 @@ import { useToast } from "@/components/ui/use-toast";
 
 const Footer = () => {
   const { toast } = useToast();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     try {
-      const response = await axios.post("/api/user-query", data, {
+      const response = await axios.post(`${BASE_URL}/api/user-query`, data, {
         headers: { "Content-Type": "application/json" },
       });
       if (response.status !== 200) {
@@ -63,7 +64,7 @@ const Footer = () => {
           </div>
           <div>
             <h4 className="text-sm text-neutral-400">
-              &copy; 2024 E-Store, Inc. All rights are reseverd.
+              &copy; 2024 Twirl, Inc. All rights are reseverd.
             </h4>
           </div>
           <div className="w-full md:w-1/3">
