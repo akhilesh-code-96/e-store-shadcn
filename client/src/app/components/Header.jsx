@@ -194,6 +194,7 @@ const Header = () => {
             </Typography>
           </CommandShortcut>
         </div>
+
         <div className="items-center hidden space-x-4 lg:flex">
           <div
             className="flex justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
@@ -243,84 +244,101 @@ const Header = () => {
           </div>
         </div>
         {/* Secondary Header */}
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" className="lg:hidden">
-              <Menu className="w-6 h-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <SheetHeader>
-              <SheetTitle className="mb-2">Menu</SheetTitle>
-            </SheetHeader>
-            <ul className="flex flex-col space-y-4">
-              {[
-                `Hello, ${user || "Guest"}`,
-                role === 1 ? "Admin Panel" : null,
-                "Orders",
-              ].map((link) => {
-                if (!link) return null;
-                // Determine the path based on the link
-                let path;
-                if (link.startsWith("Hello")) {
-                  path = "/my-account"; // Redirect to the my-account page
-                } else if (link === "Orders") {
-                  path = "/my-account/orders";
-                } else {
-                  path = `/${link.toLowerCase().replace(" ", "-")}`;
-                }
-                return (
-                  <Link
-                    key={path}
-                    to={path}
-                    className="text-neutral-500 hover:text-neutral-200"
-                    onClick={closeSheet} // Close the sheet when the link is clicked
-                  >
-                    {link}
-                  </Link>
-                );
-              })}
-              <div>
-                <Link to="/login">
-                  {user ? (
-                    <Button
-                      className="h-[30px] rounded-sm"
-                      onClick={() => {
-                        handleLogout();
-                        closeSheet(); // Close the sheet after logout
-                      }}
+        <div className="flex items-center lg:hidden">
+          {/* Shopping Cart */}
+          <div className="relative inline-block">
+            <Link to="/add-to-cart">
+              <CiShoppingCart size={24} className="cursor-pointer" />
+            </Link>
+            {cartCount > 0 && (
+              <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full left-6">
+                {cartCount}
+              </Badge>
+            )}
+          </div>
+
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="lg:hidden">
+                <Menu className="w-6 h-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle className="mb-2">Menu</SheetTitle>
+              </SheetHeader>
+              <ul className="flex flex-col space-y-4">
+                {[
+                  `Hello, ${user || "Guest"}`,
+                  role === 1 ? "Admin Panel" : null,
+                  "Orders",
+                ].map((link) => {
+                  if (!link) return null;
+                  // Determine the path based on the link
+                  let path;
+                  if (link.startsWith("Hello")) {
+                    path = "/my-account"; // Redirect to the my-account page
+                  } else if (link === "Orders") {
+                    path = "/my-account/orders";
+                  } else {
+                    path = `/${link.toLowerCase().replace(" ", "-")}`;
+                  }
+                  return (
+                    <Link
+                      key={path}
+                      to={path}
+                      className="text-neutral-500 hover:text-neutral-200"
+                      onClick={closeSheet} // Close the sheet when the link is clicked
                     >
-                      Sign out
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      className="h-[30px] rounded-sm"
-                      onClick={closeSheet}
-                    >
-                      Sign in
-                    </Button>
-                  )}
-                </Link>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="relative inline-block">
-                  <Link to="/add-to-cart" onClick={closeSheet}>
-                    <CiShoppingCart size={24} className="cursor-pointer" />
+                      {link}
+                    </Link>
+                  );
+                })}
+                <div>
+                  <Link to="/login">
+                    {user ? (
+                      <Button
+                        className="h-[30px] rounded-sm"
+                        onClick={() => {
+                          handleLogout();
+                          closeSheet(); // Close the sheet after logout
+                        }}
+                      >
+                        Sign out
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        className="h-[30px] rounded-sm"
+                        onClick={closeSheet}
+                      >
+                        Sign in
+                      </Button>
+                    )}
                   </Link>
-                  {cartCount > 0 && (
-                    <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-[#fd5361] rounded-full left-6">
-                      {cartCount}
-                    </Badge>
-                  )}
                 </div>
-                <FaXTwitter className="cursor-pointer" onClick={closeSheet} />
-                <IoLogoGithub className="cursor-pointer" onClick={closeSheet} />
-                <ModeToggle />
-              </div>
-            </ul>
-          </SheetContent>
-        </Sheet>
+                <div className="flex items-center space-x-2">
+                  <div className="relative inline-block">
+                    <Link to="/add-to-cart" onClick={closeSheet}>
+                      <CiShoppingCart size={24} className="cursor-pointer" />
+                    </Link>
+                    {cartCount > 0 && (
+                      <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-[#fd5361] rounded-full left-6">
+                        {cartCount}
+                      </Badge>
+                    )}
+                  </div>
+                  <FaXTwitter className="cursor-pointer" onClick={closeSheet} />
+                  <IoLogoGithub
+                    className="cursor-pointer"
+                    onClick={closeSheet}
+                  />
+                  <ModeToggle />
+                </div>
+              </ul>
+            </SheetContent>
+          </Sheet>
+        </div>
       </section>
 
       {/* Search Dialog */}
