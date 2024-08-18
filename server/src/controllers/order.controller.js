@@ -13,6 +13,8 @@ class OrderController {
       address,
       quantities,
     } = req.query;
+
+    console.log(req.query);
     const parsedAddress = JSON.parse(address);
     const parsedProductIds = JSON.parse(productIds);
     const parsedQuantities = quantities ? JSON.parse(quantities) : [];
@@ -36,7 +38,7 @@ class OrderController {
       });
 
       await record.save();
-
+      console.log("I am here!");
       // Populate product details
       const populatedRecord = await record.populate({
         path: "products.productId",

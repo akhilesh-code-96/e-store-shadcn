@@ -173,7 +173,7 @@ const ProductDetailPage = () => {
                   onClick={() => handleBuyNow(prod._id)}
                   disabled={loading}
                 >
-                  {loading ? "Processing..." : "Buy Now"}
+                  {loading ? "Processing..." : "Buy now"}
                 </Button>
               </div>
             </div>

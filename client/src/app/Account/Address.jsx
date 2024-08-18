@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import {
   Card,
@@ -8,10 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   allAddresses,
   getAddresses,
+  deleteAddress,
 } from "../redux/reducers/accountReducers/addressReducer";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -20,6 +21,8 @@ const Address = () => {
   const dispatch = useDispatch();
   const addresses = useSelector(allAddresses);
   const userId = window.localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const [reload, setReload] = useState(false);
 
   // api call management to fetch all the addresses.
   useEffect(() => {
@@ -31,7 +34,16 @@ const Address = () => {
       }
     };
     getAllAddresses();
-  }, [dispatch, userId, location.pathname]);
+  }, [dispatch, userId, location.pathname, reload]);
+
+  const handleEdit = (id) => {
+    navigate("/my-account/addresses/add-address", { state: { addId: id } });
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteAddress(`id=${id}`));
+    setReload((prev) => !prev);
+  };
 
   const isNested = location.pathname !== "/my-account/addresses";
 
@@ -67,15 +79,21 @@ const Address = () => {
                     <p>Phone number: {address.mobileNumber}</p>
                   </CardContent>
                   <CardFooter className="flex space-x-2">
-                    <Link className="hover:underline text-neutral-300">
+                    <div
+                      onClick={() => handleEdit(address._id)}
+                      className="cursor-pointer hover:underline text-neutral-300"
+                    >
                       Edit
-                    </Link>
+                    </div>
                     <div className="h-4">
                       <Separator orientation="vertical" />
                     </div>
-                    <Link className="hover:underline text-neutral-300">
+                    <div
+                      onClick={() => handleDelete(address._id)}
+                      className="cursor-pointer hover:underline text-neutral-300"
+                    >
                       Delete
-                    </Link>
+                    </div>
                   </CardFooter>
                 </Card>
               ))}

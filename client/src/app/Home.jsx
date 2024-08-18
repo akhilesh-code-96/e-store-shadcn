@@ -337,7 +337,7 @@ const Home = () => {
                       onClick={() => handleCartItems(product._id)}
                       className="text-xs text-white bg-[#a578fd] md:text-sm lg:text-base hover:bg-[#af8cf7] rounded-sm shadow-md"
                     >
-                      Add to Cart
+                      Add to cart
                     </Button>
                   </div>
                 </CardFooter>

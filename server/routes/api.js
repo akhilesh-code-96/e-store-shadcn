@@ -42,6 +42,8 @@ router.post("/user-query", validationRequest, userController.storeUserQuery);
 // address routes
 router.post("/add-address", addressController.addAddress);
 router.get("/get-addresses", addressController.getAddresses);
+router.put("/update-address", addressController.updateAddress);
+router.delete("/delete-address", addressController.deleteAddress);
 
 // cart routes
 router.post("/add-to-cart", cartController.addToCart);

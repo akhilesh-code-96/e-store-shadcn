@@ -26,15 +26,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getOrders } from "./redux/reducers/checkoutReducers/orderReducer";
-import { allOrders } from "./redux/reducers/checkoutReducers/orderReducer";
+import { getReorder } from "./redux/reducers/checkoutReducers/orderReducer";
+import { reorder } from "./redux/reducers/checkoutReducers/orderReducer";
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const product = useSelector(selectProducts);
-  const orders = useSelector(allOrders);
+  const orders = useSelector(reorder);
   const cartProducts = useSelector(cartItems);
   const addresses = useSelector(allAddresses);
   const userId = window.localStorage.getItem("userId");
@@ -42,6 +42,7 @@ const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [payment, setPayment] = useState("cash");
   const [productsToDisplay, setProductsToDisplay] = useState([]);
+  const [activeButton, setActiveButton] = useState(false);
 
   // Calculate total amount
   const totalAmount = productsToDisplay
@@ -68,6 +69,7 @@ const CheckoutPage = () => {
     setPayment(value);
   };
 
+  // console.log("product id", productId);
   const handlePlaceOrder = () => {
     const productIds = JSON.stringify(
       productsToDisplay.map((product) =>
@@ -97,23 +99,34 @@ const CheckoutPage = () => {
     }, 2000);
   };
 
+  // setting products to display if no product id is there
   useEffect(() => {
     if (orders.length > 0) {
       const prods = [];
       for (let i = 0; i < orders.length; i++) {
         for (let j = 0; j < orders[i].products.length; j++) {
-          prods.push(orders[i].products[j].productId);
+          const productId = orders[i].products[j].productId;
+          const newObj = {
+            ...productId,
+            quantity: orders[i].products[j].quantity,
+          };
+          prods.push(newObj);
         }
       }
-      setProductsToDisplay(prods);
+      const updatedProds = prods.map((pro) => {
+        const { _id, ...rest } = pro; // Destructure to remove _id
+        return { productId: _id, ...rest }; // Create a new object with productId instead of _id
+      });
+      setProductsToDisplay(updatedProds);
     }
   }, [orders]);
 
+  // getting cart products or reorder product if order id exists
   useEffect(() => {
     if (productId) {
       dispatch(fetchProducts(`id=${productId}`));
     } else if (orderId) {
-      dispatch(getOrders(`id=${orderId}`));
+      dispatch(getReorder(`id=${orderId}`));
     }
     dispatch(getAddresses(`id=${userId}`));
   }, [dispatch, productId, orderId, userId]);
@@ -129,11 +142,14 @@ const CheckoutPage = () => {
 
     if (addresses.length > 0) {
       setSelectedAddress(JSON.stringify(addresses[0]));
+    } else {
+      setActiveButton(true);
     }
   }, [productId, orderId, product, cartProducts, addresses]);
 
-  // console.log("Checkout page orders", orders);
-  // console.log("Products to display", productsToDisplay);
+  console.log("Checkout page orders", orders);
+  console.log("Products to display", productsToDisplay);
+  console.log("Active Button", activeButton);
 
   return (
     <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
@@ -234,15 +250,15 @@ const CheckoutPage = () => {
                   <Button
                     variant="contained"
                     onClick={handlePlaceOrder}
+                    disabled={activeButton}
                     sx={{
+                      textTransform: "none",
                       width: {
                         xs: "100%", // Adjust for small screens
                         md: "150px", // Fixed width for medium and larger screens
                       },
-                      padding: "8px 16px", // Equivalent to px-4 py-2
-                      fontSize: "12px", // Adjust text size to be smaller
+                      fontSize: "13px", // Adjust text size to be smaller
                       mt: 2, // Equivalent to mt-4
-                      borderRadius: "8px", // Equivalent to rounded-lg
                       marginInlineStart: {
                         xs: 0, // Margin start for small screens
                         md: "16px", // Margin start for medium and larger screens

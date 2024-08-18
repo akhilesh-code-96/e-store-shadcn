@@ -72,9 +72,9 @@ const Footer = () => {
               onSubmit={handleSubmit}
             >
               <Input
-                id="email"
+                id="userEmail"
                 type="email"
-                name="email"
+                name="userEmail"
                 placeholder="Your email"
                 className="w-full px-4 py-2 rounded-md focus:outline-none"
               />

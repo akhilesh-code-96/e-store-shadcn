@@ -22,6 +22,17 @@ export const getOrders = createAsyncThunk(
   }
 );
 
+export const getReorder = createAsyncThunk(
+  "order/getReorder",
+  async (queryParams) => {
+    const response = await axios.get(
+      `${BASE_URL}/api/get-orders?${queryParams}`
+    );
+    const order = response.data.orders;
+    return order;
+  }
+);
+
 export const getDailySales = createAsyncThunk(
   "order/getDailySales",
   async (queryParams) => {
@@ -50,6 +61,7 @@ const initialState = {
   totalPages: 0,
   aggregatedSales: [],
   aggregatedCategory: [],
+  checkoutOrder: [],
 };
 
 const orderSlice = createSlice({
@@ -68,6 +80,9 @@ const orderSlice = createSlice({
     builder.addCase(getCategory.fulfilled, (state, action) => {
       state.aggregatedCategory = action.payload;
     });
+    builder.addCase(getReorder.fulfilled, (state, action) => {
+      state.checkoutOrder = action.payload;
+    });
   },
 });
 
@@ -79,6 +94,7 @@ export const agSales = (state) => state.orderReducer.aggregatedSales;
 export const agCategory = (state) => state.orderReducer.aggregatedCategory;
 export const totalCounts = (state) => state.orderReducer.count;
 export const allPages = (state) => state.orderReducer.totalPages;
+export const reorder = (state) => state.orderReducer.checkoutOrder;
 
 // export reducer
 export const orderReducer = orderSlice.reducer;

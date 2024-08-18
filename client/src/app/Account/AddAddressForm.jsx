@@ -1,22 +1,44 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addAddress } from "../redux/reducers/accountReducers/addressReducer";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addAddress,
+  getAddresses,
+  updateAddress,
+} from "../redux/reducers/accountReducers/addressReducer";
+import { allAddresses } from "../redux/reducers/accountReducers/addressReducer";
 
 const AddAddressForm = () => {
   const userId = window.localStorage.getItem("userId");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const address = useSelector(allAddresses);
+  const { addId } = location.state || "";
+
+  React.useEffect(() => {
+    if (addId) {
+      dispatch(getAddresses(`addId=${addId}`));
+    }
+  }, [addId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
-
+    console.log(data);
     try {
       const queryParams = `id=${userId}`;
-      dispatch(addAddress({ queryParams, data }));
+
+      if (address.length !== 0 || Object.entries(address).length !== 0) {
+        // If address exists, update the existing address
+        dispatch(
+          updateAddress({ queryParams: `id=${addId}&userId=${userId}`, data })
+        );
+      } else {
+        dispatch(addAddress({ queryParams, data }));
+      }
       navigate("/my-account/addresses");
     } catch (error) {
       console.error(error);
@@ -25,7 +47,9 @@ const AddAddressForm = () => {
 
   return (
     <div className="w-3/4 pt-5 sm:w-2/4">
-      <h2 className="text-3xl font-semibold leading-7">Add a new address</h2>
+      <h2 className="text-3xl font-semibold leading-7">
+        {addId ? "Edit address" : "Add a new address"}
+      </h2>
       <p className="mt-1 text-sm leading-6 text-gray-600">
         Use a permanent address where you can receive your orders.
       </p>
@@ -44,6 +68,7 @@ const AddAddressForm = () => {
                 id="fullName"
                 name="fullName"
                 type="text"
+                defaultValue={address?.name || ""}
                 autoComplete="given-name"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -62,6 +87,7 @@ const AddAddressForm = () => {
                 id="mobileNumber"
                 name="mobileNumber"
                 type="number"
+                defaultValue={address?.mobileNumber || ""}
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
             </div>
@@ -78,6 +104,7 @@ const AddAddressForm = () => {
               <select
                 id="country"
                 name="country"
+                defaultValue={address?.country || "India"}
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 dark:text-gray-950"
               >
                 <option>India</option>
@@ -99,6 +126,7 @@ const AddAddressForm = () => {
                 id="houseNo"
                 name="houseNo"
                 type="text"
+                defaultValue={address?.houseNo || ""}
                 autoComplete="houseNo"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -117,6 +145,7 @@ const AddAddressForm = () => {
                 id="streetAddress"
                 name="streetAddress"
                 type="text"
+                defaultValue={address?.streetAddress || ""}
                 autoComplete="street-address"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -135,6 +164,7 @@ const AddAddressForm = () => {
                 id="city"
                 name="city"
                 type="text"
+                defaultValue={address?.city || ""}
                 autoComplete="address-level2"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -153,6 +183,7 @@ const AddAddressForm = () => {
                 id="state"
                 name="state"
                 type="text"
+                defaultValue={address?.state || ""}
                 autoComplete="address-level1"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -171,6 +202,7 @@ const AddAddressForm = () => {
                 id="pincode"
                 name="pincode"
                 type="number"
+                defaultValue={address?.pincode || ""}
                 autoComplete="pincode"
                 placeholder="6 digits [0-9] PIN code"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading- dark:text-gray-950"
@@ -179,7 +211,7 @@ const AddAddressForm = () => {
           </div>
         </div>
         <Button variant="outline" className="mt-4 mb-3" type="submit">
-          Submit
+          {addId ? "Update address" : "Submit"}
         </Button>
       </form>
     </div>

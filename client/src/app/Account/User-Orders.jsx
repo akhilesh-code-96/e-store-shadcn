@@ -61,7 +61,7 @@ const UserOrders = () => {
     navigate("/checkout-page", { state: { orderId: id } });
   };
 
-  // console.log(orders);
+  console.log(orders);
 
   return (
     <div className="justify-center w-full md:w-3/5">
