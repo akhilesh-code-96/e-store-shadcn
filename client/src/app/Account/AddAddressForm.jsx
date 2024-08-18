@@ -70,6 +70,7 @@ const AddAddressForm = () => {
                 type="text"
                 defaultValue={address?.name || ""}
                 autoComplete="given-name"
+                required
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
             </div>
@@ -87,6 +88,7 @@ const AddAddressForm = () => {
                 id="mobileNumber"
                 name="mobileNumber"
                 type="number"
+                required
                 defaultValue={address?.mobileNumber || ""}
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
               />
@@ -104,6 +106,7 @@ const AddAddressForm = () => {
               <select
                 id="country"
                 name="country"
+                required
                 defaultValue={address?.country || "India"}
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 dark:text-gray-950"
               >
@@ -126,6 +129,7 @@ const AddAddressForm = () => {
                 id="houseNo"
                 name="houseNo"
                 type="text"
+                required
                 defaultValue={address?.houseNo || ""}
                 autoComplete="houseNo"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
@@ -145,6 +149,7 @@ const AddAddressForm = () => {
                 id="streetAddress"
                 name="streetAddress"
                 type="text"
+                required
                 defaultValue={address?.streetAddress || ""}
                 autoComplete="street-address"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
@@ -164,6 +169,7 @@ const AddAddressForm = () => {
                 id="city"
                 name="city"
                 type="text"
+                required
                 defaultValue={address?.city || ""}
                 autoComplete="address-level2"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
@@ -183,6 +189,7 @@ const AddAddressForm = () => {
                 id="state"
                 name="state"
                 type="text"
+                required
                 defaultValue={address?.state || ""}
                 autoComplete="address-level1"
                 className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:text-gray-950"
@@ -202,6 +209,7 @@ const AddAddressForm = () => {
                 id="pincode"
                 name="pincode"
                 type="number"
+                required
                 defaultValue={address?.pincode || ""}
                 autoComplete="pincode"
                 placeholder="6 digits [0-9] PIN code"

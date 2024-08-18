@@ -23,7 +23,7 @@ const Address = () => {
   const userId = window.localStorage.getItem("userId");
   const navigate = useNavigate();
   const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState(null);
 
   // api call management to fetch all the addresses.
   useEffect(() => {
@@ -42,9 +42,9 @@ const Address = () => {
   };
 
   const handleDelete = (id) => {
-    setLoading(true);
+    setLoadingId(id); // Set the ID of the address being deleted
     dispatch(deleteAddress(`id=${id}`))
-      .then(() => setLoading(false))
+      .then(() => setLoadingId(null))
       .finally(() => setReload((prev) => !prev));
   };
 
@@ -95,15 +95,15 @@ const Address = () => {
                     <div className="h-4">
                       <Separator orientation="vertical" />
                     </div>
-                    {!loading ? (
+                    {loadingId === address._id ? (
+                      <div className="text-neutral-300">deleting...</div>
+                    ) : (
                       <div
                         onClick={() => handleDelete(address._id)}
                         className="cursor-pointer hover:underline text-neutral-300"
                       >
                         Delete
                       </div>
-                    ) : (
-                      <div className="text-neutral-300">deleting...</div>
                     )}
                   </CardFooter>
                 </Card>
