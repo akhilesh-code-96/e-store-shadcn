@@ -81,7 +81,7 @@ const Address = () => {
                     <p>{address.country}</p>
                     <p>Phone number: {address.mobileNumber}</p>
                   </CardContent>
-                  <CardFooter className="absolute bottom-0 left-0 right-0 flex space-x-2">
+                  <CardFooter className="bottom-0 left-0 right-0 flex space-x-2 md:absolute">
                     <div
                       onClick={() => handleEdit(address._id)}
                       className="cursor-pointer hover:underline text-neutral-300"
