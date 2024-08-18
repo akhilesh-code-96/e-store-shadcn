@@ -318,16 +318,6 @@ const Header = () => {
                   </Link>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="relative inline-block">
-                    <Link to="/add-to-cart" onClick={closeSheet}>
-                      <CiShoppingCart size={24} className="cursor-pointer" />
-                    </Link>
-                    {cartCount > 0 && (
-                      <Badge className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white -translate-x-1/2 -translate-y-1/2 bg-[#fd5361] rounded-full left-6">
-                        {cartCount}
-                      </Badge>
-                    )}
-                  </div>
                   <FaXTwitter className="cursor-pointer" onClick={closeSheet} />
                   <IoLogoGithub
                     className="cursor-pointer"
