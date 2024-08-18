@@ -142,6 +142,7 @@ const CheckoutPage = () => {
 
     if (addresses.length > 0) {
       setSelectedAddress(JSON.stringify(addresses[0]));
+      setActiveButton(false);
     } else {
       setActiveButton(true);
     }
