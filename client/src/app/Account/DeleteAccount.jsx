@@ -8,6 +8,7 @@ const DeleteAccount = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -18,8 +19,8 @@ const DeleteAccount = () => {
   const handleDeleteAccount = async () => {
     if (isButtonEnabled) {
       // Logic to delete the account
-      await axios.delete(`/api/delete-account?id=${userId}`);
-      console.log("Account deleted.");
+      await axios.delete(`${BASE_URL}/api/delete-account?id=${userId}`);
+      // console.log("Account deleted.");
       window.localStorage.removeItem("user");
       window.localStorage.removeItem("userId");
       navigate("/login");
