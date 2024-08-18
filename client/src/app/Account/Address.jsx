@@ -23,6 +23,7 @@ const Address = () => {
   const userId = window.localStorage.getItem("userId");
   const navigate = useNavigate();
   const [reload, setReload] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // api call management to fetch all the addresses.
   useEffect(() => {
@@ -41,7 +42,10 @@ const Address = () => {
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteAddress(`id=${id}`)).then(() => setReload((prev) => !prev));
+    setLoading(true);
+    dispatch(deleteAddress(`id=${id}`))
+      .then(() => setLoading(false))
+      .finally(() => setReload((prev) => !prev));
   };
 
   const isNested = location.pathname !== "/my-account/addresses";
@@ -81,7 +85,7 @@ const Address = () => {
                     <p>{address.country}</p>
                     <p>Phone number: {address.mobileNumber}</p>
                   </CardContent>
-                  <CardFooter className="bottom-0 left-0 right-0 flex space-x-2 md:absolute">
+                  <CardFooter className="flex space-x-2 ">
                     <div
                       onClick={() => handleEdit(address._id)}
                       className="cursor-pointer hover:underline text-neutral-300"
@@ -91,12 +95,16 @@ const Address = () => {
                     <div className="h-4">
                       <Separator orientation="vertical" />
                     </div>
-                    <div
-                      onClick={() => handleDelete(address._id)}
-                      className="cursor-pointer hover:underline text-neutral-300"
-                    >
-                      Delete
-                    </div>
+                    {!loading ? (
+                      <div
+                        onClick={() => handleDelete(address._id)}
+                        className="cursor-pointer hover:underline text-neutral-300"
+                      >
+                        Delete
+                      </div>
+                    ) : (
+                      <div className="text-neutral-300">deleting...</div>
+                    )}
                   </CardFooter>
                 </Card>
               ))}

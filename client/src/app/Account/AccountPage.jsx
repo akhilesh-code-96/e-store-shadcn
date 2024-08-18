@@ -1,9 +1,7 @@
 import React from "react";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,7 +25,7 @@ const AccountPage = () => {
               {/* Details */}
               <div className="grid grid-cols-1 gap-4 p-5 mt-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
                 <Link to="/my-account/orders">
-                  <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
+                  <Card className="w-[320px] h-[120px] sm:w-full sm:h-auto cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
                     <CardHeader>
                       <div className="flex space-x-2">
                         <img
@@ -40,7 +38,7 @@ const AccountPage = () => {
                         <div className="flex flex-col">
                           <CardTitle>Your Orders</CardTitle>
                           <CardDescription>
-                            Track, return or buy things again
+                            Track, return or re-order products from here
                           </CardDescription>
                         </div>
                       </div>
@@ -69,7 +67,7 @@ const AccountPage = () => {
                   </Card>
                 </Link> */}
                 <Link to="/my-account/addresses">
-                  <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
+                  <Card className="w-[320px] h-[120px] sm:w-full sm:h-auto  cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
                     <CardHeader>
                       <div className="flex space-x-2">
                         <img
@@ -81,13 +79,16 @@ const AccountPage = () => {
                         />
                         <div className="flex flex-col">
                           <CardTitle>Your Addresses</CardTitle>
+                          <CardDescription>
+                            Add, delete or edit your addresses here
+                          </CardDescription>
                         </div>
                       </div>
                     </CardHeader>
                   </Card>
                 </Link>
                 <Link to="/my-account/delete-account">
-                  <Card className="w-[320px] h-[120px] cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
+                  <Card className="w-[320px] h-[120px] sm:w-full sm:h-auto  cursor-pointer border-neutral-700 dark:bg-black hover:dark:bg-[#080e0b]">
                     <CardHeader>
                       <div className="flex space-x-2">
                         <img

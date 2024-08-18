@@ -57,7 +57,6 @@ const addressSlice = createSlice({
   initialState: initialState,
   extraReducers: (builder) => {
     builder.addCase(getAddresses.fulfilled, (state, action) => {
-      console.log("Reducer address", action.payload);
       state.addresses = action.payload;
     });
   },

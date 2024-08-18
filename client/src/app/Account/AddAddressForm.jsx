@@ -38,6 +38,7 @@ const AddAddressForm = () => {
       } else {
         dispatch(addAddress({ queryParams, data }));
       }
+      dispatch(getAddresses(`id=${userId}`));
       navigate("/my-account/addresses");
     } catch (error) {
       console.error(error);
