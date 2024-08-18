@@ -27,11 +27,10 @@ const AddAddressForm = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
-    console.log(data);
     try {
       const queryParams = `id=${userId}`;
 
-      if (address.length !== 0 || Object.entries(address).length !== 0) {
+      if (addId) {
         // If address exists, update the existing address
         dispatch(
           updateAddress({ queryParams: `id=${addId}&userId=${userId}`, data })
