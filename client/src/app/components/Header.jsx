@@ -44,6 +44,7 @@ const Header = () => {
   const userId = window.localStorage.getItem("userId");
   const role = JSON.parse(window.localStorage.getItem("role"));
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   React.useEffect(() => {
     if (userId) {
@@ -119,6 +120,10 @@ const Header = () => {
     }
   }
 
+  const closeSheet = () => {
+    setIsOpen(false);
+  };
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -134,9 +139,6 @@ const Header = () => {
               alt="logo"
               className="object-contain h-10 w-14"
             />
-            {/* <span className="md:text-md text-sm font-bold ms-2 me-2 text-[#0273e4]">
-              Twirl
-            </span> */}
           </Link>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
@@ -241,7 +243,7 @@ const Header = () => {
           </div>
         </div>
         {/* Secondary Header */}
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" className="lg:hidden">
               <Menu className="w-6 h-6" />
@@ -257,7 +259,7 @@ const Header = () => {
                 role === 1 ? "Admin Panel" : null,
                 "Orders",
               ].map((link) => {
-                if (!link) return;
+                if (!link) return null;
                 // Determine the path based on the link
                 let path;
                 if (link.startsWith("Hello")) {
@@ -272,6 +274,7 @@ const Header = () => {
                     key={path}
                     to={path}
                     className="text-neutral-500 hover:text-neutral-200"
+                    onClick={closeSheet} // Close the sheet when the link is clicked
                   >
                     {link}
                   </Link>
@@ -281,14 +284,20 @@ const Header = () => {
                 <Link to="/login">
                   {user ? (
                     <Button
-                      // variant="outline"
                       className="h-[30px] rounded-sm"
-                      onClick={() => handleLogout()}
+                      onClick={() => {
+                        handleLogout();
+                        closeSheet(); // Close the sheet after logout
+                      }}
                     >
                       Sign out
                     </Button>
                   ) : (
-                    <Button variant="outline" className="h-[30px] rounded-sm">
+                    <Button
+                      variant="outline"
+                      className="h-[30px] rounded-sm"
+                      onClick={closeSheet}
+                    >
                       Sign in
                     </Button>
                   )}
@@ -296,7 +305,7 @@ const Header = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <div className="relative inline-block">
-                  <Link to="/add-to-cart">
+                  <Link to="/add-to-cart" onClick={closeSheet}>
                     <CiShoppingCart size={24} className="cursor-pointer" />
                   </Link>
                   {cartCount > 0 && (
@@ -305,8 +314,8 @@ const Header = () => {
                     </Badge>
                   )}
                 </div>
-                <FaXTwitter className="cursor-pointer" />
-                <IoLogoGithub className="cursor-pointer" />
+                <FaXTwitter className="cursor-pointer" onClick={closeSheet} />
+                <IoLogoGithub className="cursor-pointer" onClick={closeSheet} />
                 <ModeToggle />
               </div>
             </ul>
