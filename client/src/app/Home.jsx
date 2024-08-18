@@ -145,6 +145,7 @@ const Home = () => {
 
   const clearFiter = () => {
     dispatch(clearFilters());
+    dispatch(fetchProducts(`limit=10`));
   };
 
   // console.log("category", categories);
