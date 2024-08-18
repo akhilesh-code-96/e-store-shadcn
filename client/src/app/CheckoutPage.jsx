@@ -133,8 +133,8 @@ const CheckoutPage = () => {
     }
   }, [productId, orderId, product, cartProducts, addresses]);
 
-  console.log("Checkout page orders", orders);
-  console.log("Products to display", productsToDisplay);
+  // console.log("Checkout page orders", orders);
+  // console.log("Products to display", productsToDisplay);
 
   return (
     <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
