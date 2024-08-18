@@ -28,7 +28,7 @@ const Footer = () => {
           description: "Thank you for contacting us!",
         });
       }
-      document.getElementById("email").value = "";
+      document.getElementById("userEmail").value = "";
       document.getElementById("issue").value = "";
     } catch (error) {
       console.error(error);
