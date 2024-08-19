@@ -159,7 +159,7 @@ const CheckoutPage = () => {
           type="single"
           collapsible
           defaultValue="item-1"
-          className="p-5 bg-neutral-900 rounded-sm border-[1px]"
+          className="p-5 dark:bg-neutral-900 rounded-sm border-[1px]"
         >
           <AccordionItem value="item-1">
             <AccordionTrigger>Delivery Address</AccordionTrigger>

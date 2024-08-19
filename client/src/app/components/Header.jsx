@@ -130,17 +130,17 @@ const Header = () => {
     <div className="w-full h-[55px] flex items-center fixed top-0 bottom-0 backdrop-blur-sm backdrop-opacity-100 bg-white bg-opacity-80 dark:bg-[#0f1214] dark:bg-opacity-80 px-4 border-b-[1px] z-50">
       <section
         id="navigation"
-        className="relative flex items-center justify-center w-full px-3 space-x-6 sm:ms-0 ms-3 sm:space-x-0 sm:justify-between"
+        className="relative flex items-center w-full px-3 space-x-6 justify-evenly sm:justify-between sm:ms-0 ms-3 sm:space-x-0"
       >
         <div className="flex items-center space-x-4">
-          <Link to="/" className="flex items-center me-[-10px]">
+          <Link to="/" className="flex items-center me-8">
             <img
               src="/logo.png"
               alt="logo"
               className="object-contain w-10 h-10"
             />
+            <span className="font-semibold xs:text-xs">Twirl</span>
           </Link>
-          <span>Twirl</span>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
             {[
@@ -180,10 +180,10 @@ const Header = () => {
           className="flex w-[200px] lg:hidden justify-between cursor-pointer dark:bg-[#14171b] dark:hover:bg-[#1d2126] dark:hover:text-gray-50 hover:bg-neutral-200 hover:text-neutral-600 transition ease-in-out sm:w-[250px] h-8 rounded-xl bg-[#3aafaf] bg-opacity-20 font-sans text-sm py-[6px] px-3 text-neutral-400 ring-1 shadow-custom-blue"
           onClick={() => setOpen((prevOpen) => !prevOpen)}
         >
-          <span className="text-[10px] xs:text-[11px] sm:text-[12px]">
+          <span className="text-[8px] xs:text-[11px] sm:text-[12px]">
             Search Products...
           </span>
-          <CommandShortcut className="rounded-md px-[5px] mt-[-1px] sm:mt-[-2px] w-9 h-5 xs:h-auto xs:w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
+          <CommandShortcut className="sm:flex hidden rounded-md px-[5px] mt-[-1px] sm:mt-[-2px] w-9 h-5 xs:h-auto xs:w-10 border-[1px] shadow-custom-dark outline-1 dark:bg-[#14171a] bg-neutral-300">
             <Typography
               component="legend"
               sx={{
