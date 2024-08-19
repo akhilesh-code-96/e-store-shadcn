@@ -133,7 +133,10 @@ const Header = () => {
         className="relative flex items-center w-full px-3 space-x-6 justify-evenly sm:justify-between sm:ms-0 ms-3 sm:space-x-0"
       >
         <div className="flex items-center space-x-4">
-          <Link to="/" className="flex items-center me-8 ms-[-8px]">
+          <Link
+            to="/"
+            className="flex items-center me-8 ms-[-8px] lg:ms-0 lg:me-0"
+          >
             <img
               src="/logo.png"
               alt="logo"
