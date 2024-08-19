@@ -133,13 +133,14 @@ const Header = () => {
         className="relative flex items-center justify-center w-full px-3 space-x-6 sm:ms-0 ms-3 sm:space-x-0 sm:justify-between"
       >
         <div className="flex items-center space-x-4">
-          <Link to="/" className="flex items-center sm:me-0 me-1">
+          <Link to="/" className="flex items-center me-[-10px]">
             <img
-              src="/twirl.svg"
+              src="/logo.png"
               alt="logo"
-              className="object-contain h-10 w-14"
+              className="object-contain w-10 h-10"
             />
           </Link>
+          <span>Twirl</span>
           {/* Main Header */}
           <div className="hidden space-x-6 lg:flex">
             {[
