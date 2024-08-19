@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -12,7 +12,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const timer = setTimeout(() => {
       setTransitionClass("transition");
     }, 100);
