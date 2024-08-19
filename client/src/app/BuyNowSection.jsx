@@ -14,7 +14,7 @@ const BuyNowSection = () => {
       <div className="flex items-start md:p-[55px] p-0 mt-2">
         <div className="flex flex-col items-center justify-center w-full border-[1px] rounded-sm dark:bg-neutral-900 shadow-md">
           <h1 className="p-2 text-lg font-semibold md:text-xl">
-            Process to checkout
+            Proceed to checkout
           </h1>
           <Separator />
           <div className="flex flex-col justify-center p-2">

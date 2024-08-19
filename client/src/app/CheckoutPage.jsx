@@ -153,7 +153,7 @@ const CheckoutPage = () => {
   console.log("Active Button", activeButton);
 
   return (
-    <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start justify-center w-full">
+    <div className="min-h-screen pt-[55px] p-5 flex flex-col md:flex-row items-start w-full">
       <div className="w-full px-5 mt-5 md:w-4/6 md:mt-10">
         <Accordion
           type="single"
