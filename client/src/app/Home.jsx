@@ -125,7 +125,7 @@ const Home = () => {
         dispatch(
           fetchProducts(
             `limit=10&category=${categoryQuery}&range=${rangeQuery}`
-          ).finally(() => setLoading(false))
+          )
         );
       } catch (error) {
         console.error(error);
