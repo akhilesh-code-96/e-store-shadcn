@@ -35,7 +35,6 @@ export const updateProductQantity = createAsyncThunk(
         `${BASE_URL}/api/update-quantity?${queryParams}`
       );
       const products = response.data.products;
-      console.log(products);
       return products;
     } catch (error) {
       console.error(error);

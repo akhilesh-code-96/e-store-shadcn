@@ -48,13 +48,10 @@ class CartController {
     let newQuantity;
     let newStock;
 
-    console.log(cartProduct);
-
     try {
       if (value === "1") {
         if (product.stock >= cartProduct.quantity) {
           newQuantity = cartProduct.quantity + 1;
-          console.log(newQuantity);
           newStock = product.stock - 1;
         }
       }
