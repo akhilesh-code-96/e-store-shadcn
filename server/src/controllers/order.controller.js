@@ -38,7 +38,6 @@ class OrderController {
       });
 
       await record.save();
-      console.log("I am here!");
       // Populate product details
       const populatedRecord = await record.populate({
         path: "products.productId",

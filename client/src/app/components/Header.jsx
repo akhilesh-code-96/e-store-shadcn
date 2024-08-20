@@ -132,7 +132,7 @@ const Header = () => {
         id="navigation"
         className="relative flex items-center w-full px-3 space-x-6 justify-evenly sm:justify-between sm:ms-0 ms-3 sm:space-x-0"
       >
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <Link
             to="/"
             className="flex items-center me-8 ms-[-8px] lg:ms-0 lg:me-0"
