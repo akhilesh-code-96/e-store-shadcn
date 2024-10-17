@@ -4,6 +4,7 @@ const router = require("./routes/api.js");
 const connectDB = require("./db/connect.js");
 const session = require("express-session");
 const cors = require("cors");
+const helmet = require('helmet');
 
 const PORT = 3000;
 
@@ -15,6 +16,17 @@ app.use(
     credentials: true,
   })
 );
+
+// enforcing csp
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'none'"],
+        scriptSrc: ["'self'", "https://vercel.live"],
+        // Add other directives as needed
+    },
+}));
+
+// parse json files
 app.use(express.json());
 
 app.use("/api", router);
