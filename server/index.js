@@ -16,17 +16,6 @@ app.use(
   })
 );
 app.use(express.json());
-// session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // Add a secret key in your .env file
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day session expiration
-    },
-  })
-);
 
 app.use("/api", router);
 
