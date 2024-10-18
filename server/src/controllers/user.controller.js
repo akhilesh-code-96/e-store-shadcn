@@ -25,7 +25,6 @@ class UserController {
     const { email, password } = req.query;
     try {
       const user = await UserModel.findOne({ email });
-      console.log(user);
       if (user) {
         const userPassword = user.password;
         if (password === userPassword) {
