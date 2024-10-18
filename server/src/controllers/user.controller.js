@@ -23,7 +23,6 @@ class UserController {
 
   async loginUser(req, res) {
     const { email, password } = req.query;
-    console.log(email, password);
     try {
       const user = await UserModel.findOne({ email });
       console.log(user);
