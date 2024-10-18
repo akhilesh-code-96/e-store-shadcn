@@ -13,7 +13,6 @@ app.use(
   cors({
     origin: ["https://twirl-one.app", "http://localhost:5173"],
     methods: ["POST", "GET", "DELETE", "PUT"],
-    credentials: true,
   })
 );
 
