@@ -10,7 +10,7 @@ const PORT = 3000;
 const app = express();
 app.use(
   cors({
-    origin: ["https://twirl-one.app", "http://localhost:5173"],
+    origin: ["https://twirl-one.vercel.app", "http://localhost:5173"],
     methods: ["POST", "GET", "DELETE", "PUT"],
     credentials: true,
   })
