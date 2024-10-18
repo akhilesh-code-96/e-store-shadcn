@@ -18,7 +18,6 @@ export const getCartProducts = createAsyncThunk(
         `${BASE_URL}/api/get-cart-products?${queryParams}`
       );
       const products = response.data.products;
-      console.log(products);
       return products;
     } catch (error) {
       console.error(error);
@@ -29,7 +28,6 @@ export const getCartProducts = createAsyncThunk(
 export const updateProductQantity = createAsyncThunk(
   "cart/updateProductQuantity",
   async (queryParams) => {
-    console.log(queryParams);
     try {
       const response = await axios.put(
         `${BASE_URL}/api/update-quantity?${queryParams}`
@@ -60,7 +58,6 @@ export const emptyCart = createAsyncThunk(
       const response = await axios.delete(
         `${BASE_URL}/api/empty-cart?${queryParams}`
       );
-      console.log(response.status);
       if (response.status === 200) {
         return [];
       }
