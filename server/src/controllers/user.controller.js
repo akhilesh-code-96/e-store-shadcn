@@ -23,12 +23,13 @@ class UserController {
 
   async loginUser(req, res) {
     const { email, password } = req.query;
+    console.log(email, password);
     try {
       const user = await UserModel.findOne({ email });
+      console.log(user);
       if (user) {
         const userPassword = user.password;
         if (password === userPassword) {
-          req.session.userEmail = email;
           res.status(200).json({ user });
         } else {
           throw new Error("User not found.");
