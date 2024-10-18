@@ -5,7 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const fetchProducts = createAsyncThunk(
   "header/fetchProducts",
   async (queryParams) => {
-    console.log(queryParams);
+    console.log(`${BASE_URL}/api/get-products?${queryParams}`);
     try {
       const response = await axios.get(
         `${BASE_URL}/api/get-products?${queryParams}`
@@ -14,7 +14,6 @@ export const fetchProducts = createAsyncThunk(
       console.log(products);
       return products;
     } catch (error) {
-      console.log("i am here");
       console.error(error);
     }
   }

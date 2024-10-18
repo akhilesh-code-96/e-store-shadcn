@@ -4,7 +4,6 @@ const router = require("./routes/api.js");
 const connectDB = require("./db/connect.js");
 const session = require("express-session");
 const cors = require("cors");
-const helmet = require("helmet");
 
 const PORT = 3000;
 
@@ -13,17 +12,7 @@ app.use(
   cors({
     origin: ["https://twirl-one.app", "http://localhost:5173"],
     methods: ["POST", "GET", "DELETE", "PUT"],
-  })
-);
-
-// enforcing csp
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'none'"],
-      scriptSrc: ["'self'", "https://vercel.live"],
-      // Add other directives as needed
-    },
+    credentials: true,
   })
 );
 
